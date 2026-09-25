@@ -1090,6 +1090,17 @@ function measureBody(B) {
   return { height: cm(B.H), chest: cm(scan(0.62, 0.78, true)), waist: cm(scan(0.25, 0.5, false)), hips: cm(scan(-0.12, 0.12, true)), inseam: cm(B.crotchY - B.minY) };
 }
 
+// Matte conversion: any imported material becomes a fully rough, non-metallic standard material (keeps colour, maps and alpha)
+function matte(m) {
+  if (!m) return m;
+  const n = new T.MeshStandardMaterial({ color: m.color ? m.color.clone() : 0xffffff, map: m.map || null, normalMap: m.normalMap || null,
+    alphaMap: m.alphaMap || null, transparent: !!m.transparent, opacity: m.opacity ?? 1, alphaTest: m.alphaTest || 0,
+    vertexColors: !!m.vertexColors, roughness: 1, metalness: 0, side: m.side });
+  n.name = m.name; if (m.normalScale) n.normalScale.copy(m.normalScale);
+  if (m.skinning) n.skinning = true;
+  return n;
+}
+
 /* ---------------- garment catalog ---------------- */
 const ICONS = {
   tee: 'M17 9l-9 6 4 7 5-3v21h14V19l5 3 4-7-9-6c-1 3-4 5-7 5s-6-2-7-5z',
@@ -1736,6 +1747,7 @@ async function loadCharacter(name, buf, isDefault, opts = {}) {
       if (o.isSkinnedMesh) { o.frustumCulled = false; skinned.push(o); } else plain.push(o);
       // untextured sculpt exports (ZBrush polypaint, grey defaults) get the neutral mannequin finish
       if (isDefault || [].concat(o.material).every(m => m && !m.map)) { o.material = Array.isArray(o.material) ? o.material.map(() => bodyMat) : bodyMat; o.userData.smooth = true; }
+      else o.material = Array.isArray(o.material) ? o.material.map(matte) : matte(o.material);
     });
     if (skinned.length) rebindSkinned(skinned);
     root.traverse(o => { if (o.isMesh && o.userData.smooth) smoothNormals(o.geometry); });
@@ -2055,7 +2067,7 @@ function makeCustomSource(root, name) {
     g.morphAttributes = {};
     g.applyMatrix4(o.matrixWorld);
     if (!g.attributes.normal) g.computeVertexNormals();
-    const mats = (Array.isArray(o.material) ? o.material : [o.material]).map(m => { const c = m.clone(); c.side = T.DoubleSide; return c; });
+    const mats = (Array.isArray(o.material) ? o.material : [o.material]).map(m => { const c = matte(m); c.side = T.DoubleSide; return c; });
     parts.push({ geo: g, material: Array.isArray(o.material) ? mats : mats[0] });
   });
   if (!parts.length) return null;
@@ -3789,7 +3801,7 @@ async function applyAvatarMaps() {
   const alb = mp.albedo ? await loadTex(mp.albedo, true, flip) : null, nrm = mp.normal ? await loadTex(mp.normal, false, flip) : null;
   let mat = null;
   if (alb || nrm) {
-    mat = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.62, metalness: 0, map: alb, normalMap: nrm });
+    mat = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 1, metalness: 0, map: alb, normalMap: nrm });
     const s = mp.normalScale ?? 1; if (nrm) mat.normalScale.set(s, s);
   }
   for (const m of meshes) {
@@ -4242,8 +4254,11 @@ async function applyMaps(e) {
   const alb = mp.albedo ? await loadTex(mp.albedo, true, flip) : null, nrm = mp.normal ? await loadTex(mp.normal, false, flip) : null;
   const s = mp.normalScale ?? 1;
   const fix = base => {
-    let n = base.clone();
-    if (!('normalMap' in n) || n.isMeshLambertMaterial || n.isMeshBasicMaterial) { const c = new T.MeshStandardMaterial({ color: base.color ? base.color.clone() : 0xffffff, map: base.map || null, roughness: 0.85 }); c.name = base.name; n = c; }
+    // Matte by default: every textured garment gets a fully rough, non-metallic standard material
+    const n = new T.MeshStandardMaterial({ color: base.color ? base.color.clone() : 0xffffff, map: base.map || null,
+      normalMap: base.normalMap || null, roughness: 1, metalness: 0, transparent: !!base.transparent, opacity: base.opacity ?? 1,
+      alphaTest: base.alphaTest || 0, alphaMap: base.alphaMap || null });
+    n.name = base.name; if (base.normalScale) n.normalScale.copy(base.normalScale);
     n.side = T.DoubleSide;
     if (alb) { n.map = alb; if (n.color) n.color.set(0xffffff); }
     n.normalMap = nrm; if (nrm && n.normalScale) n.normalScale.set(s, s);
