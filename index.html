@@ -1783,10 +1783,14 @@ async function loadCharacter(name, buf, isDefault, opts = {}) {
   } finally { S.busy = false; }
 }
 const downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null);
-downloadsP.then(d => { if (!d) { $('#exportBtn').disabled = true; $('#exportBtn').title = 'Saving files is not available in this view'; } });
+// Plain browser download: used whenever the Claude downloads capability is not there (shared links, self-hosted copies)
+function browserSave(filename, data, type) {
+  const url = URL.createObjectURL(new Blob([data], { type: type || 'application/octet-stream' }));
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.rel = 'noopener'; a.style.display = 'none';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
 async function exportGLB() {
   const dl = await downloadsP;
-  if (!dl) { toast('Saving files is not available in this view.'); return; }
   if (!S.charRoot) return;
   status('Packing .glb', true);
   const stash = [];
@@ -1801,10 +1805,12 @@ async function exportGLB() {
   try {
     const glb = await new Promise((res, rej) => new T.GLTFExporter().parse(S.charRoot, res, rej, { binary: true, animations: S.clips, onlyVisible: true }));
     const base = (S.fileName ? S.fileName.replace(/\.[^.]+$/, '') : 'mannequin') + '-dressed';
-    const zip = fflate.zipSync({ [base + '.glb']: new Uint8Array(glb) }, { level: 6 });
-    status('Ready to save');
-    await dl.save({ filename: base + '.zip', data: zip });
-    status(`Saved ${base}.zip`);
+    if (dl) {
+      const zip = fflate.zipSync({ [base + '.glb']: new Uint8Array(glb) }, { level: 6 });
+      status('Ready to save');
+      await dl.save({ filename: base + '.zip', data: zip });
+      status(`Saved ${base}.zip`);
+    } else { browserSave(base + '.glb', glb, 'model/gltf-binary'); status(`Saved ${base}.glb`); toast(`Saved ${base}.glb`); }
   } catch (err) {
     const code = err && err.code;
     status(code === 'declined' ? 'Save cancelled' : 'Export failed');
@@ -4203,7 +4209,7 @@ function itemAction(act, id) {
 const baseName = e => (e.fileName || e.def.name).replace(/\.[^.]+$/, '').replace(/[^\w.-]+/g, '_');
 async function saveZip(files, name) {
   const dl = await downloadsP;
-  if (!dl) { toast('Saving files is not available in this view.'); return; }
+  if (!dl) { try { browserSave(name, fflate.zipSync(files, { level: 6 }), 'application/zip'); toast(`Saved ${name}`); } catch (e) { toast('The file could not be saved here.'); } return; }
   try { await dl.save({ filename: name, data: fflate.zipSync(files, { level: 6 }) }); toast(`Saved ${name}`); }
   catch (err) { if (err && err.code !== 'declined') toast('The file could not be saved here.'); }
 }
