@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "defaultAvatar": "male_01",
+  "avatars": [
+    {
+      "id": "male_01",
+      "name": "Male 01",
+      "file": "avatars/male_01/Male_01.fbx",
+      "maps": { "albedo": null, "normal": null, "normalScale": 1 }
+    }
+  ],
+  "animations": [],
+  "garments": []
+}

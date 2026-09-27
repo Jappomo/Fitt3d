@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>FITT3D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -467,6 +466,17 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .inspector::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;pointer-events:none;z-index:2;
     background:linear-gradient(180deg,transparent 0,rgba(143,124,248,.45) 22%,rgba(161,147,255,.95) 50%,rgba(143,124,248,.45) 78%,transparent 100%)}
 }
+/* demo garments from assets/manifest.json */
+.demos{padding:4px 14px 16px;border-top:1px solid var(--line);margin:4px 8px 0}
+.demo-head{font:500 10.5px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 0 10px}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.demo-item{display:flex;flex-direction:column;gap:5px;padding:5px;border-radius:12px;border:1px solid transparent;background:none;cursor:pointer;min-width:0;color:inherit;text-align:left}
+.demo-item:hover{background:var(--panel-2);border-color:var(--line)}
+.demo-item[disabled]{opacity:.5;cursor:wait}
+.demo-item .pic{aspect-ratio:1;border-radius:9px;background:radial-gradient(circle at 50% 38%,#3a404a 0,#23272d 78%);display:grid;place-items:center;overflow:hidden}
+.demo-item .pic img{width:100%;height:100%;object-fit:contain}
+.demo-item .pic svg{width:58%;height:58%;fill:none;stroke:var(--muted);stroke-width:1.6}
+.demo-item .nm{font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
 </style>
 <div class="app">
   <header class="bar">
@@ -499,7 +509,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
           <button class="icon-btn" type="button" id="libAddSec" title="New section" aria-label="New section"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 5.5h5.5l1.8 1.8h7.7v9.2h-15z"/><path d="M10 9.5v4.5M7.8 11.8h4.5"/></svg></button>
           <button class="icon-btn" type="button" id="libImport" title="Import garment" aria-label="Import garment"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v10M6 9l4 4 4-4M3.5 14.5v2.5h13v-2.5"/></svg></button>
         </div>
-        <div class="scroll"><div class="library" id="library"></div></div>
+        <div class="scroll"><div class="library" id="library"></div><div class="demos" id="demoList" hidden></div></div>
       </div>
     </aside>
     <section class="stage" id="stage" aria-label="3D viewport">
@@ -1182,6 +1192,94 @@ function matte(m) {
   if (m.skinning) n.skinning = true;
   return n;
 }
+
+/* ================= Shipped assets: public/assets/manifest.json =================
+   Everything FITT3D ships with (default avatar, its maps, animation clips, demo garments)
+   is listed in the manifest, so adding content means dropping files in public/assets
+   and adding a line there. No code change needed. */
+const ASSET_BASE = 'assets/';
+let manifestP = null;
+function loadManifest() {
+  if (!manifestP) manifestP = fetch(ASSET_BASE + 'manifest.json', { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error('manifest ' + r.status); return r.json(); })
+    .catch(e => { console.warn('asset manifest unavailable', e); return { avatars: [], animations: [], garments: [] }; });
+  return manifestP;
+}
+const assetURL = p => ASSET_BASE + String(p).replace(/^\/+/, '');
+// Hosts that only serve web file types (like the Claude-hosted copy) get binary files as
+// "<file>.txt": zlib-compressed base64. Real files are always tried first.
+async function fetchAsset(p) {
+  try { const r = await fetch(assetURL(p)); if (r.ok) return await r.arrayBuffer(); } catch (e) { /* try the packed copy */ }
+  const r = await fetch(assetURL(p) + '.txt'); if (!r.ok) throw new Error(`${p}: ${r.status}`);
+  const bin = atob((await r.text()).trim()), z = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) z[i] = bin.charCodeAt(i);
+  return fflate.unzlibSync(z).buffer;
+}
+const extOf = p => (String(p).split('.').pop() || '').toLowerCase();
+const imgType = p => ({ png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' })[extOf(p)] || 'image/png';
+
+async function defaultAvatarEntry() {
+  const m = await loadManifest();
+  return (m.avatars || []).find(a => a.id === m.defaultAvatar) || (m.avatars || [])[0] || null;
+}
+
+/* default avatar maps: used when you have not loaded your own textures for it */
+async function manifestAvatarMaps() {
+  const a = await defaultAvatarEntry(); if (!a || !a.maps) return null;
+  const out = {};
+  for (const kind of ['albedo', 'normal']) {
+    const p = a.maps[kind]; if (!p) continue;
+    try { out[kind] = { name: p.split('/').pop(), type: imgType(p), buf: await fetchAsset(p) }; } catch (e) { console.warn(e); }
+  }
+  if (a.maps.normalScale != null) out.normalScale = a.maps.normalScale;
+  return out.albedo || out.normal ? out : null;
+}
+
+/* animation clips: added to the Pose menu for any avatar whose bone names match */
+async function loadManifestAnimations() {
+  const m = await loadManifest(); const list = m.animations || [];
+  if (!list.length || !S.skeleton || !S.charRoot) return;
+  const names = new Set(S.skeleton.bones.map(b => T.PropertyBinding.sanitizeNodeName(b.name)));
+  const root = S.charRoot.children[0];
+  let added = 0;
+  for (const a of list) {
+    try {
+      const buf = await fetchAsset(a.file);
+      const { clips } = await parseModel({ name: a.file, arrayBuffer: async () => buf });
+      for (const c of clips) {
+        // rotations only: root translation in another unit system would throw the avatar across the scene
+        const tracks = c.tracks.filter(t => t.name.endsWith('.quaternion') && names.has(t.name.slice(0, t.name.lastIndexOf('.'))));
+        if (tracks.length < Math.max(4, c.tracks.filter(t => t.name.endsWith('.quaternion')).length * 0.5)) continue;
+        const clip = new T.AnimationClip(a.name || c.name || a.file, c.duration, tracks);
+        if (S.clips.some(x => x.name === clip.name)) continue;
+        S.clips.push(clip); added++;
+        if (clips.length > 1 && !a.all) break;
+      }
+    } catch (e) { console.warn('animation', a.file, e); }
+  }
+  if (added) { if (!S.mixer) S.mixer = new T.AnimationMixer(root); renderPoses(); }
+}
+
+/* demo garments: listed under Demos in the wardrobe; clicking one opens it in Adjust fit like an import */
+async function renderDemos() {
+  const m = await loadManifest(), list = m.garments || [], box = $('#demoList'); if (!box) return;
+  box.hidden = !list.length; if (!list.length) return;
+  box.innerHTML = `<div class="demo-head">Demos</div><div class="demo-grid">${list.map((g, i) => `
+    <button class="demo-item" type="button" data-demo="${i}" title="Fit ${esc(g.name)}">
+      <span class="pic">${g.thumb ? `<img src="${esc(assetURL(g.thumb))}" alt="" draggable="false">` : `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="${ICONS.tee}"/></svg>`}</span>
+      <span class="nm">${esc(g.name)}</span></button>`).join('')}</div>`;
+}
+document.addEventListener('click', async ev => {
+  const b = ev.target.closest('[data-demo]'); if (!b) return;
+  const m = await loadManifest(), g = (m.garments || [])[+b.dataset.demo]; if (!g) return;
+  if (!S.B) { toast('Load an avatar first.'); return; }
+  b.disabled = true;
+  try {
+    const buf = await fetchAsset(g.file), name = (g.name || 'Demo') + '.' + extOf(g.file);
+    await importGarment(new File([buf], name));
+  } catch (e) { console.error(e); toast(`Could not load ${g.name}.`); }
+  finally { b.disabled = false; }
+});
 
 /* ---------------- garment catalog ---------------- */
 const ICONS = {
@@ -3616,14 +3714,9 @@ $('#library').addEventListener('drop', ev => {
 /* ---------- default avatar + boot ---------- */
 async function loadDefaultAvatar() {
   try {
-    if (!S.defaultBuf) {
-      // shipped as zlib-compressed base64 text next to the page
-      const r = await fetch('Male_01.fbx.txt'); if (!r.ok) throw new Error('fetch ' + r.status);
-      const bin = atob((await r.text()).trim()), z = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) z[i] = bin.charCodeAt(i);
-      S.defaultBuf = fflate.unzlibSync(z).buffer;
-    }
-    return await loadCharacter('Male_01.fbx', S.defaultBuf.slice(0), true);
+    const av = await defaultAvatarEntry(); if (!av) throw new Error('no avatar in manifest');
+    if (!S.defaultBuf) S.defaultBuf = await fetchAsset(av.file);
+    return await loadCharacter(av.file.split('/').pop(), S.defaultBuf.slice(0), true);
   } catch (e) { console.warn('default avatar unavailable', e); return false; }
 }
 
@@ -3956,10 +4049,12 @@ async function applyAvatarMaps() {
 async function loadAvatarState() {
   S.meas = (S.avatarKey && await DB.getMeta('measure:' + S.avatarKey)) || {};
   S.avatarMaps = (S.avatarKey && await DB.getMeta('avatarMaps:' + S.avatarKey)) || null;
+  if (!S.avatarMaps && S.isDefault) S.avatarMaps = await manifestAvatarMaps();
   if (S.avatarMaps) { try { await applyAvatarMaps(); } catch (e) { console.warn(e); } }
   renderAvTex();
   autoMeasure(); renderMeasure();
   await loadBoneMap();
+  loadManifestAnimations();
 }
 const saveAvatarMaps = () => { if (S.avatarKey) DB.putMeta('avatarMaps:' + S.avatarKey, S.avatarMaps); };
 function avatarHasUV() { return (S.bodyMeshes || []).every(m => m.geometry.attributes.uv); }
@@ -4653,6 +4748,7 @@ function hotData() {
   if (!ok) ok = await loadDefaultAvatar();
   if (!ok) { S.busy = true; buildMannequinChar(); S.busy = false; S.pose = 'rest'; renderPoses(); frameCamera(S.params.height / 100); toast('The default avatar could not load. Using the built-in mannequin.'); }
   await restoreLibrary();
+  renderDemos();
   let restored = 0;
   if (saved && Array.isArray(saved.equipped) && saved.equipped.length) {
     S.busy = true;
@@ -4719,5 +4815,3 @@ fitSecEl.addEventListener('click', ev => { const t = ev.target.closest('.tip[dat
 document.querySelector('.inspector .scroll').addEventListener('scroll', hideTip);
 })();
 </script>
-
-</body></html>
