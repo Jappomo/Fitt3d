@@ -172,7 +172,11 @@ button,select,input{font:inherit;color:inherit}
 
 /* inspector */
 .inspector .scroll{padding:6px 0 10px}
-.card-sec{margin:0 10px 8px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line)}
+.card-sec{position:relative;margin:0 10px 6px;border:0;background:none;border-radius:0}
+.card-sec:not(.closed){padding-bottom:10px;margin-bottom:12px}
+.card-sec:not(.closed)::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(92,201,213,.55) 30%,rgba(92,201,213,.8) 50%,rgba(92,201,213,.55) 70%,transparent);
+  box-shadow:0 1px 8px 0 rgba(92,201,213,.2)}
 .card-sec>.sec-toggle{width:100%;display:flex;align-items:center;gap:10px;padding:13px 14px;border:0;background:none;cursor:pointer;text-align:left}
 .sec-toggle h2{margin:0;font:600 14.5px/1 var(--f);flex:1}
 #rigInfo{display:inline-flex;gap:12px;font:500 12px/1 var(--f);color:var(--ink-2)}
@@ -4570,7 +4574,7 @@ $('#aboutBtn').addEventListener('click', () => {
   const root = $('#modalRoot');
   root.innerHTML = `<div class="overlay" id="abOverlay"><div class="dialog about" role="dialog" aria-modal="true" aria-labelledby="abT">
     <div id="abLogo"></div><h3 id="abT">FITT3D</h3><span class="ver">Version 0.0.1 <span style="color:var(--accent)">beta</span></span>
-    <p class="by">Vibecoded by Giacomo Liberio</p><button class="btn primary" type="button" id="abClose">Close</button></div></div>`;
+    <p class="by">Micromanaged by Giacomo Liberio<br>Coded by Claude</p><button class="btn primary" type="button" id="abClose">Close</button></div></div>`;
   $('#abLogo').appendChild($('#logoBig').content.cloneNode(true));
   const close = () => { if (document.activeElement === ti) commitName(); root.innerHTML = ''; document.removeEventListener('keydown', key, true); $('#aboutBtn').focus(); };
   const key = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
