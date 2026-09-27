@@ -1,0 +1,23 @@
+[
+  {
+    "version": "0.1.1",
+    "date": "2026-09-27",
+    "notes": [
+      "New menu bar: File, Edit, Settings and Info.",
+      "Save and open projects as .ft3d files.",
+      "Undo and redo for wearing, taking off, layer order, visibility and sculpt strokes.",
+      "Edit > Select last jumps back to the garment you selected before.",
+      "Settings: autosave on or off with an interval, antialiasing, frame cap.",
+      "Custom keyboard shortcuts, with import and export as JSON.",
+      "Loading intro.",
+      "About: closes when you click outside it."
+    ]
+  },
+  {
+    "version": "0.0.1",
+    "date": "2026-09-20",
+    "notes": [
+      "First beta: garment import, Adjust fit and pose, proxy cage, sculpting, layers, measurements, Map binding, avatar textures, .glb export."
+    ]
+  }
+]
