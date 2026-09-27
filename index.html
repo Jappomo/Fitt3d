@@ -486,6 +486,55 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 #splash.out{opacity:0;visibility:hidden}
 @keyframes spPulse{50%{transform:scale(1.05)}}
 @media (prefers-reduced-motion:reduce){#splash img{animation:none}}
+
+/* menubar */
+.menubar{display:flex;align-items:center;gap:2px;margin-left:4px}
+.mb-btn{position:relative;height:32px;padding:0 12px;border:0;border-radius:9px;background:none;color:var(--ink-2);font:500 13.5px/1 var(--f);cursor:pointer}
+.mb-btn:hover,.mb-btn[aria-expanded="true"]{background:var(--panel-2);color:#fff}
+.mb-btn.dot::after{content:"";position:absolute;top:6px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.proj-name{font:500 12px/1 var(--f-mono);color:var(--muted);margin-left:8px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proj-name.dirty::after{content:" •";color:var(--teal)}
+.mb-menu{position:fixed;z-index:26;min-width:230px;padding:6px;border-radius:14px;background:rgba(40,44,51,.98);border:1px solid var(--line-2);box-shadow:var(--shadow);display:grid;gap:1px}
+.mb-menu hr{border:0;border-top:1px solid var(--line);margin:5px 4px}
+.mb-item{display:flex;align-items:center;gap:10px;border:0;background:none;border-radius:9px;padding:8px 10px;color:var(--ink-2);font:400 13px/1.2 var(--f);text-align:left;cursor:pointer;width:100%}
+.mb-item:hover:not([disabled]),.mb-item:focus-visible{background:var(--panel-3);color:#fff;outline:0}
+.mb-item svg{width:15px;height:15px;color:var(--muted);flex:none}
+.mb-item .kb{margin-left:auto;font:500 10.5px/1 var(--f-mono);color:var(--faint);padding-left:16px}
+.mb-item[disabled]{opacity:.45;cursor:default}
+.mb-tag{margin-left:auto;font:500 9.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--panel-3);color:var(--muted)}
+.mb-head{font:500 10px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:10px 10px 6px}
+.mb-row{display:flex;align-items:center;gap:10px;padding:6px 10px;font-size:13px;color:var(--ink-2);min-height:34px}
+.mb-row>span{flex:1}
+.mb-row small{color:var(--faint);font-size:11px}
+.mb-seg{display:flex;padding:2px;border-radius:8px;background:var(--bg-2);gap:2px}
+.mb-seg button{border:0;background:none;border-radius:6px;padding:5px 8px;font:500 11.5px/1 var(--f);color:var(--muted);cursor:pointer}
+.mb-seg button[aria-pressed="true"]{background:var(--grad);color:#fff}
+.mb-seg button[disabled]{opacity:.4;cursor:default}
+.switch{position:relative;width:32px;height:18px;flex:none;border-radius:9px;border:0;background:var(--panel-3);cursor:pointer;padding:0;transition:background .15s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#cfd3db;transition:transform .15s}
+.switch[aria-checked="true"]{background:var(--teal)}
+.switch[aria-checked="true"]::after{transform:translateX(14px);background:#fff}
+.mb-note{font-size:11px;color:var(--teal);padding:0 10px 6px;display:flex;gap:8px;align-items:center}
+/* shortcuts + patch notes + save-as windows */
+.keys-list{display:grid;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);overflow:hidden}
+.key-row{display:flex;align-items:center;gap:10px;padding:7px 8px 7px 14px;min-height:40px}
+.key-row+.key-row{border-top:1px solid var(--line)}
+.key-row .kl{flex:1;font-size:13px;color:var(--ink-2)}
+.key-row .kx{width:26px;flex:none}
+.key-row .grp{font:500 10px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-right:8px}
+.key-cap{min-width:120px;height:28px;padding:0 10px;border-radius:8px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--ink);font:500 11.5px/1 var(--f-mono);cursor:pointer}
+.key-cap.empty{color:var(--faint);font-family:var(--f)}
+.key-cap.rec{border-color:var(--teal);color:var(--teal);box-shadow:0 0 0 3px rgba(92,201,213,.15)}
+.key-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 20px 18px;border-top:1px solid var(--line)}
+.key-foot .sp{flex:1}
+.pn-ver{display:grid;gap:8px;padding:14px 0}
+.pn-ver+.pn-ver{border-top:1px solid var(--line)}
+.pn-ver h4{margin:0;display:flex;align-items:baseline;gap:10px;font:600 15px/1 var(--f)}
+.pn-ver h4 small{font:500 11px/1 var(--f-mono);color:var(--muted)}
+.pn-ver ul{margin:0;padding-left:18px;display:grid;gap:5px;color:var(--ink-2);font-size:13px}
+.pn-ver .cur{font:500 10px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--teal-soft);color:var(--teal)}
+.name-input{height:36px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg-2);padding:0 12px;color:#fff;font:500 14px var(--f);outline:0;width:100%}
+.name-input:focus{border-color:rgba(143,124,248,.7)}
 </style>
 <div id="splash" role="status" aria-live="polite" aria-label="Loading FITT3D">
   <img src="data:image/png;base64,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" alt="" width="56" height="56">
@@ -512,7 +561,13 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <header class="bar">
     <div class="brand">
       <button class="logo-btn" type="button" id="aboutBtn" aria-label="About FITT3D" title="About FITT3D"><img src="data:image/png;base64,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" alt="" width="40" height="41"></button>
-      <h1>FITT3D</h1>
+      <nav class="menubar" id="menubar" aria-label="Main menu">
+        <button type="button" class="mb-btn" data-menu="file" aria-haspopup="menu" aria-expanded="false">File</button>
+        <button type="button" class="mb-btn" data-menu="edit" aria-haspopup="menu" aria-expanded="false">Edit</button>
+        <button type="button" class="mb-btn" data-menu="settings" aria-haspopup="menu" aria-expanded="false">Settings</button>
+        <button type="button" class="mb-btn" data-menu="info" aria-haspopup="menu" aria-expanded="false">Info</button>
+      </nav>
+      <span class="proj-name" id="projName" hidden></span>
     </div>
     <div class="bar-actions">
       <button class="btn" id="importBtn" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="5" r="2.6"/><path d="M4.5 17c.6-3.4 2.7-5.2 5.5-5.2s4.9 1.8 5.5 5.2"/></svg>Import avatar</button>
@@ -1223,6 +1278,17 @@ function matte(m) {
   return n;
 }
 
+/* ---------- app version + user settings (per browser, localStorage) ---------- */
+const APP_VERSION = '0.1.1';
+const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, keys: {} };
+const SETTINGS = (() => {
+  let s = null; try { s = JSON.parse(localStorage.getItem('fitt3d.settings') || 'null'); } catch (e) { /* private mode */ }
+  const d = JSON.parse(JSON.stringify(SETTINGS_DEFAULT));
+  if (s && typeof s === 'object') { Object.assign(d.autosave, s.autosave || {}); Object.assign(d.render, s.render || {}); d.keys = (s.keys && typeof s.keys === 'object') ? s.keys : {}; }
+  return d;
+})();
+function saveSettings() { try { localStorage.setItem('fitt3d.settings', JSON.stringify(SETTINGS)); } catch (e) { /* ok */ } }
+
 /* ================= Shipped assets: public/assets/manifest.json =================
    Everything FITT3D ships with (default avatar, its maps, animation clips, demo garments)
    is listed in the manifest, so adding content means dropping files in public/assets
@@ -1648,7 +1714,7 @@ function makeMaterial(entry) {
 
 /* ---------------- scene ---------------- */
 const canvas = $('#view'), stage = $('#stage');
-const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
+const renderer = new T.WebGLRenderer({ canvas, antialias: SETTINGS.render.aa !== false, alpha: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputEncoding = T.sRGBEncoding;
 renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.68;
@@ -2162,7 +2228,11 @@ $('#wearList').addEventListener('change', ev => {
 
 /* ---------------- loop ---------------- */
 const clock = new T.Clock(); let time = 0;
+let lastFrame = 0;
 function tick(now) {
+  const cap = SETTINGS.render.cap;
+  if (cap && now - lastFrame < 1000 / cap - 2) { requestAnimationFrame(tick); return; }
+  lastFrame = now;
   const dt = Math.min(0.05, clock.getDelta()); time += dt;
   if (S.fitting || S.sculpting || S.measuring || S.exporting) { /* pose held while fitting, sculpting or measuring */ }
   else if (S.mixer && S.action) S.mixer.update(dt);
@@ -2799,7 +2869,9 @@ $('#layerList').addEventListener('drop', ev => {
 function selectGarment(id) {
   if (S.fitting) return;
   if (K && K.e.def.id !== id) endSculpt();
+  const before = S.selected;
   S.selected = S.selected === id && !K ? null : id;
+  if (before && before !== S.selected) S.prevSelected = before;
   renderLayers(); renderSculptBox(); if (typeof renderLibrary === 'function') renderLibrary();
   if (S.selected) { openSec('garmentSec'); status(`Selected ${S.equipped.get(id).def.name}`); }
   if (typeof scheduleSave === 'function') scheduleSave();
@@ -2995,15 +3067,26 @@ function endStroke() {
 function sculptUndo() {
   if (!K || !K.undo.length) { toast('Nothing to undo.'); return; }
   const snap = K.undo.pop(), before = snapshotBind();
+  (K.redo = K.redo || []).push(before);
   K.parts.forEach((p, k) => { p.wd.bind.set(snap[k]); writeBind(p.t, p.wd); });
   deformFromProxy(K.e);
   commitDiff(before);
   const e = K.e; K.parts.forEach(p => { p.proxy.geometry.dispose(); p.proxy.material.dispose(); }); K.parts = editTargetsOf(e).map(makePart);
   status('Undid last stroke');
 }
+function sculptRedo() {
+  if (!K || !K.redo || !K.redo.length) { toast('Nothing to redo.'); return; }
+  const snap = K.redo.pop(), before = snapshotBind();
+  K.undo.push(before);
+  K.parts.forEach((p, k) => { p.wd.bind.set(snap[k]); writeBind(p.t, p.wd); });
+  deformFromProxy(K.e);
+  commitDiff(before);
+  const e = K.e; K.parts.forEach(p => { p.proxy.geometry.dispose(); p.proxy.material.dispose(); }); K.parts = editTargetsOf(e).map(makePart);
+  status('Redid stroke');
+}
 function sculptFixClipping() {
   if (!K) return;
-  const before = snapshotBind(); K.undo.push(before);
+  const before = snapshotBind(); K.undo.push(before); K.redo = [];
   const B = K.body, ease = K.e.proxy ? 0.006 : 0.004;
   for (const p of K.parts) {
     const W = p.wd.W, D = new Float32Array(p.wd.m * 3);
@@ -3051,7 +3134,7 @@ stage.addEventListener('pointerdown', ev => {
   const h = sculptHit(ev); if (!h) return;
   controls.enabled = false; ev.preventDefault();
   try { canvas.setPointerCapture(ev.pointerId); } catch (e) { /* ok */ }
-  const before = snapshotBind(); K.undo.push(before); if (K.undo.length > 30) K.undo.shift();
+  const before = snapshotBind(); K.undo.push(before); if (K.undo.length > 30) K.undo.shift(); K.redo = [];
   if (nav === 'maya' && ev.altKey) return;
   const inv = ev.button === 2 || ev.ctrlKey || (nav !== 'maya' && ev.altKey);
   K.stroke = { before, last: h.point.clone(), invert: inv };
@@ -4271,6 +4354,420 @@ async function loadBoneMap() {
   if (bindOpen) { refreshBindBones(); buildBindDots(); renderBinding(); }
 }
 
+/* ================= Menu bar: File · Edit · Settings · Info ================= */
+const DISCORD_URL = '';            // set the invite link here to enable File > Join Discord
+const MIc = d => `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const MICONS = {
+  save: MIc('<path d="M4 4h9.5L16 6.5V16H4z"/><path d="M7 4v4h6V4M7 16v-5h6v5"/>'),
+  saveAs: MIc('<path d="M4 4h8l2.5 2.5V9M4 4v12h6"/><path d="M7 4v3.5h5M13 13l3-3 1.5 1.5-3 3H13z"/>'),
+  open: MIc('<path d="M3 6.5V15h12.5l2-6.5H6.5L4.5 15M3 6.5V4.5h5l1.5 2h6V8.5"/>'),
+  export: MIc('<path d="M10 3v10M6.5 6.5 10 3l3.5 3.5M3.5 13.5V17h13v-3.5"/>'),
+  discord: MIc('<path d="M6 5.5c1.2-.5 2.5-.8 4-.8s2.8.3 4 .8c1.3 2 2 4 2 6.5-1.1 1-2.4 1.6-3.8 2l-.8-1.4M6 5.5C4.7 7.5 4 9.5 4 12c1.1 1 2.4 1.6 3.8 2l.8-1.4M6.5 12c2.3 1 4.7 1 7 0"/><circle cx="8" cy="9.8" r=".9"/><circle cx="12" cy="9.8" r=".9"/>'),
+  undo: MIc('<path d="M7.5 5 4 8.5 7.5 12"/><path d="M4 8.5h8a4 4 0 0 1 0 8H9"/>'),
+  redo: MIc('<path d="M12.5 5 16 8.5 12.5 12"/><path d="M16 8.5H8a4 4 0 0 0 0 8h3"/>'),
+  sel: MIc('<path d="M5 3.5 15 9l-4.5 1.2L8.5 15z"/><path d="M3.5 16.5h5" stroke-dasharray="1.5 2"/>'),
+  keys: MIc('<rect x="2.5" y="5.5" width="15" height="9" rx="2"/><path d="M5.5 8.5h1M9 8.5h2M13.5 8.5h1M6.5 11.5h7"/>'),
+  notes: MIc('<path d="M5 3.5h7l3 3v10H5z"/><path d="M12 3.5v3h3M7.5 10h5M7.5 13h3.5"/>'),
+  mail: MIc('<rect x="3" y="5" width="14" height="10.5" rx="2"/><path d="m3.5 6 6.5 5 6.5-5"/>'),
+  heart: MIc('<path d="M10 16s-6-3.6-6-8a3.3 3.3 0 0 1 6-2 3.3 3.3 0 0 1 6 2c0 4.4-6 8-6 8z"/>'),
+  info: MIc('<circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.2v.1"/>')
+};
+
+/* ---------- actions (menus and keyboard shortcuts share these) ---------- */
+const ACTIONS = [
+  ['file.save', 'File', 'Save local', () => saveProject(false)],
+  ['file.saveAs', 'File', 'Save local as', () => saveProject(true)],
+  ['file.open', 'File', 'Open local', () => openProjectPicker()],
+  ['file.export', 'File', 'Export avatar .glb', () => exportGLB()],
+  ['file.importAvatar', 'File', 'Import avatar', () => $('#importBtn').click()],
+  ['file.importGarment', 'File', 'Import garment', () => $('#importGarmentBtn').click()],
+  ['edit.undo', 'Edit', 'Undo', () => doUndo()],
+  ['edit.redo', 'Edit', 'Redo', () => doRedo()],
+  ['edit.selectLast', 'Edit', 'Select last', () => selectLast()],
+  ['view.home', 'View', 'Reset camera', () => $('#homeBtn').click()],
+  ['view.wardrobe', 'View', 'Collapse / expand wardrobe', () => $('#wardToggle').click()],
+  ['view.gWire', 'View', 'Garment wireframe', () => { VIEW.gWire = !VIEW.gWire; applyView(); renderVTools(); }],
+  ['view.xray', 'View', 'Garment X-ray', () => { VIEW.xray = !VIEW.xray; applyView(); renderVTools(); }],
+  ['pose.rest', 'Pose', 'Bind pose', () => setPose('rest')],
+  ['pose.apose', 'Pose', 'A pose', () => setPose('apose')],
+  ['pose.tpose', 'Pose', 'T pose', () => setPose('tpose')],
+  ['info.about', 'Info', 'About FITT3D', () => showAbout()]
+];
+const actionById = id => ACTIONS.find(a => a[0] === id);
+const runAction = id => { const a = actionById(id); if (a) a[3](); };
+const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform || '');
+function comboLabel(c) {
+  if (!c) return '';
+  return c.split('+').map(k => ({ Ctrl: IS_MAC ? '⌃' : 'Ctrl', Meta: IS_MAC ? '⌘' : 'Win', Alt: IS_MAC ? '⌥' : 'Alt', Shift: IS_MAC ? '⇧' : 'Shift', Space: 'Space' })[k] || k).join(IS_MAC ? '' : '+');
+}
+function comboOf(ev) {
+  const k = ev.key; if (['Control', 'Shift', 'Alt', 'Meta'].includes(k)) return null;
+  const key = k === ' ' ? 'Space' : k.length === 1 ? k.toUpperCase() : k;
+  return [ev.ctrlKey && 'Ctrl', ev.metaKey && 'Meta', ev.altKey && 'Alt', ev.shiftKey && 'Shift', key].filter(Boolean).join('+');
+}
+const kbFor = id => { const c = SETTINGS.keys[id]; return c ? `<span class="kb">${esc(comboLabel(c))}</span>` : ''; };
+
+/* ---------- menus ---------- */
+let mbOpen = null;
+function menuHTML(which) {
+  const item = (act, icon, label, extra = '') => `<button type="button" class="mb-item" role="menuitem" data-act="${act}" ${extra}>${icon}${label}${act.includes('.') ? kbFor(act) : ''}</button>`;
+  const soon = (icon, label, tag) => `<button type="button" class="mb-item" role="menuitem" disabled aria-disabled="true">${icon}${label}<span class="mb-tag">${tag}</span></button>`;
+  if (which === 'file') return item('file.save', MICONS.save, 'Save local') + item('file.saveAs', MICONS.saveAs, 'Save local as…') + '<hr>' +
+    item('file.open', MICONS.open, 'Open local…') + '<hr>' + item('file.export', MICONS.export, 'Export avatar .glb…') + '<hr>' +
+    (DISCORD_URL ? item('discord', MICONS.discord, 'Join Discord') : soon(MICONS.discord, 'Join Discord', 'Soon'));
+  if (which === 'edit') {
+    const u = undoLabel(), r = redoLabel();
+    return item('edit.undo', MICONS.undo, u ? `Undo <small style="color:var(--faint);margin-left:4px">${esc(u)}</small>` : 'Undo', u ? '' : 'disabled') +
+      item('edit.redo', MICONS.redo, r ? `Redo <small style="color:var(--faint);margin-left:4px">${esc(r)}</small>` : 'Redo', r ? '' : 'disabled') + '<hr>' +
+      item('edit.selectLast', MICONS.sel, 'Select last', S.prevSelected && S.equipped.has(S.prevSelected) ? '' : 'disabled');
+  }
+  if (which === 'settings') {
+    const A = SETTINGS.autosave, R = SETTINGS.render;
+    const seg = (key, opts, cur, dis) => `<div class="mb-seg" role="group">${opts.map(([v, l]) => `<button type="button" data-set="${key}" data-v="${v}" aria-pressed="${cur === v}"${dis ? ' disabled' : ''}>${l}</button>`).join('')}</div>`;
+    return `<div class="mb-head">Autosave</div>
+      <div class="mb-row"><span>Autosave in this browser</span><button type="button" class="switch" role="switch" data-set="autosave.on" aria-checked="${A.on}" aria-label="Autosave"></button></div>
+      <div class="mb-row"><span>Interval</span>${seg('autosave.every', [[0, 'On change'], [60, '1 min'], [300, '5 min'], [600, '10 min']], A.every, !A.on)}</div>
+      <hr><div class="mb-head">Viewport render</div>
+      <div class="mb-row"><span>Antialiasing</span><button type="button" class="switch" role="switch" data-set="render.aa" aria-checked="${R.aa}" aria-label="Antialiasing"></button></div>
+      ${R.aa !== renderer.getContextAttributes().antialias ? '<div class="mb-note">Applies after reload <button type="button" class="link-btn" data-act="reload">Reload now</button></div>' : ''}
+      <div class="mb-row"><span>Frame cap</span>${seg('render.cap', [[0, 'Off'], [30, '30'], [60, '60']], R.cap)}</div>
+      <hr>${item('keys', MICONS.keys, 'Keyboard shortcuts…')}`;
+  }
+  return item('notes', MICONS.notes, 'Patch notes') +
+    soon(MICONS.mail, 'Feedback…', 'Coming soon') + soon(MICONS.heart, 'Donate', 'Not in beta') + '<hr>' +
+    item('info.about', MICONS.info, 'About FITT3D');
+}
+function openMenu(which) {
+  closeMenuBar();
+  const btn = $(`.mb-btn[data-menu="${which}"]`); if (!btn) return;
+  const m = document.createElement('div'); m.className = 'mb-menu'; m.id = 'mbMenu'; m.setAttribute('role', 'menu'); m.dataset.which = which;
+  m.innerHTML = menuHTML(which);
+  document.body.appendChild(m);
+  const r = btn.getBoundingClientRect();
+  m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left)) + 'px'; m.style.top = (r.bottom + 6) + 'px';
+  btn.setAttribute('aria-expanded', 'true'); mbOpen = which;
+  if (which === 'info') { btn.classList.remove('dot'); try { localStorage.setItem('fitt3d.seenNotes', APP_VERSION); } catch (e) { /* ok */ } }
+}
+function closeMenuBar() { const m = $('#mbMenu'); if (m) m.remove(); document.querySelectorAll('.mb-btn').forEach(b => b.setAttribute('aria-expanded', 'false')); mbOpen = null; }
+function refreshMenu() { if (!mbOpen) return; const m = $('#mbMenu'); if (m) m.innerHTML = menuHTML(mbOpen); }
+$('#menubar').addEventListener('click', ev => { const b = ev.target.closest('.mb-btn'); if (!b) return; if (mbOpen === b.dataset.menu) closeMenuBar(); else openMenu(b.dataset.menu); });
+$('#menubar').addEventListener('pointerover', ev => { const b = ev.target.closest('.mb-btn'); if (b && mbOpen && mbOpen !== b.dataset.menu) openMenu(b.dataset.menu); });
+document.addEventListener('pointerdown', ev => { if (mbOpen && !ev.target.closest('#mbMenu') && !ev.target.closest('.mb-btn')) closeMenuBar(); }, true);
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && mbOpen) { closeMenuBar(); } });
+document.addEventListener('click', ev => {
+  const m = ev.target.closest('#mbMenu'); if (!m) return;
+  const set = ev.target.closest('[data-set]');
+  if (set) {
+    const [grp, key] = set.dataset.set.split('.');
+    if (set.classList.contains('switch')) SETTINGS[grp][key] = !SETTINGS[grp][key]; else SETTINGS[grp][key] = +set.dataset.v;
+    saveSettings();
+    if (grp === 'autosave' && SETTINGS.autosave.on) { S.lastAuto = Date.now(); saveSession(); }
+    refreshMenu(); return;
+  }
+  const it = ev.target.closest('[data-act]'); if (!it || it.disabled) return;
+  const act = it.dataset.act; closeMenuBar();
+  if (act === 'discord') window.open(DISCORD_URL, '_blank', 'noopener');
+  else if (act === 'keys') showShortcuts();
+  else if (act === 'notes') showPatchNotes();
+  else if (act === 'reload') { saveSession(); location.reload(); }
+  else runAction(act);
+});
+try { if (localStorage.getItem('fitt3d.seenNotes') !== APP_VERSION) $('.mb-btn[data-menu="info"]').classList.add('dot'); } catch (e) { /* ok */ }
+
+/* ---------- keyboard shortcuts: nothing bound by default ---------- */
+document.addEventListener('keydown', ev => {
+  if (ev.defaultPrevented || ev.repeat) return;
+  const t = ev.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  if ($('#modalRoot').children.length || $('#bindPick')) return;
+  const c = comboOf(ev); if (!c) return;
+  const id = Object.keys(SETTINGS.keys).find(k => SETTINGS.keys[k] === c); if (!id) return;
+  ev.preventDefault(); closeMenuBar(); runAction(id);
+});
+function showShortcuts() {
+  const root = $('#modalRoot'); let draft = { ...SETTINGS.keys }, rec = null;
+  const draw = () => {
+    $('#kbList').innerHTML = ACTIONS.map(([id, grp, label]) => `<div class="key-row"><span class="kl"><span class="grp">${grp}</span>${label}</span>
+      <button type="button" class="key-cap${draft[id] ? '' : ' empty'}${rec === id ? ' rec' : ''}" data-key="${id}" title="Click, then press the keys. Backspace clears.">${rec === id ? 'Press keys…' : draft[id] ? esc(comboLabel(draft[id])) : 'Not set'}</button>
+      ${draft[id] ? `<button type="button" class="x-btn" data-clear="${id}" aria-label="Clear ${label}" title="Clear"><svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l7 7M10.5 3.5l-7 7"/></svg></button>` : '<span class="kx"></span>'}</div>`).join('');
+  };
+  root.innerHTML = `<div class="overlay" id="kbOverlay"><div class="window" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" style="height:min(680px,calc(100% - 32px))">
+    <div class="win-head"><h3>Keyboard shortcuts</h3><button class="icon-btn ghost" type="button" id="kbClose" aria-label="Close">${MIc('<path d="M5 5l10 10M15 5 5 15"/>')}</button></div>
+    <div class="win-body"><p class="note" style="margin-bottom:12px">Click a field and press the keys. Nothing is bound by default. Shortcuts are stored in this browser.</p><div class="keys-list" id="kbList"></div></div>
+    <div class="key-foot"><button class="btn small" type="button" id="kbImport">Import JSON</button><button class="btn small" type="button" id="kbExport">Export JSON</button>
+      <button class="link-btn" type="button" id="kbReset">Restore to default</button><span class="sp"></span>
+      <button class="btn" type="button" id="kbCancel">Cancel</button><button class="btn primary" type="button" id="kbSave">Save settings</button></div></div></div>`;
+  draw();
+  const close = () => { root.innerHTML = ''; document.removeEventListener('keydown', key, true); };
+  const key = ev => {
+    if (rec) {
+      ev.preventDefault(); ev.stopPropagation();
+      if (ev.key === 'Escape') { rec = null; draw(); return; }
+      if (ev.key === 'Backspace' || ev.key === 'Delete') { delete draft[rec]; rec = null; draw(); return; }
+      const c = comboOf(ev); if (!c) return;
+      const clash = Object.keys(draft).find(k => draft[k] === c && k !== rec);
+      if (clash) { delete draft[clash]; toast(`${comboLabel(c)} moved from "${actionById(clash)[2]}".`); }
+      draft[rec] = c; rec = null; draw(); return;
+    }
+    if (ev.key === 'Escape') { ev.stopPropagation(); close(); }
+  };
+  document.addEventListener('keydown', key, true);
+  $('#kbList').addEventListener('click', ev => {
+    const k = ev.target.closest('[data-key]'); if (k) { rec = rec === k.dataset.key ? null : k.dataset.key; draw(); return; }
+    const c = ev.target.closest('[data-clear]'); if (c) { delete draft[c.dataset.clear]; draw(); }
+  });
+  $('#kbClose').onclick = close; $('#kbCancel').onclick = close;
+  $('#kbOverlay').addEventListener('pointerdown', ev => { if (ev.target.id === 'kbOverlay') close(); });
+  $('#kbReset').onclick = () => { draft = {}; rec = null; draw(); toast('All shortcuts cleared. Save settings to keep it.'); };
+  $('#kbSave').onclick = () => { SETTINGS.keys = draft; saveSettings(); close(); toast('Keyboard shortcuts saved.'); };
+  $('#kbExport').onclick = () => {
+    const data = new TextEncoder().encode(JSON.stringify({ app: 'FITT3D', type: 'shortcuts', version: 1, keys: draft }, null, 2));
+    saveBytes('fitt3d-shortcuts.json', data, 'application/json');
+  };
+  $('#kbImport').onclick = () => pickFile('.json,application/json', async f => {
+    try { const j = JSON.parse(await f.text()), keys = j && (j.keys || j);
+      const ok = {}; for (const [id, c] of Object.entries(keys || {})) if (actionById(id) && typeof c === 'string') ok[id] = c;
+      draft = ok; draw(); toast(`Imported ${Object.keys(ok).length} shortcut${Object.keys(ok).length === 1 ? '' : 's'}. Save settings to keep them.`);
+    } catch (e) { toast('That is not a FITT3D shortcuts file.'); }
+  });
+}
+function pickFile(accept, cb) { const i = document.createElement('input'); i.type = 'file'; i.accept = accept; i.onchange = () => { if (i.files[0]) cb(i.files[0]); }; i.click(); }
+async function saveBytes(name, data, type) {
+  const dl = await downloadsP;
+  if (dl) { try { await dl.save({ filename: name, data }); return true; } catch (e) { if (e && e.code === 'declined') return false; throw e; } }
+  browserSave(name, data, type); return true;
+}
+
+/* ---------- patch notes: assets/patch-notes.json (newest first) ---------- */
+const PATCH_NOTES_FALLBACK = [{ version: '0.1.1', date: '2026-09-27', notes: ['Menu bar: File, Edit, Settings and Info.', 'Save and open projects as .ft3d files.', 'Undo and redo for wearing, layers and sculpting.', 'Settings for autosave, antialiasing and frame cap.', 'Custom keyboard shortcuts.', 'Loading intro.'] }];
+async function showPatchNotes() {
+  let list = PATCH_NOTES_FALLBACK;
+  try { const r = await fetch(assetURL('patch-notes.json'), { cache: 'no-cache' }); if (r.ok) { const j = await r.json(); if (Array.isArray(j) && j.length) list = j; } } catch (e) { /* fallback */ }
+  const root = $('#modalRoot');
+  root.innerHTML = `<div class="overlay" id="pnOverlay"><div class="window" role="dialog" aria-modal="true" aria-label="Patch notes">
+    <div class="win-head"><h3>Patch notes</h3><button class="icon-btn ghost" type="button" id="pnClose" aria-label="Close">${MIc('<path d="M5 5l10 10M15 5 5 15"/>')}</button></div>
+    <div class="win-body" style="padding-top:4px">${list.map(v => `<section class="pn-ver"><h4>Version ${esc(v.version)}${v.version === APP_VERSION ? '<span class="cur">Current</span>' : ''}<small>${esc(v.date || '')}</small></h4>
+      <ul>${(v.notes || []).map(n => `<li>${esc(n)}</li>`).join('')}</ul></section>`).join('')}</div></div></div>`;
+  const close = () => { root.innerHTML = ''; document.removeEventListener('keydown', key, true); };
+  const key = ev => { if (ev.key === 'Escape') { ev.stopPropagation(); close(); } };
+  document.addEventListener('keydown', key, true);
+  $('#pnClose').onclick = close; $('#pnOverlay').addEventListener('pointerdown', ev => { if (ev.target.id === 'pnOverlay') close(); });
+}
+
+/* ---------- undo / redo ---------- */
+// Scene history: which garments are worn, their layer order and visibility. Sculpt mode uses its own stroke history.
+const H = { stack: [], idx: -1, applying: false, labels: [] };
+const sceneSnap = () => JSON.stringify({ o: (S.layerOrder || []).filter(id => S.equipped.has(id)), h: (S.layerOrder || []).filter(id => S.equipped.get(id) && S.equipped.get(id).hidden) });
+function describeChange(a, b) {
+  if (!a) return '';
+  const A = JSON.parse(a), B = JSON.parse(b), nm = id => (S.customLib.get(id) || { def: { name: 'garment' } }).def.name;
+  const on = B.o.find(id => !A.o.includes(id)), off = A.o.find(id => !B.o.includes(id));
+  if (on) return `wear ${nm(on)}`; if (off) return `take off ${nm(off)}`;
+  if (A.h.join() !== B.h.join()) return 'visibility'; return 'layer order';
+}
+function recordHistory() {
+  if (H.applying || S.restoring || S.fitting) return;
+  const s = sceneSnap(); if (H.stack[H.idx] === s) return;
+  const label = describeChange(H.stack[H.idx], s);
+  H.stack = H.stack.slice(0, H.idx + 1); H.labels = H.labels.slice(0, H.idx + 1);
+  H.stack.push(s); H.labels.push(label); H.idx = H.stack.length - 1;
+  if (H.stack.length > 60) { H.stack.shift(); H.labels.shift(); H.idx--; }
+  markDirty();
+}
+const undoLabel = () => K ? (K.undo.length ? 'sculpt stroke' : '') : (H.idx > 0 ? H.labels[H.idx] || 'change' : '');
+const redoLabel = () => K ? (K.redo && K.redo.length ? 'sculpt stroke' : '') : (H.idx < H.stack.length - 1 ? H.labels[H.idx + 1] || 'change' : '');
+async function applySnap(json) {
+  const T0 = JSON.parse(json);
+  H.applying = true; S.busy = true; status('Updating scene', true);
+  try {
+    for (const id of [...S.equipped.keys()]) if (!T0.o.includes(id)) unequip(id, true);
+    for (const id of T0.o) {
+      if (S.equipped.has(id)) continue;
+      const e = S.customLib.get(id); if (!e) continue;
+      await ensureSource(e); await nextFrame(); bindCustomEntry(e); S.equipped.set(id, e);
+    }
+    S.layerOrder = T0.o.filter(id => S.equipped.has(id));
+    for (const [id, e] of S.equipped) e.hidden = T0.h.includes(id);
+    if (S.selected && !S.equipped.has(S.selected)) S.selected = null;
+    resolveLayers(); renderWearList(); applyView();
+  } catch (e) { console.error(e); toast('Could not restore that step.'); }
+  S.busy = false; H.applying = false; status('Ready');
+}
+async function doUndo() {
+  if (S.busy) return;
+  if (K) { sculptUndo(); return; }
+  if (S.fitting) { toast('Finish or cancel the fit first.'); return; }
+  if (H.idx <= 0) { toast('Nothing to undo.'); return; }
+  const lbl = H.labels[H.idx]; H.idx--; await applySnap(H.stack[H.idx]); toast(`Undid ${lbl || 'last change'}.`);
+}
+async function doRedo() {
+  if (S.busy) return;
+  if (K) { sculptRedo(); return; }
+  if (S.fitting) { toast('Finish or cancel the fit first.'); return; }
+  if (H.idx >= H.stack.length - 1) { toast('Nothing to redo.'); return; }
+  H.idx++; await applySnap(H.stack[H.idx]); toast(`Redid ${H.labels[H.idx] || 'change'}.`);
+}
+function selectLast() {
+  const id = S.prevSelected;
+  if (!id || !S.equipped.has(id)) { toast('No previous selection.'); return; }
+  if (S.selected === id) return;
+  selectGarment(id);
+}
+
+/* ---------- .ft3d project files ---------- */
+// A .ft3d file is a zip: project.json (scene, avatar, measurements, bone map, garments with fit, sculpt and maps)
+// plus bin/N entries for binary data (mesh files, maps, sculpt offsets).
+const PROJ = { name: null, handle: null, dirty: false };
+function markDirty() { if (S.restoring || H.applying) return; PROJ.dirty = true; showProjName(); }
+function showProjName() { const el = $('#projName'); if (!el) return; el.hidden = !PROJ.name; el.textContent = PROJ.name ? PROJ.name + '.ft3d' : ''; el.classList.toggle('dirty', PROJ.dirty && !!PROJ.name); el.title = PROJ.dirty ? 'Unsaved changes' : 'Saved'; }
+function packBins(v, bins) {
+  if (v instanceof ArrayBuffer) { bins.push(new Uint8Array(v)); return { __bin: bins.length - 1, t: 'ArrayBuffer' }; }
+  if (ArrayBuffer.isView(v)) { bins.push(new Uint8Array(v.buffer.slice(v.byteOffset, v.byteOffset + v.byteLength))); return { __bin: bins.length - 1, t: v.constructor.name }; }
+  if (Array.isArray(v)) return v.map(x => packBins(x, bins));
+  if (v && typeof v === 'object') { const o = {}; for (const k of Object.keys(v)) o[k] = packBins(v[k], bins); return o; }
+  return v;
+}
+const BIN_TYPES = { Float32Array, Float64Array, Int32Array, Uint32Array, Int16Array, Uint16Array, Int8Array, Uint8Array, Uint8ClampedArray };
+function unpackBins(v, files) {
+  if (Array.isArray(v)) return v.map(x => unpackBins(x, files));
+  if (v && typeof v === 'object') {
+    if ('__bin' in v) { const u = files['bin/' + v.__bin]; if (!u) throw new Error('missing bin ' + v.__bin); const buf = u.slice().buffer; return v.t === 'ArrayBuffer' ? buf : new (BIN_TYPES[v.t] || Uint8Array)(buf); }
+    const o = {}; for (const k of Object.keys(v)) o[k] = unpackBins(v[k], files); return o;
+  }
+  return v;
+}
+async function buildProject() {
+  const garments = (S.layerOrder || []).filter(id => S.customLib.has(id)).map(id => {
+    const e = S.customLib.get(id), src = e.custom || {};
+    return { id, name: e.def.name, tag: e.def.tag, order: e.def.order, thumb: e.def.thumb || null, fileName: e.fileName, buf: e.fileBuf,
+      place: src.place || e.saved?.place, pose: src.pose || e.saved?.pose, fit: src.fit || e.saved?.fit, sculpt: e.sculptDelta || null, maps: e.maps || null };
+  });
+  let avatar;
+  if (S.isMannequin) avatar = { kind: 'mannequin', params: { ...S.params } };
+  else if (S.isDefault) avatar = { kind: 'default', id: ((await defaultAvatarEntry()) || {}).id || null };
+  else { const f = await DB.getMeta('avatarFile'); avatar = { kind: 'imported', name: S.fileName, buf: f && f.buf, scaleMode: f && f.scaleMode }; }
+  const secs = S.sections.filter(s => garments.some(g => g.tag === s.id)).map(({ id, name, icon, fixed }) => ({ id, name, icon, fixed }));
+  const proj = { format: 'fitt3d-project', version: 1, app: APP_VERSION, saved: new Date().toISOString(), name: PROJ.name,
+    avatar, meas: S.meas || {}, avatarMaps: S.avatarMaps || null, boneMap: S.boneMap || {}, scene: sessionState(), sections: secs, garments };
+  const bins = [], json = packBins(proj, bins), files = { 'project.json': new TextEncoder().encode(JSON.stringify(json)) };
+  bins.forEach((b, i) => { files['bin/' + i] = b; });
+  return fflate.zipSync(files, { level: 6 });
+}
+function askName(title, value) {
+  return new Promise(res => {
+    const root = $('#modalRoot');
+    root.innerHTML = `<div class="overlay" id="nmOverlay"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="nmT">
+      <h3 id="nmT"></h3><input class="name-input" id="nmIn" maxlength="80" spellcheck="false" aria-label="File name">
+      <div class="row"><button class="btn" type="button" id="nmNo">Cancel</button><button class="btn primary" type="button" id="nmYes">Save</button></div></div></div>`;
+    $('#nmT').textContent = title; const inp = $('#nmIn'); inp.value = value; inp.focus(); inp.select();
+    const done = v => { root.innerHTML = ''; document.removeEventListener('keydown', key, true); res(v); };
+    const key = ev => { if (ev.key === 'Escape') { ev.stopPropagation(); done(null); } else if (ev.key === 'Enter' && document.activeElement === inp) { ev.preventDefault(); $('#nmYes').click(); } };
+    document.addEventListener('keydown', key, true);
+    $('#nmNo').onclick = () => done(null);
+    $('#nmYes').onclick = () => { const v = inp.value.trim().replace(/\.ft3d$/i, '').replace(/[\\/:*?"<>|]+/g, '_'); if (v) done(v); else inp.focus(); };
+    $('#nmOverlay').addEventListener('pointerdown', ev => { if (ev.target.id === 'nmOverlay') done(null); });
+  });
+}
+async function saveProject(as) {
+  if (S.busy || S.fitting) { toast(S.fitting ? 'Finish or cancel the fit first.' : 'Please wait a moment.'); return; }
+  if (K) endSculpt();
+  let data;
+  try { status('Packing project', true); data = await buildProject(); }
+  catch (e) { console.error(e); status('Save failed'); toast('Could not pack the project.'); return; }
+  // Overwrite the same file on disk when the browser allows it (Chrome and Edge, outside embedded frames)
+  if (!as && PROJ.handle) {
+    try { const w = await PROJ.handle.createWritable(); await w.write(data); await w.close(); PROJ.dirty = false; showProjName(); status('Saved'); toast(`Saved ${PROJ.name}.ft3d`); return; }
+    catch (e) { console.warn(e); PROJ.handle = null; }
+  }
+  const suggested = PROJ.name || (S.isDefault ? 'Untitled' : (S.fileName || 'Untitled').replace(/\.[^.]+$/, ''));
+  if (window.showSaveFilePicker && window.self === window.top) {
+    try {
+      const h = await window.showSaveFilePicker({ suggestedName: suggested + '.ft3d', types: [{ description: 'FITT3D project', accept: { 'application/x-fitt3d': ['.ft3d'] } }] });
+      const w = await h.createWritable(); await w.write(data); await w.close();
+      PROJ.handle = h; PROJ.name = h.name.replace(/\.ft3d$/i, ''); PROJ.dirty = false; showProjName(); status('Saved'); toast(`Saved ${h.name}`); return;
+    } catch (e) { if (e && e.name === 'AbortError') { status('Save cancelled'); return; } console.warn(e); }
+  }
+  const name = (!as && PROJ.name) ? PROJ.name : await askName('Save project as', suggested);
+  if (!name) { status('Save cancelled'); return; }
+  try {
+    let ok;
+    try { ok = await saveBytes(name + '.ft3d', data, 'application/octet-stream'); }
+    catch (e) { ok = await saveBytes(name + '.ft3d.zip', fflate.zipSync({ [name + '.ft3d']: data }, { level: 0 }), 'application/zip'); toast('Saved inside a .zip: unzip it to get the .ft3d file.'); }
+    if (!ok) { status('Save cancelled'); return; }
+    PROJ.name = name; PROJ.dirty = false; showProjName(); status('Saved');
+  } catch (e) { console.error(e); status('Save failed'); toast('The file could not be saved here.'); }
+}
+function openProjectPicker() {
+  if (S.busy || S.fitting) { toast(S.fitting ? 'Finish or cancel the fit first.' : 'Please wait a moment.'); return; }
+  if (window.showOpenFilePicker && window.self === window.top) {
+    window.showOpenFilePicker({ types: [{ description: 'FITT3D project', accept: { 'application/x-fitt3d': ['.ft3d'] } }] })
+      .then(async ([h]) => { const f = await h.getFile(); await openProject(f, h); })
+      .catch(e => { if (!e || e.name !== 'AbortError') pickFile('.ft3d,.zip', f => openProject(f)); });
+    return;
+  }
+  pickFile('.ft3d,.zip', f => openProject(f));
+}
+async function openProject(file, handle) {
+  let files;
+  try {
+    files = fflate.unzipSync(new Uint8Array(await file.arrayBuffer()));
+    if (!files['project.json']) { const inner = Object.keys(files).find(k => /\.ft3d$/i.test(k)); if (inner) files = fflate.unzipSync(files[inner]); }
+    if (!files['project.json']) throw new Error('not a project');
+  } catch (e) { toast('That is not a FITT3D project file (.ft3d).'); return; }
+  let P;
+  try { P = unpackBins(JSON.parse(new TextDecoder().decode(files['project.json'])), files); if (P.format !== 'fitt3d-project') throw new Error('format'); }
+  catch (e) { console.error(e); toast('This project file is damaged or from a newer version.'); return; }
+  if (S.equipped.size) {
+    const ok = await confirmDialog({ title: `Open ${file.name}?`, body: 'This replaces the avatar and the garments you are wearing. Garments in your library stay there.', confirm: 'Open' });
+    if (!ok) return;
+  }
+  S.busy = true; S.restoring = true; status(`Opening ${file.name}`, true);
+  try {
+    if (K) endSculpt();
+    for (const id of [...S.equipped.keys()]) unequip(id, true);
+    S.layerOrder = []; S.selected = null;
+    // avatar
+    S.busy = false;
+    let ok = false;
+    const A = P.avatar || {};
+    if (A.kind === 'imported' && A.buf) ok = await loadCharacter(A.name || 'avatar.fbx', A.buf, false, { scaleMode: A.scaleMode || 'scale' });
+    else if (A.kind === 'mannequin') { if (A.params) Object.assign(S.params, A.params); await buildMannequinChar(); ok = true; }
+    if (!ok) ok = await loadDefaultAvatar();
+    S.busy = true;
+    if (P.meas) { S.meas = P.meas; saveMeasures(); }
+    if (P.boneMap) { S.boneMap = P.boneMap; saveBoneMap(); S._pr = null; }
+    if (P.avatarMaps !== undefined) { S.avatarMaps = P.avatarMaps; await applyAvatarMaps(); saveAvatarMaps(); renderAvTex(); }
+    if (typeof autoMeasure === 'function') { autoMeasure(); renderMeasure(); }
+    // sections and garments (added to the library, replacing same-id items)
+    for (const s of P.sections || []) if (!S.sections.some(x => x.id === s.id)) { const ui = S.sections.findIndex(x => x.id === 'unsorted'); S.sections.splice(ui < 0 ? S.sections.length : ui, 0, { ...s, collapsed: false }); }
+    saveSections();
+    for (const g of P.garments || []) {
+      const old = S.customLib.get(g.id); if (old && old.custom) old.custom = null;
+      const tag = S.sections.some(s => s.id === g.tag) ? g.tag : 'unsorted';
+      const e = { def: { id: g.id, name: g.name, cat: 'Custom', slot: g.id, custom: true, tag, order: g.order ?? 0, thumb: g.thumb }, custom: null, mesh: null,
+        fileBuf: g.buf, fileName: g.fileName, saved: { place: g.place, pose: g.pose, fit: g.fit }, sculptDelta: g.sculpt || null, maps: g.maps || null, added: Date.now() };
+      S.customLib.set(g.id, e); saveItem(e);
+    }
+    renderLibrary();
+    // scene
+    const sc = P.scene || {};
+    if (sc.view || sc.ui) applySavedUi(sc);
+    for (const id of sc.equipped || []) {
+      const e = S.customLib.get(id); if (!e) continue;
+      try { await ensureSource(e); await nextFrame(); bindCustomEntry(e); S.equipped.set(id, e); } catch (err) { console.error(err); }
+    }
+    S.layerOrder = (sc.equipped || []).filter(id => S.equipped.has(id));
+    (sc.hidden || []).forEach(id => { const e = S.equipped.get(id); if (e) e.hidden = true; });
+    S.selected = sc.selected && S.equipped.has(sc.selected) ? sc.selected : null;
+    resolveLayers();
+    if (sc.cam) { camera.position.fromArray(sc.cam.p); controls.target.fromArray(sc.cam.t); controls.update(); }
+    PROJ.name = (P.name || file.name).replace(/\.ft3d(\.zip)?$/i, '').replace(/\.zip$/i, ''); PROJ.handle = handle || null; PROJ.dirty = false;
+    H.stack = []; H.labels = []; H.idx = -1;
+    toast(`Opened ${PROJ.name} · ${S.layerOrder.length} garment${S.layerOrder.length === 1 ? '' : 's'}`);
+  } catch (e) { console.error(e); toast('Something went wrong while opening the project.'); }
+  S.busy = false; S.restoring = false;
+  renderWearList(); applyView(); showProjName(); status('Ready');
+}
+
 /* ================= viewport tools, dialogs, garment window, session ================= */
 var VIEW = { wireColor: '#404040', wireShadedColor: '#404040', mode: 'lit', avatarShade: false, avatar: true, avatarXray: false, aWire: false, aWireShaded: false, aTex: true, gShow: true, xray: false, gWire: false, gWireShaded: false, gTex: true, ids: false, orbit: 'default', bg: '#2a2e35', fov: 30, min: 0.8, max: 9 };
 
@@ -4732,7 +5229,15 @@ async function showGarmentWindow(id, tab = 'info') {
 
 /* ---------- session: save as you work, restore on load ---------- */
 let saveT = 0;
-function scheduleSave() { if (S.restoring) return; clearTimeout(saveT); saveT = setTimeout(saveSession, 700); }
+let sessionDirty = false;
+function scheduleSave() {
+  if (S.restoring) return;
+  if (typeof recordHistory === 'function') recordHistory();
+  if (!SETTINGS.autosave.on) return;
+  if (SETTINGS.autosave.every) { sessionDirty = true; return; }
+  clearTimeout(saveT); saveT = setTimeout(saveSession, 700);
+}
+setInterval(() => { if (SETTINGS.autosave.on && SETTINGS.autosave.every && sessionDirty && Date.now() - (S.lastAuto || 0) >= SETTINGS.autosave.every * 1000) { sessionDirty = false; S.lastAuto = Date.now(); saveSession(); } }, 5000);
 function sessionState() {
   return { v: 7, avatar: S.isDefault ? 'default' : S.isMannequin ? 'mannequin' : 'imported',
     equipped: (S.layerOrder || []).filter(id => S.customLib.has(id)), selected: S.selected,
@@ -4743,8 +5248,8 @@ function sessionState() {
 }
 function saveSession() { if (S.restoring || typeof DB === 'undefined') return; DB.putMeta('session', sessionState()); }
 try { const hot = window.claude && window.claude.hot; if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => sessionState()); } catch (e) { /* optional */ }
-addEventListener('pagehide', saveSession);
-document.addEventListener('visibilitychange', () => { if (document.hidden) saveSession(); });
+addEventListener('pagehide', () => { if (SETTINGS.autosave.on) saveSession(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && SETTINGS.autosave.on) saveSession(); });
 function applySavedUi(s) {
   if (s.view) Object.assign(VIEW, s.view);
   if (s.view && s.view.gTex === undefined) { // session from before the garment/avatar menus
@@ -4813,18 +5318,19 @@ window.addEventListener('unhandledrejection', () => { if (S.restoring && window.
 })();
 
 /* ---------- about ---------- */
-$('#aboutBtn').addEventListener('click', () => {
+function showAbout() {
   const root = $('#modalRoot');
   root.innerHTML = `<div class="overlay" id="abOverlay"><div class="dialog about" role="dialog" aria-modal="true" aria-labelledby="abT">
-    <div id="abLogo"></div><h3 id="abT">FITT3D</h3><span class="ver">Version 0.0.1 <span style="color:var(--accent)">beta</span></span>
+    <div id="abLogo"></div><h3 id="abT">FITT3D</h3><span class="ver">Version ${APP_VERSION} <span style="color:var(--accent)">Beta</span></span>
     <p class="by">Micromanaged by Giacomo Liberio<br>Coded by Claude</p><button class="btn primary" type="button" id="abClose">Close</button></div></div>`;
   $('#abLogo').appendChild($('#logoBig').content.cloneNode(true));
-  const close = () => { if (document.activeElement === ti) commitName(); root.innerHTML = ''; document.removeEventListener('keydown', key, true); $('#aboutBtn').focus(); };
+  const close = () => { root.innerHTML = ''; document.removeEventListener('keydown', key, true); $('#aboutBtn').focus(); };
   const key = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
   document.addEventListener('keydown', key, true);
   $('#abClose').onclick = close; $('#abOverlay').addEventListener('pointerdown', e => { if (e.target.id === 'abOverlay') close(); });
   $('#abClose').focus();
-});
+}
+$('#aboutBtn').addEventListener('click', showAbout);
 
 /* ---------- parameter tooltips (fit panel) ---------- */
 $('#tipAuto').dataset.tip = FIT_TIPS.autoPose; $('#tipAuto').setAttribute('aria-label', 'About Auto-match pose: ' + FIT_TIPS.autoPose);
