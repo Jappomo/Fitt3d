@@ -172,7 +172,11 @@ button,select,input{font:inherit;color:inherit}
 
 /* inspector */
 .inspector .scroll{padding:6px 0 10px}
-.card-sec{margin:0 10px 8px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line)}
+.card-sec{position:relative;margin:0 10px 6px;border:0;background:none;border-radius:0}
+.card-sec:not(.closed){padding-bottom:10px;margin-bottom:12px}
+.card-sec:not(.closed)::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(92,201,213,.55) 30%,rgba(92,201,213,.8) 50%,rgba(92,201,213,.55) 70%,transparent);
+  box-shadow:0 1px 8px 0 rgba(92,201,213,.2)}
 .card-sec>.sec-toggle{width:100%;display:flex;align-items:center;gap:10px;padding:13px 14px;border:0;background:none;cursor:pointer;text-align:left}
 .sec-toggle h2{margin:0;font:600 14.5px/1 var(--f);flex:1}
 #rigInfo{display:inline-flex;gap:12px;font:500 12px/1 var(--f);color:var(--ink-2)}
@@ -365,11 +369,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.fps .spin{animation:none}}
 
-#avTexBtn { margin-top: 14px; }
-#bindToggle { margin-top: 6px; position: relative; }
-#bindToggle .chev { width: 14px; height: 14px; margin-left: auto; transition: transform .18s; opacity: .7; }
-#bindToggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
-#bindToggle[aria-expanded="true"] { border-color: rgba(143,124,248,.55); }
+#measToggle .tg-val { margin-left: auto; font: 600 13px/1 var(--f); color: var(--ink); font-variant-numeric: tabular-nums; }
+#measToggle .tg-val small { font-weight: 400; font-size: 11px; color: var(--muted); margin-left: 3px; }
+#measToggle .tg-val + .chev { margin-left: 8px; }
+#measToggle[aria-expanded="true"] .tg-val { display: none; }
+#measToggle[aria-expanded="true"] .tg-val + .chev { margin-left: auto; }
+.meas-panel { display: grid; gap: 10px; margin-top: -4px; }
+.bind-panel, .tex-panel { margin-top: -4px !important; }
+#measToggle .chev,#bindToggle .chev,#avTexBtn .chev { width: 14px; height: 14px; margin-left: auto; transition: transform .18s; opacity: .7; }
+#measToggle[aria-expanded="true"] .chev,#bindToggle[aria-expanded="true"] .chev,#avTexBtn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+#measToggle[aria-expanded="true"],#bindToggle[aria-expanded="true"],#avTexBtn[aria-expanded="true"] { border-color: rgba(143,124,248,.55); }
 .bind-panel { margin-top: 8px; display: grid; gap: 10px; }
 .bind-panel .note { margin: 0; font-size: 11.5px; line-height: 1.45; color: var(--ink-2); }
 .bind-test { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -380,14 +389,44 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .bind-grid .bh { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; opacity: .55; padding-left: 4px; }
 .bind-grid .bl { font-size: 12px; opacity: .85; white-space: nowrap; }
 .bind-span { grid-column: 2 / 4; }
-.bind-sel { display: flex; align-items: center; gap: 6px; min-width: 0; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 7px; padding: 0 6px; height: 26px; }
+.bind-sel { display: flex; align-items: center; gap: 6px; min-width: 0; width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 7px; padding: 0 6px; height: 26px; color: inherit; font: inherit; cursor: pointer; text-align: left; }
 .bind-sel:hover { border-color: rgba(255,209,102,.5); }
 .bind-sel i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: #5cc9d5; }
 .bind-sel.miss i { background: #ff5c93; }
 .bind-sel.miss { border-color: rgba(255,92,147,.45); }
 .bind-sel.set i { box-shadow: 0 0 0 2px rgba(143,124,248,.6); }
-.bind-sel select { flex: 1; min-width: 0; width: 100%; background: transparent; border: 0; color: inherit; font: inherit; font-size: 11.5px; outline: none; cursor: pointer; text-overflow: ellipsis; }
-.bind-sel select option { background: #1d2027; color: #e6e8ee; }
+.bind-sel span { flex: 1; min-width: 0; font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bind-sel span em { font-style: normal; color: var(--muted); margin-right: 4px; }
+.bind-sel svg { flex: none; width: 11px; height: 11px; color: var(--muted); }
+.bind-pop { position: fixed; z-index: 40; display: flex; flex-direction: column; border-radius: 12px; background: rgba(34,38,44,.98); border: 1px solid var(--line-2); box-shadow: var(--shadow); overflow: hidden; }
+.bp-top { display: flex; gap: 6px; padding: 8px; border-bottom: 1px solid var(--line); }
+.bp-search { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px; border-radius: 9px; background: var(--bg-2); border: 1px solid var(--line); color: var(--muted); }
+.bp-search:focus-within { border-color: rgba(143,124,248,.6); }
+.bp-search svg { width: 13px; height: 13px; flex: none; }
+.bp-search input { flex: 1; min-width: 0; border: 0; background: none; outline: 0; color: var(--ink); font-size: 12px; }
+.bp-tree { flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; border: 1px solid var(--line); background: var(--bg-2); color: var(--muted); cursor: pointer; }
+.bp-tree svg { width: 15px; height: 15px; }
+.bp-tree:hover { color: #fff; }
+.bp-tree[aria-pressed="true"] { background: var(--grad); color: #fff; border-color: transparent; }
+.bp-list { overflow-y: auto; padding: 4px; display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.bp-opt { flex: none; display: flex; align-items: center; gap: 8px; border: 0; background: none; color: var(--ink-2); font: 400 12px/1.2 var(--f); text-align: left; padding: 6px 8px 6px calc(8px + var(--d, 0) * 10px); border-radius: 7px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.bp-opt:hover, .bp-opt:focus-visible { background: var(--panel-3); color: #fff; outline: 0; }
+.bp-opt.on { background: var(--accent-soft); color: #fff; }
+.bp-opt.is-auto { color: var(--teal); }
+.bp-opt.auto { justify-content: space-between; font-weight: 500; }
+.bp-opt.auto span { color: var(--muted); font-weight: 400; overflow: hidden; text-overflow: ellipsis; }
+.bp-opt mark { background: rgba(92,201,213,.25); color: #fff; border-radius: 3px; padding: 0 1px; }
+.bp-empty { margin: 8px; font-size: 12px; color: var(--muted); }
+.tex-panel { margin-top: 8px; display: grid; gap: 10px; }
+.tex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tex-card { display: grid; gap: 6px; min-width: 0; }
+.tex-card h4 { margin: 0; display: flex; align-items: center; justify-content: space-between; font: 500 11px/1 var(--f); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tex-card h4 .x-btn { width: 20px; height: 20px; }
+.tex-drop { aspect-ratio: 1; border-radius: 10px; border: 1px dashed var(--line-2); background: #1f2227 center/cover no-repeat; display: grid; place-items: center; align-content: center; gap: 4px; color: var(--faint); font-size: 11px; cursor: pointer; padding: 6px; text-align: center; }
+.tex-drop:hover { border-color: rgba(143,124,248,.6); color: var(--ink-2); }
+.tex-drop.has { border-style: solid; }
+.tex-drop svg { width: 18px; height: 18px; }
+.tex-card .nm { font-size: 10.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .nm-input{width:100%;min-width:0;height:20px;border:1px solid rgba(143,124,248,.7);border-radius:6px;background:var(--bg-2);color:#fff;font:500 11.5px/1 var(--f);padding:0 5px;outline:none;text-align:center}
@@ -520,12 +559,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
           <button class="sec-toggle" type="button" aria-expanded="true"><span class="chev" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 2 7 5 3.5 8"/></svg></span><h2>Avatar</h2><span class="meta" id="rigInfo"></span></button>
           <div class="sec-body" id="charSec">
             <div class="src"><b id="srcName">Avatar</b><button class="link-btn" id="mannequinBtn" type="button" hidden>Use default avatar</button></div>
+            <button class="btn block" type="button" id="measToggle" aria-expanded="false" aria-controls="measPanel"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="10" r="5.5"/><circle cx="8" cy="10" r="1.6"/><path d="M13.5 10h4.5v3.5M15 10v2M17 10v1.5"/></svg>Measurements<span class="tg-val" id="measHVal"></span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>
+            <div class="meas-panel" id="measPanel" hidden>
             <div class="m-height" id="mHeight"></div>
             <div class="m-tabs" role="tablist" aria-label="Measurements" id="mTabs"></div>
             <div class="m-panel" role="tabpanel" id="mPanel"></div>
-            <button class="btn block" type="button" id="avTexBtn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="m3.5 13.5 4-4 3 3 2-2 4 4"/><circle cx="13" cy="7" r="1.4"/></svg>Load textures</button>
+            </div>
             <button class="btn block bind-toggle" type="button" id="bindToggle" aria-expanded="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4" r="1.6"/><circle cx="5" cy="10" r="1.6"/><circle cx="15" cy="10" r="1.6"/><circle cx="10" cy="16" r="1.6"/><path d="M10 5.6v8.8M6.4 9.2 8.8 5.2M13.6 9.2 11.2 5.2"/></svg>Map binding<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>
             <div class="bind-panel" id="bindPanel" hidden></div>
+            <button class="btn block" type="button" id="avTexBtn" aria-expanded="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="m3.5 13.5 4-4 3 3 2-2 4 4"/><circle cx="13" cy="7" r="1.4"/></svg>Load textures<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>
+            <div class="tex-panel" id="avTexPanel" hidden></div>
             <div id="bodyCtl"><div class="sliders" id="sliders"></div><p class="note">Change the body and every garment refits on release.</p></div>
             <dl id="measure" hidden></dl><p id="importNote" hidden></p>
           </div>
@@ -3692,11 +3735,18 @@ const ROWS = [
 const rowKeys = k => k === 'arm' ? ['armL', 'armR'] : k === 'leg' ? ['legL', 'legR'] : [k];
 const TAPE_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="10" r="5.5"/><circle cx="8" cy="10" r="1.6"/><path d="M13.5 10h4.5v3.5M15 10v2M17 10v1.5"/></svg>';
 const RESET_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 11.2a5.6 5.6 0 1 0 1.7-5.1"/><path d="M4.3 3.7v3.1h3.1"/></svg>';
+let measOpen = false; try { measOpen = localStorage.getItem('fitt3d.measOpen') === '1'; } catch (e) { /* ok */ }
+function setMeasOpen(on) { measOpen = on; try { localStorage.setItem('fitt3d.measOpen', on ? '1' : '0'); } catch (e) { /* ok */ }
+  $('#measToggle').setAttribute('aria-expanded', String(on)); $('#measPanel').hidden = !(on || S.mLive); }
+$('#measToggle').addEventListener('click', () => { if (S.B) setMeasOpen(!measOpen); });
+$('#measToggle').setAttribute('aria-expanded', String(measOpen));
 function renderMeasure() {
   const panel = $('#mPanel'); if (!panel || !S.B) return;
   const live = !!S.mLive;
   $('#mTabs').hidden = true;
-  $('#mHeight').hidden = live; $('#avTexBtn').hidden = live; $('#bindToggle').hidden = live; if (live && !$('#bindPanel').hidden) setBindOpen(false);
+  $('#mHeight').hidden = live; $('#avTexBtn').hidden = live; $('#bindToggle').hidden = live; $('#measToggle').hidden = live;
+  $('#measPanel').hidden = !(live || measOpen);
+  $('#measHVal').innerHTML = `${fmtCm(mval('height'))}<small>cm</small>`; if (live && !$('#bindPanel').hidden) setBindOpen(false); if (live && avTexOpen) setAvTexOpen(false);
   $('#mHeight').innerHTML = `<span>Height</span><b class="tip-host" tabindex="0" data-tip="${ROWS[0][2]}">${fmtCm(mval('height'))}</b><small>cm</small>`;
   if (live) { renderSession(); return; }
   panel.innerHTML = `<div class="m-col">${ROWS.slice(1).map(([k, label, info]) => {
@@ -3907,53 +3957,49 @@ async function loadAvatarState() {
   S.meas = (S.avatarKey && await DB.getMeta('measure:' + S.avatarKey)) || {};
   S.avatarMaps = (S.avatarKey && await DB.getMeta('avatarMaps:' + S.avatarKey)) || null;
   if (S.avatarMaps) { try { await applyAvatarMaps(); } catch (e) { console.warn(e); } }
+  renderAvTex();
   autoMeasure(); renderMeasure();
   await loadBoneMap();
 }
 const saveAvatarMaps = () => { if (S.avatarKey) DB.putMeta('avatarMaps:' + S.avatarKey, S.avatarMaps); };
 function avatarHasUV() { return (S.bodyMeshes || []).every(m => m.geometry.attributes.uv); }
 let avUrls = [];
-function showAvatarMaps() {
+let avTexOpen = false;
+function renderAvTex() {
+  const box = $('#avTexPanel'); if (!box) return;
   avUrls.forEach(u => URL.revokeObjectURL(u)); avUrls = [];
-  const root = $('#modalRoot'), mp = S.avatarMaps || {};
-  const card = (kind, label, hint) => { const m = mp[kind], u = mapURL(m); if (u) avUrls.push(u);
-    return `<div class="map-card"><h4>${label}${m ? `<button class="link-btn" type="button" data-avrm="${kind}">Remove</button>` : ''}</h4>
-      <div class="map-prev${m ? ' has' : ''}" ${u ? `style="background-image:url('${u}')"` : ''}>${m ? '' : hint}</div>
-      <button class="btn small block" type="button" data-avadd="${kind}">${m ? 'Replace image' : 'Choose image'}</button>
-      ${kind === 'normal' && m ? `<div class="sl"><label for="avNrm"><span class="lbl">Normal strength</span><output id="avNrmOut">${(mp.normalScale ?? 1).toFixed(2)}</output></label><input type="range" id="avNrm" min="0" max="3" step="0.05" value="${mp.normalScale ?? 1}"></div>` : ''}
-      ${m ? `<p class="note">${esc(m.name)}</p>` : ''}</div>`; };
-  root.innerHTML = `<div class="overlay" id="avOverlay"><div class="window" role="dialog" aria-modal="true" aria-labelledby="avTitle">
-    <div class="win-head"><h3 id="avTitle">Avatar textures</h3><button class="icon-btn ghost" type="button" id="avClose" aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l10 10M15 5 5 15"/></svg></button></div>
-    <div class="win-body">
-      ${avatarHasUV() ? '' : '<p class="note" style="margin-bottom:12px;color:var(--pink)">This avatar has no UVs, so textures cannot show on it.</p>'}
-      <div class="maps">${card('albedo', 'Albedo', 'Skin colour map (PNG, JPG or WebP)')}${card('normal', 'Normal map', 'Tangent-space normal map')}</div>
-      <p class="note" style="margin-top:12px">Textures apply to every avatar mesh through its UVs and are remembered for this avatar in this browser. Turn them off from the Avatar menu in the viewport.</p>
-    </div></div></div>`;
-  const close = () => { root.innerHTML = ''; avUrls.forEach(u => URL.revokeObjectURL(u)); avUrls = []; document.removeEventListener('keydown', key, true); };
-  const key = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
-  document.addEventListener('keydown', key, true);
-  $('#avClose').onclick = close;
-  $('#avOverlay').addEventListener('pointerdown', e => { if (e.target.id === 'avOverlay') close(); });
-  root.querySelector('.maps').addEventListener('click', async ev => {
-    const add = ev.target.closest('[data-avadd]'); if (add) { avMapKind = add.dataset.avadd; avMapIn.click(); return; }
-    const rm = ev.target.closest('[data-avrm]');
-    if (rm) { delete S.avatarMaps[rm.dataset.avrm]; if (!S.avatarMaps.albedo && !S.avatarMaps.normal) S.avatarMaps = null; await applyAvatarMaps(); saveAvatarMaps(); showAvatarMaps(); }
-  });
+  if (!avTexOpen) { box.innerHTML = ''; return; }
+  const mp = S.avatarMaps || {};
+  const card = (kind, label) => { const m = mp[kind], u = mapURL(m); if (u) avUrls.push(u);
+    return `<div class="tex-card"><h4>${label}${m ? `<button class="x-btn" type="button" data-avrm="${kind}" aria-label="Remove ${label}" title="Remove"><svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l7 7M10.5 3.5l-7 7"/></svg></button>` : ''}</h4>
+      <button class="tex-drop${m ? ' has' : ''}" type="button" data-avadd="${kind}" ${u ? `style="background-image:url('${u}')"` : ''} aria-label="${m ? 'Replace' : 'Add'} ${label} map" title="${m ? 'Click or drop to replace' : 'Click or drop an image'}">${m ? '' : `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 5v10M5 10h10"/></svg><span>Add map</span>`}</button>
+      <span class="nm">${m ? esc(m.name) : 'PNG, JPG or WebP'}</span></div>`; };
+  box.innerHTML = `${avatarHasUV() ? '' : '<p class="note" style="color:var(--pink)">This avatar has no UVs, so textures cannot show on it.</p>'}
+    <div class="tex-grid">${card('albedo', 'Albedo')}${card('normal', 'Normal')}</div>
+    ${mp.normal ? `<div class="sl"><label for="avNrm"><span class="lbl">Normal strength</span><output id="avNrmOut">${(mp.normalScale ?? 1).toFixed(2)}</output></label><input type="range" id="avNrm" min="0" max="3" step="0.05" value="${mp.normalScale ?? 1}"></div>` : ''}`;
   const ns = $('#avNrm');
   if (ns) { ns.addEventListener('input', () => { S.avatarMaps.normalScale = +ns.value; $('#avNrmOut').textContent = (+ns.value).toFixed(2);
       (S.bodyMeshes || []).forEach(m => [].concat(m.userData.orig).forEach(mt => mt && mt.normalScale && mt.normalScale.set(+ns.value, +ns.value))); });
     ns.addEventListener('change', saveAvatarMaps); }
-  $('#avClose').focus();
 }
-avMapIn.addEventListener('change', async () => {
-  const f = avMapIn.files[0]; avMapIn.value = ''; if (!f || !avMapKind) return;
+function setAvTexOpen(on) { avTexOpen = on; $('#avTexBtn').setAttribute('aria-expanded', String(on)); $('#avTexPanel').hidden = !on; renderAvTex(); }
+async function setAvatarMap(kind, f) {
   try {
     S.avatarMaps = S.avatarMaps || {};
-    S.avatarMaps[avMapKind] = { name: f.name, type: f.type || 'image/png', buf: await f.arrayBuffer() };
-    await applyAvatarMaps(); saveAvatarMaps(); showAvatarMaps();
+    S.avatarMaps[kind] = { name: f.name, type: f.type || 'image/png', buf: await f.arrayBuffer() };
+    await applyAvatarMaps(); saveAvatarMaps(); renderAvTex();
   } catch (e) { console.error(e); toast('Could not read that image. Use PNG, JPG or WebP.'); }
+}
+$('#avTexPanel').addEventListener('click', async ev => {
+  const add = ev.target.closest('[data-avadd]'); if (add) { avMapKind = add.dataset.avadd; avMapIn.click(); return; }
+  const rm = ev.target.closest('[data-avrm]');
+  if (rm) { delete S.avatarMaps[rm.dataset.avrm]; if (!S.avatarMaps.albedo && !S.avatarMaps.normal) S.avatarMaps = null; await applyAvatarMaps(); saveAvatarMaps(); renderAvTex(); }
 });
-$('#avTexBtn').addEventListener('click', () => { if (S.B) showAvatarMaps(); });
+$('#avTexPanel').addEventListener('dragover', ev => { if (ev.target.closest('[data-avadd]')) { ev.preventDefault(); ev.stopPropagation(); } });
+$('#avTexPanel').addEventListener('drop', ev => { const t = ev.target.closest('[data-avadd]'); if (!t) return; ev.preventDefault(); ev.stopPropagation();
+  const f = ev.dataTransfer.files && ev.dataTransfer.files[0]; if (f && /^image\//.test(f.type)) setAvatarMap(t.dataset.avadd, f); });
+avMapIn.addEventListener('change', () => { const f = avMapIn.files[0]; avMapIn.value = ''; if (f && avMapKind) setAvatarMap(avMapKind, f); });
+$('#avTexBtn').addEventListener('click', () => { if (S.B) setAvTexOpen(!avTexOpen); });
 
 /* ================= Map binding: check and correct which bones drive each joint ================= */
 const bindRoot = new T.Group(); bindRoot.name = 'BindMarkers'; bindRoot.visible = false; scene.add(bindRoot);
@@ -3967,7 +4013,7 @@ const BIND_CHAINS = [['pelvis', 'chest', 'neck', 'head'], ['chest', 'arm1', 'for
 const slotBone = key => { if (!bindBones) return null; const m = key.match(/^([a-z]+)(-?1)?$/); return m[2] ? bindBones[m[1]][+m[2]] : bindBones[m[1]]; };
 function refreshBindBones() { bindBones = findPoseBones(true); S._pr = null; if (F) F.bones = findPoseBones(true); }
 function buildBindDots() {
-  for (const c of [...bindRoot.children]) if (c !== bindLines) bindRoot.remove(c);
+  for (const c of [...bindRoot.children]) if (c !== bindLines && c !== bindPrev) bindRoot.remove(c);
   if (!bindBones) return;
   for (const [slot, , paired] of BIND_SLOTS) for (const key of paired ? [slot + '1', slot + '-1'] : [slot]) {
     if (!slotBone(key)) continue;
@@ -3979,6 +4025,7 @@ function buildBindDots() {
 const _bp = new T.Vector3();
 function updateBindMarkers() {
   if (!bindOpen || !bindBones) return;
+  if (bindPrevBone) bindPrev.position.copy(bindPrevBone.getWorldPosition(_bp));
   for (const d of bindRoot.children) { if (!d.userData.key) continue; const b = slotBone(d.userData.key); if (b) d.position.copy(b.getWorldPosition(_bp)); }
   const pts = [];
   for (const ch of BIND_CHAINS) for (let i = 0; i < ch.length - 1; i++) {
@@ -3991,13 +4038,12 @@ const shortName = n => n.replace(/^.*[:|]/, '');
 function renderBinding() {
   const box = $('#bindPanel'); if (!box) return;
   if (!S.skeleton) { box.innerHTML = '<p class="note">This avatar has no skeleton, so there are no joints to map.</p>'; return; }
-  const bones = S.skeleton.bones.map(b => b.name);
-  const opts = (cur, auto) => `<option value="">${auto ? 'Auto · ' + esc(shortName(auto.name)) : 'Auto · not found'}</option>` +
-    bones.map(n => `<option value="${esc(n)}"${n === cur ? ' selected' : ''}>${esc(shortName(n))}</option>`).join('');
   const sel = (slot, sd, label) => {
     const key = sd ? slot + sd : slot, cur = sd ? (S.boneMap[slot] || {})[sd] : S.boneMap[slot], auto = bindBones.auto[key], ok = !!slotBone(key);
-    return `<label class="bind-sel${ok ? '' : ' miss'}${cur ? ' set' : ''}" data-hot="${key}"><i aria-hidden="true"></i><span class="sr">${label}</span>
-      <select data-slot="${slot}" data-sd="${sd || ''}" aria-label="${label}">${opts(typeof cur === 'string' ? cur : '', auto)}</select></label>`;
+    const shown = cur ? shortName(cur) : auto ? shortName(auto.name) : 'Not found';
+    return `<button type="button" class="bind-sel${ok ? '' : ' miss'}${cur ? ' set' : ''}" data-hot="${key}" data-slot="${slot}" data-sd="${sd || ''}"
+      aria-haspopup="listbox" aria-label="${label}: ${esc(shown)}" title="${cur ? 'Set by you' : 'Auto'}: ${esc(shown)}"><i aria-hidden="true"></i><span>${esc(shown)}</span>
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
   };
   const missing = BIND_SLOTS.reduce((n, [slot, , p]) => n + (p ? [1, -1].filter(sd => !slotBone(slot + sd)).length : (slotBone(slot) ? 0 : 1)), 0);
   box.innerHTML = `<p class="note">${missing ? `<b style="color:var(--pink)">${missing} joint${missing > 1 ? 's' : ''} not found.</b> ` : 'All joints found. '}Check the markers on the avatar and pick another bone where one is wrong. Poses, animations and the fit poser use this map.</p>
@@ -4009,18 +4055,83 @@ function renderBinding() {
     <button class="link-btn" type="button" id="bindReset"${Object.keys(S.boneMap).length ? '' : ' hidden'}>Reset all to auto</button>`;
 }
 function setBindOpen(on) {
+  if (!on) closeBindPick();
   bindOpen = on; $('#bindToggle').setAttribute('aria-expanded', String(on)); $('#bindPanel').hidden = !on;
   bindRoot.visible = on;
   if (on) { refreshBindBones(); setPose(S.pose); buildBindDots(); renderBinding(); updateBindMarkers(); }
 }
 $('#bindToggle').addEventListener('click', () => { if (!S.B) return; setBindOpen(!bindOpen); });
-$('#bindPanel').addEventListener('change', ev => {
-  const s = ev.target.closest('select[data-slot]'); if (!s) return;
-  const slot = s.dataset.slot, sd = s.dataset.sd ? +s.dataset.sd : 0, v = s.value;
+function applyBind(slot, sd, v) {
   if (sd) { S.boneMap[slot] = S.boneMap[slot] || {}; if (v) S.boneMap[slot][sd] = v; else delete S.boneMap[slot][sd]; if (!Object.keys(S.boneMap[slot]).length) delete S.boneMap[slot]; }
   else { if (v) S.boneMap[slot] = v; else delete S.boneMap[slot]; }
   saveBoneMap(); refreshBindBones(); setPose(S.pose); buildBindDots(); renderBinding(); updateBindMarkers();
-});
+}
+/* ---------- joint picker: search + alphabetical / hierarchy list ---------- */
+let bindTree = false; try { bindTree = localStorage.getItem('fitt3d.bindTree') === '1'; } catch (e) { /* ok */ }
+function boneRows() {
+  const bones = S.skeleton.bones, set = new Set(bones), rows = [];
+  if (!bindTree) return bones.map(b => ({ b, d: 0 })).sort((x, y) => shortName(x.b.name).localeCompare(shortName(y.b.name), undefined, { numeric: true, sensitivity: 'base' }));
+  const kids = new Map(); const roots = [];
+  for (const b of bones) { let p = b.parent; while (p && !set.has(p)) p = p.parent; if (p) { if (!kids.has(p)) kids.set(p, []); kids.get(p).push(b); } else roots.push(b); }
+  const walk = (b, d) => { rows.push({ b, d }); (kids.get(b) || []).forEach(c => walk(c, d + 1)); };
+  roots.forEach(r => walk(r, 0));
+  return rows;
+}
+function closeBindPick() { const m = $('#bindPick'); if (m) m.remove(); document.removeEventListener('pointerdown', bindPickOut, true); }
+function bindPickOut(ev) { if (!ev.target.closest('#bindPick') && !ev.target.closest('.bind-sel')) closeBindPick(); }
+function openBindPick(btn) {
+  closeBindPick();
+  const slot = btn.dataset.slot, sd = btn.dataset.sd ? +btn.dataset.sd : 0, key = sd ? slot + sd : slot;
+  const cur = sd ? (S.boneMap[slot] || {})[sd] : S.boneMap[slot], auto = bindBones.auto[key];
+  const m = document.createElement('div'); m.id = 'bindPick'; m.className = 'bind-pop';
+  m.innerHTML = `<div class="bp-top"><label class="bp-search"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="search" placeholder="Search joints" aria-label="Search joints" autocomplete="off" spellcheck="false"></label>
+    <button type="button" class="bp-tree" aria-pressed="${bindTree}" title="${bindTree ? 'Showing hierarchy. Click for A to Z' : 'Showing A to Z. Click for hierarchy'}" aria-label="Show as hierarchy">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="4" height="3" rx="1"/><rect x="9" y="7" width="5" height="3" rx="1"/><rect x="9" y="12" width="5" height="3" rx="1" transform="translate(0 -1)"/><path d="M4 5v7.5h5M4 8.5h5"/></svg></button></div>
+    <div class="bp-list" role="listbox" aria-label="Joints"></div>`;
+  document.body.appendChild(m);
+  const list = m.querySelector('.bp-list'), inp = m.querySelector('input');
+  const draw = () => {
+    const q = inp.value.trim().toLowerCase();
+    const rows = boneRows().filter(r => !q || r.b.name.toLowerCase().includes(q));
+    const hl = n => { const t = shortName(n); if (!q) return esc(t); const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
+    list.innerHTML = (q ? '' : `<button type="button" role="option" class="bp-opt auto${cur ? '' : ' on'}" data-v="">Auto<span>${auto ? esc(shortName(auto.name)) : 'not found'}</span></button>`) +
+      rows.map(r => `<button type="button" role="option" class="bp-opt${r.b.name === cur ? ' on' : ''}${auto && auto === r.b && !cur ? ' is-auto' : ''}" data-v="${esc(r.b.name)}" style="--d:${bindTree && !q ? Math.min(r.d, 14) : 0}" title="${esc(r.b.name)}">${hl(r.b.name)}</button>`).join('') +
+      (rows.length ? '' : '<p class="bp-empty">No joint matches.</p>');
+    const on = list.querySelector('.on'); if (on && !q) on.scrollIntoView({ block: 'center' });
+  };
+  draw();
+  const r = btn.getBoundingClientRect(), w = Math.max(230, r.width), h = Math.min(340, innerHeight - 24);
+  m.style.width = w + 'px'; m.style.maxHeight = h + 'px';
+  m.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.right - w)) + 'px';
+  const below = innerHeight - r.bottom - 8;
+  m.style.top = (below >= Math.min(h, m.offsetHeight) ? r.bottom + 4 : Math.max(8, r.top - Math.min(h, m.offsetHeight) - 4)) + 'px';
+  inp.focus();
+  inp.addEventListener('input', draw);
+  inp.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') { ev.stopPropagation(); closeBindPick(); btn.focus(); }
+    else if (ev.key === 'Enter') { const f = list.querySelector('.bp-opt:not(.auto)') || list.querySelector('.bp-opt'); if (f) f.click(); }
+    else if (ev.key === 'ArrowDown') { ev.preventDefault(); const f = list.querySelector('.bp-opt'); if (f) f.focus(); }
+  });
+  list.addEventListener('keydown', ev => {
+    const o = ev.target.closest('.bp-opt'); if (!o) return;
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); (o.nextElementSibling || o).focus(); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); (o.previousElementSibling || inp).focus(); }
+    else if (ev.key === 'Escape') { closeBindPick(); btn.focus(); }
+  });
+  list.addEventListener('pointerover', ev => { const o = ev.target.closest('.bp-opt'); if (o && o.dataset.v) { const b = S.skeleton.bones.find(x => x.name === o.dataset.v); previewBone(b); } });
+  list.addEventListener('pointerleave', () => previewBone(null));
+  list.addEventListener('click', ev => { const o = ev.target.closest('.bp-opt'); if (!o) return; closeBindPick(); previewBone(null); applyBind(slot, sd, o.dataset.v); });
+  m.querySelector('.bp-tree').addEventListener('click', ev => { bindTree = !bindTree; try { localStorage.setItem('fitt3d.bindTree', bindTree ? '1' : '0'); } catch (e) { /* ok */ }
+    const t = ev.currentTarget; t.setAttribute('aria-pressed', String(bindTree)); t.title = bindTree ? 'Showing hierarchy. Click for A to Z' : 'Showing A to Z. Click for hierarchy'; draw(); inp.focus(); });
+  setTimeout(() => document.addEventListener('pointerdown', bindPickOut, true), 0);
+}
+/* hovering a joint in the list shows where it is on the avatar */
+const bindPrev = new T.Mesh(new T.SphereGeometry(0.02, 16, 12), new T.MeshBasicMaterial({ color: 0xffffff, depthTest: false, transparent: true, opacity: 0.9 }));
+bindPrev.renderOrder = 47; bindPrev.visible = false; bindRoot.add(bindPrev);
+let bindPrevBone = null;
+function previewBone(b) { bindPrevBone = b || null; bindPrev.visible = !!b; if (b) bindPrev.position.copy(b.getWorldPosition(_bp)); }
+$('#bindPanel').addEventListener('click', ev => { const b = ev.target.closest('.bind-sel'); if (b) { ev.stopPropagation(); if ($('#bindPick')) closeBindPick(); else openBindPick(b); } });
 $('#bindPanel').addEventListener('click', ev => {
   const p = ev.target.closest('[data-bpose]'); if (p) { setPose(p.dataset.bpose); renderBinding(); return; }
   if (ev.target.id === 'bindReset') { S.boneMap = {}; saveBoneMap(); refreshBindBones(); setPose(S.pose); buildBindDots(); renderBinding(); updateBindMarkers(); }
@@ -4570,7 +4681,7 @@ $('#aboutBtn').addEventListener('click', () => {
   const root = $('#modalRoot');
   root.innerHTML = `<div class="overlay" id="abOverlay"><div class="dialog about" role="dialog" aria-modal="true" aria-labelledby="abT">
     <div id="abLogo"></div><h3 id="abT">FITT3D</h3><span class="ver">Version 0.0.1 <span style="color:var(--accent)">beta</span></span>
-    <p class="by">Vibecoded by Giacomo Liberio</p><button class="btn primary" type="button" id="abClose">Close</button></div></div>`;
+    <p class="by">Micromanaged by Giacomo Liberio<br>Coded by Claude</p><button class="btn primary" type="button" id="abClose">Close</button></div></div>`;
   $('#abLogo').appendChild($('#logoBig').content.cloneNode(true));
   const close = () => { if (document.activeElement === ti) commitName(); root.innerHTML = ''; document.removeEventListener('keydown', key, true); $('#aboutBtn').focus(); };
   const key = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
