@@ -1,5 +1,68 @@
 [
   {
+    "version": "0.1.5",
+    "date": "2026-09-28",
+    "sections": [
+      {
+        "title": "Accessories",
+        "notes": [
+          "New accessory type for solid or partly solid objects: bags, belts, straps, holsters, helmets.",
+          "Import as accessory button at the top of Adjust fit and pose.",
+          "Paint deform mask: painted parts bend with the body, the rest stays exactly rigid.",
+          "Lattice deform to reshape an accessory with a box of control points.",
+          "Sculpt accessory, with the same brushes as garments.",
+          "Parent to joint for props that must never deform, using the searchable joint list with the hierarchy toggle.",
+          "Extended influence: how far garments on top keep their lift past the accessory's edge.",
+          "Runs on a low-poly cage, so painting, moving and lattice editing stay fast on heavy meshes."
+        ]
+      },
+      {
+        "title": "Cages",
+        "notes": [
+          "Cage from Avatar: builds the cage from the patch of skin the object covers. Belts and strap sets get one smooth, easy-to-deform shape instead of a cage that follows every strap and hole.",
+          "Accessory cages can go down to 0.2 cm.",
+          "Cage settings for accessories live only in Adjust fit and pose."
+        ]
+      },
+      {
+        "title": "Adjust fit and pose",
+        "notes": [
+          "Place garments and accessories with a move, rotate and scale gizmo, with rotation snap (Off, 45°, 90°) and a Reset position icon.",
+          "Snap two points: click a point on the object and a point on the avatar or a garment, turn the target plane freely with its own gizmo, then snap them face to face.",
+          "Feet tilt and Feet turn in Pose to match, for shoes.",
+          "Focus mode: only the fitting tools are shown while fitting.",
+          "See-through colour picker."
+        ]
+      },
+      {
+        "title": "Layers",
+        "notes": [
+          "Layers show their number (name on hover), with a forces icon for Receive, Cast and Receive from Garments.",
+          "Layer forces: a garment or accessory can take the push of the layers above it, with a Self / Layers above balance, how many levels to count, and an influence slider per layer.",
+          "Layer transition group in Garment options: distance slider and the Layer transition brush.",
+          "Compact Move row with up and down arrows at the top of the stack."
+        ]
+      },
+      {
+        "title": "Painting",
+        "notes": [
+          "Deform mask and Layer transition painting share one layout: Black · white or Heat map view, Isolate object toggle, brush size and strength.",
+          "Shift + drag smooths, Shift + right drag clamps to fully on or off.",
+          "Fill, Clear and Smooth for the whole mask, then Cancel and Done.",
+          "Return to fitting shows below the panel while painting a mask during import."
+        ]
+      },
+      {
+        "title": "Fixes",
+        "notes": [
+          "Layer transition feathering is more precise on large garments.",
+          "Heat map colours are no longer washed out.",
+          "Garments over an accessory band no longer sink inside it when receiving from the layers above."
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.1.1",
     "date": "2026-09-27",
     "notes": [
@@ -7,10 +70,12 @@
       "Save and open projects as .ft3d files.",
       "Undo and redo for wearing, taking off, layer order, visibility and sculpt strokes.",
       "Edit > Select last jumps back to the garment you selected before.",
-      "Settings: autosave on or off with an interval, antialiasing, frame cap.",
+      "Smooth and Construct relax the cage toward the spacing it had when generated, so cells stay square like a quad mesh.",
+      "Layer transition: where a garment hangs past the edge of the one underneath, the lift fades out gradually instead of snapping to the skin.",
+      "Settings: autosave with an interval, antialiasing, frame cap.",
       "Custom keyboard shortcuts, with import and export as JSON.",
       "Loading intro.",
-      "About: closes when you click outside it."
+      "About closes when you click outside it."
     ]
   },
   {

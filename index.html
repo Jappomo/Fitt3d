@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>FITT3D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -317,10 +318,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:3px;border-radius:12px;background:var(--bg-2)}
 .tools button{border:0;background:transparent;border-radius:9px;padding:7px 2px;font-size:11.5px;color:var(--muted);cursor:pointer}
 .tools button[aria-pressed="true"]{background:var(--grad);color:#fff}
-.steps{list-style:none;margin:0;padding:0;display:grid;gap:16px;counter-reset:st}
-.steps li{counter-increment:st;display:grid;gap:10px}
-.steps h3{margin:0;font:600 13px/1.2 var(--f);display:flex;align-items:center;gap:8px}
-.steps h3::before{content:counter(st);display:inline-grid;place-items:center;width:20px;height:20px;border-radius:7px;background:var(--grad);color:#fff;font:600 11px/1 var(--f)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:22px;counter-reset:st}
+.steps li{counter-increment:st;display:grid;gap:12px}
+.steps li[hidden]{display:none}
+/* stage title and separator in one: a centred label on a grey rule */
+.steps h3{margin:0;display:flex;align-items:center;gap:10px;font:500 10.5px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center}
+.steps h3::before,.steps h3::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.steps h3 span{flex:none;white-space:nowrap}
+
+/* neutral values in the fitting panel */
+#fitSec .sl output{color:var(--ink-2);font-size:11px}
 .kbd{font:500 10.5px var(--f-mono);padding:1px 5px;border-radius:5px;background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink-2)}
 
 /* modals, menus, toast */
@@ -535,6 +542,78 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .pn-ver .cur{font:500 10px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--teal-soft);color:var(--teal)}
 .name-input{height:36px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg-2);padding:0 12px;color:#fff;font:500 14px var(--f);outline:0;width:100%}
 .name-input:focus{border-color:rgba(143,124,248,.7)}
+.sec-act{position:absolute;top:13px;right:14px;height:20px;line-height:20px;font-size:12.5px}
+.card-sec.closed .sec-act{display:none}
+
+/* accessories */
+.acc-banner{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:calc(100% - 220px);padding:8px 10px 8px 14px;border-radius:14px;background:rgba(34,38,44,.96);border:1px solid rgba(92,201,213,.45);box-shadow:var(--shadow),0 0 18px rgba(92,201,213,.15);backdrop-filter:blur(10px)}
+.acc-banner .ab-txt{font-size:12.5px;color:var(--ink);max-width:340px;line-height:1.35}
+.acc-banner .ab-sl{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
+.acc-banner .ab-sl input{width:90px}
+.acc-banner .ab-sp{flex:1}
+.ghost-btn{background:transparent;border-style:dashed;color:var(--muted)}
+.ghost-btn:hover{color:var(--ink)}
+.snap-steps{margin:0;padding-left:18px;display:grid;gap:6px;font-size:12.5px;color:var(--muted)}
+.snap-steps li.on{color:#fff}
+.snap-steps li.done{color:var(--teal)}
+.row-l{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--ink-2)}
+.row-l .lbl{display:inline-flex;align-items:center;gap:6px}
+#fitPlace{gap:14px;padding:4px 0 2px}
+#fitPlace .row-l{min-height:34px}
+#fitPlace .mb-seg button{padding:7px 12px}
+
+/* fitting focus: only the fitting / accessory tools are shown */
+body.fit-focus #avatarSec, body.fit-focus #layersSec, body.fit-focus #garmentSec > .sec-toggle, body.fit-focus #sculptDesel { display: none !important; }
+body.fit-focus #garmentSec { padding-top: 12px; }
+body.fit-focus #garmentSec.closed .sec-body { display: grid; }
+.iso-btn { justify-content: flex-start; }
+.iso-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: rgba(143,124,248,.6); color: #fff; }
+.fit-return { margin: 12px 24px 0; width: calc(100% - 48px); }
+.fit-return[hidden] { display: none; }
+.acc-btn { margin-bottom: 14px; justify-content: flex-start; }
+.acc-btn .tip { margin-left: auto; }
+.acc-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: rgba(143,124,248,.6); color: #fff; }
+.see-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.see-row input[type=color] { width: 30px; height: 24px; border: 1px solid var(--line-2); border-radius: 7px; background: none; padding: 0; cursor: pointer; }
+.sl.off { opacity: .38; pointer-events: none; }
+.seg-ic { display: grid; place-items: center; padding: 0 8px !important; }
+.seg-ic svg { width: 14px; height: 14px; }
+.mask-legend { height: 8px; border-radius: 4px; }
+.mask-legend.bw { background: linear-gradient(90deg, #000, #fff); }
+.mask-legend.heat { background: linear-gradient(90deg, #2f6bff, #2fd07a, #ffd84a, #ff4a3d); }
+.mask-leg-l { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: -4px; }
+.snap-box{display:grid;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2)}
+.ly-inf{width:24px;height:24px;color:var(--teal)}
+.ly-inf.off{color:var(--faint)}
+.ly-name b{font-weight:500}
+.ly-tools{display:flex;align-items:center;gap:6px}
+.ly-tools span{flex:1;font:500 10.5px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.ly-tools .btn{gap:6px;padding:0 9px;flex:1;justify-content:center}
+.ly-tools .btn svg{width:13px;height:13px}
+.ly-tools .ly-arrow{flex:0 0 34px;padding:0}
+.ly-tools span{font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.whole-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.whole-row .btn{justify-content:center;text-align:center}
+.whole-row+.done-row{margin-top:14px}
+.ly-force{width:26px;height:26px;color:var(--teal);flex:none}
+.ly-force.part{color:#ffd166}
+.force-pop{position:fixed;z-index:30;width:220px;padding:8px;border-radius:14px;background:rgba(40,44,51,.98);border:1px solid var(--line-2);box-shadow:var(--shadow);display:grid;gap:4px}
+.fp-head{font:500 10.5px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:6px 6px 4px}
+.fp-row{display:flex;align-items:center;gap:10px;padding:7px 6px;border-radius:9px}
+.fp-row:hover{background:var(--panel-3)}
+.fp-row>span{flex:1;display:grid;gap:3px}
+.fp-row b{font:500 13px/1.1 var(--f);color:var(--ink)}
+.fp-row small{font-size:11px;color:var(--muted)}
+.lf-toggle .chev{width:14px;height:14px;margin-left:8px;transition:transform .18s;opacity:.7}
+.lf-toggle .tg-val{margin-left:auto;font:500 12px/1 var(--f);color:var(--muted)}
+.lf-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.lf-toggle[aria-expanded="true"]{border-color:rgba(143,124,248,.55)}
+.lf-panel{display:grid;gap:12px;margin-top:-4px}
+.lf-ends{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);margin-top:2px}
+.lf-nm{margin-left:6px;color:var(--faint);font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}
+.row-l.off{opacity:.38;pointer-events:none}
+.ly-force.above{box-shadow:inset 0 -2px 0 var(--accent)}
+.pn-ver h5{margin:14px 0 6px;font:600 11px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#8f7cf8)}
 </style>
 <div id="splash" role="status" aria-live="polite" aria-label="Loading FITT3D">
   <img src="data:image/png;base64,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" alt="" width="56" height="56">
@@ -598,6 +677,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       </div>
     </aside>
     <section class="stage" id="stage" aria-label="3D viewport">
+      <div class="acc-banner" id="accBanner" hidden></div>
       <canvas id="view"></canvas>
       <div class="fps" id="status" title=""><span class="spin"></span><span id="fpsText">-- fps</span><span id="statusText" hidden></span></div>
       <div class="gizmo">
@@ -671,6 +751,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         <section class="card-sec" id="layersSec" data-col="layers">
           <button class="sec-toggle" type="button" aria-expanded="true"><span class="chev" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 2 7 5 3.5 8"/></svg></span><h2>Layers</h2><span class="meta" id="layerCount"></span></button>
           <div class="sec-body">
+            <div class="ly-tools" id="lyTools"><span>Move</span>
+              <button class="btn small ly-arrow" type="button" id="lyUp" disabled title="Move layer out" aria-label="Move layer out"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 9.5 10 5l4.5 4.5"/></svg></button>
+              <button class="btn small ly-arrow" type="button" id="lyDown" disabled title="Move layer in" aria-label="Move layer in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 10.5 10 15l4.5-4.5"/></svg></button></div>
             <div class="ly-end">Outside</div>
             <ol class="ly-list" id="layerList"></ol>
             <div class="ly-end">Next to skin</div>
@@ -678,23 +761,27 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         </section>
         <section class="card-sec" id="garmentSec" data-col="garment">
           <button class="sec-toggle" type="button" aria-expanded="true"><span class="chev" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 2 7 5 3.5 8"/></svg></span><h2>Garment options</h2></button>
+          <button class="link-btn sec-act" type="button" id="sculptDesel" hidden>Deselect</button>
           <div class="sec-body">
             <div id="sculptBox" class="g-actions"></div>
             <div class="fit-sec" id="fitSec" hidden>
               <div class="mode-bar"><span>Fitting</span><b id="fitName"></b><button class="link-btn" id="resetPlace" type="button">Reset</button></div>
               <p class="meta" id="fitMeta" style="margin:8px 0 12px"></p>
+              <button class="btn block acc-btn" id="fitAccBtn" type="button" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7V5.5a4 4 0 0 1 8 0V7M4 7h12l-1 10H5z"/></svg><span id="fitAccTxt">Import as accessory</span><span class="tip" id="tipAcc" tabindex="0" role="button">?</span></button>
               <ol class="steps">
-                <li><h3>Place it on the body</h3><div class="sliders" id="fitPlace"></div>
-                  <label class="toggle"><input type="checkbox" id="seeThrough" checked> See-through garment<span class="tip" id="tipSee" tabindex="0" role="button">?</span></label></li>
-                <li><h3>Pose the body to match</h3>
+                <li><h3><span>Place it on the body</span></h3><div class="sliders" id="fitPlace"></div>
+                  <div class="see-row"><label class="toggle"><input type="checkbox" id="seeThrough" checked> See-through garment<span class="tip" id="tipSee" tabindex="0" role="button">?</span></label>
+                    <input type="color" id="seeCol" value="#9fd8ff" title="See-through colour" aria-label="See-through colour"></div></li>
+                <li><h3><span>Pose the body to match</span></h3>
                   <div style="display:flex;align-items:center;gap:8px"><button class="btn small" id="autoPose" type="button">Auto-match pose</button><span class="tip" id="tipAuto" tabindex="0" role="button">?</span></div><div class="sliders" id="fitPose"></div></li>
-                <li><h3>Fit and bind</h3><div class="sliders" id="fitFit"></div></li>
+                <li><h3><span>Fit and bind</span></h3><div class="sliders" id="fitFit"></div></li>
               </ol>
               <div class="done-row" style="margin-top:14px"><button class="btn" id="cancelFit" type="button">Cancel</button><button class="btn primary" id="bindBtn" type="button">Done</button></div>
             </div>
             <div id="wearList" hidden></div><span id="wearCount" hidden></span>
           </div>
         </section>
+        <button class="btn block fit-return" type="button" id="fitReturn" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5 3.5 9.5 8 14"/><path d="M4 9.5h8.5a4 4 0 0 1 0 8H11"/></svg>Return to fitting</button>
       </div>
     </aside>
   </main>
@@ -705,6 +792,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <div class="brush-hud" id="brushHud" hidden></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/TransformControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/libs/fflate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/curves/NURBSUtils.js"></script>
@@ -1279,7 +1367,7 @@ function matte(m) {
 }
 
 /* ---------- app version + user settings (per browser, localStorage) ---------- */
-const APP_VERSION = '0.1.1';
+const APP_VERSION = '0.1.5';
 const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, keys: {} };
 const SETTINGS = (() => {
   let s = null; try { s = JSON.parse(localStorage.getItem('fitt3d.settings') || 'null'); } catch (e) { /* private mode */ }
@@ -1806,7 +1894,7 @@ function fitEntry(entry, reveal = true) {
   const t0 = performance.now();
   const geo = fitGarmentGeometry(entry.def, entry.fit, S.B);
   const ms = Math.round(performance.now() - t0);
-  if (entry.mesh) { garmentGroup.remove(entry.mesh); entry.mesh.geometry.dispose(); entry.mesh = null; }
+  if (entry.mesh) { entry.mesh.removeFromParent(); entry.mesh.geometry.dispose(); entry.mesh = null; }
   if (!geo) { entry.stats = 'Nothing to cover on this body'; status(`${entry.def.name}: no matching body region`); return; }
   if (!entry.material) entry.material = makeMaterial(entry);
   const mesh = S.B.skinned ? new T.SkinnedMesh(geo, entry.material) : new T.Mesh(geo, entry.material);
@@ -1846,8 +1934,8 @@ function equip(id) {
 }
 function unequip(id, silent) {
   const e = S.equipped.get(id); if (!e) return;
-  if (e.mesh) { garmentGroup.remove(e.mesh); if (e.def.custom) disposeGroup(e.mesh); else e.mesh.geometry.dispose(); e.mesh = null; }
-  if (e.proxy) { proxyGroup.remove(e.proxy.mesh); e.proxy.mesh.geometry.dispose(); e.proxy = null; }
+  if (e.mesh) { e.mesh.removeFromParent(); if (e.def.custom) disposeGroup(e.mesh); else e.mesh.geometry.dispose(); e.mesh = null; }
+  if (e.proxy) { e.proxy.mesh.removeFromParent(); e.proxy.mesh.geometry.dispose(); e.proxy = null; }
   if (e.material) { e.material.dispose(); e.material = null; }
   S.equipped.delete(id); e.hidden = false;
   if (!silent) { if (K && K.e === e) endSculpt(); resolveLayers(); renderWearList(); renderGrid(); status(`Removed ${e.def.name}`); }
@@ -2234,7 +2322,7 @@ function tick(now) {
   if (cap && now - lastFrame < 1000 / cap - 2) { requestAnimationFrame(tick); return; }
   lastFrame = now;
   const dt = Math.min(0.05, clock.getDelta()); time += dt;
-  if (S.fitting || S.sculpting || S.measuring || S.exporting) { /* pose held while fitting, sculpting or measuring */ }
+  if (S.fitting || S.sculpting || S.measuring || S.exporting || S.accMode) { /* pose held while fitting, sculpting or measuring */ }
   else if (S.mixer && S.action) S.mixer.update(dt);
   else if (S.skeleton) applyGenericPose(S.pose, time);
   tickReveals(now);
@@ -2248,7 +2336,8 @@ function tick(now) {
 /* ================= custom garments: import, pose-match, fit, bind ================= */
 const POSE_SLIDERS = [
   ['armRaise', 'Arms raise', -30, 90, '°'], ['armFwd', 'Arms forward', -30, 80, '°'], ['elbow', 'Elbows bend', 0, 120, '°'],
-  ['legSpread', 'Legs apart', -10, 45, '°'], ['knee', 'Knees bend', 0, 90, '°']
+  ['legSpread', 'Legs apart', -10, 45, '°'], ['knee', 'Knees bend', 0, 90, '°'],
+  ['footPitch', 'Feet tilt', -45, 60, '°'], ['footTwist', 'Feet turn', -45, 45, '°']
 ];
 const PLACE_SLIDERS = [
   ['scale', 'Scale', 50, 200, '%', 1], ['y', 'Lift', -40, 40, 'cm', 0.5], ['z', 'Forward / back', -30, 30, 'cm', 0.5],
@@ -2269,9 +2358,13 @@ const FIT_TIPS = {
   'pose.elbow': 'Bends both forearms forward, for sleeves modelled with bent elbows.',
   'pose.legSpread': 'Opens the legs sideways, for trousers or skirts modelled with a wide stance.',
   'pose.knee': 'Bends both knees backward, for garments modelled in a seated or bent-leg pose.',
+  'pose.footPitch': 'Tilts both feet: positive points the toes down (like a high heel), negative lifts them. Match the angle the shoes were modelled at.',
+  'pose.footTwist': 'Turns both feet around the leg: positive turns the toes outward, negative inward. Use it when shoes were modelled with the feet pointing out.',
+  'place.gizmo': 'Drag the gizmo in the viewport to move, rotate or scale the garment (W, E, R switch mode). Reset position puts it back where it was imported.',
   'fit.ease': 'Minimum gap between the cage and the skin, in millimetres. It is always enforced: anything closer is pushed out. Raise it to leave room for layers underneath or to stop skin poking through; 0 hugs the skin.',
   'fit.conform': 'How strongly the cage is pulled in toward the body where the garment is looser than the ease. 0% keeps the original drape, 100% shrink-wraps it. Pushing out of the skin always happens, whatever this is set to.',
   'fit.proxy': 'Cell size of the low-resolution cage that drives your mesh. Smaller cages follow the body closely; larger cages keep more of the garment\'s original silhouette. Your mesh rides on the cage either way, so its folds and trims keep their shape.',
+  'fit.cageSrc': 'Where the cage is built from. Garment/Object follows the object\'s own shape. Avatar builds a smooth cage from the patch of skin the object covers (grown a little to close gaps), which is much easier to deform for belts, straps, harnesses and other thin or holey pieces. Very tight gaps are then harder to push through, which sculpting can fix.',
   'fit.smoothW': 'How many times the skin weights are blurred across the cage. Higher values give softer bending at shoulders, elbows and hips; lower values follow each bone more tightly.',
   'autoPose': 'Samples the outer part of each sleeve and trouser leg and sets Arms raise, Arms forward and Legs apart so the limbs sit inside them. Fine-tune the result by hand.',
   'seeThrough': 'Shows the garment semi-transparent while you place it, so you can see the body inside it. It does not affect the result.'
@@ -2339,16 +2432,18 @@ function rotWorld(bone, ax, ay, az, deg) {
   bone.quaternion.premultiply(local);
   bone.updateWorldMatrix(false, true);
 }
-function applyFitPose(p) {
-  if (!S.skeleton || !F || !F.bones) return;
+function applyFitPose(p, bones) {
+  const b = bones || (F && F.bones);
+  if (!S.skeleton || !b || !p) return;
   restPose(); S.charRoot.updateMatrixWorld(true);
-  const b = F.bones, fs = S.B.face || 1;
+  const fs = S.B.face || 1;
   for (const sd of [1, -1]) {
     rotWorld(b.arm[sd], 0, 0, 1, sd * p.armRaise);
     rotWorld(b.arm[sd], 1, 0, 0, -fs * p.armFwd);
     rotWorld(b.fore[sd], 1, 0, 0, -fs * p.elbow);
     rotWorld(b.thigh[sd], 0, 0, 1, sd * p.legSpread);
     rotWorld(b.shin[sd], 1, 0, 0, fs * p.knee);
+    if (b.foot && b.foot[sd]) { if (p.footTwist) rotWorld(b.foot[sd], 0, 1, 0, sd * p.footTwist); if (p.footPitch) rotWorld(b.foot[sd], 1, 0, 0, fs * p.footPitch); }
   }
   S.charRoot.updateMatrixWorld(true);
 }
@@ -2356,6 +2451,10 @@ function applyFitPose(p) {
 /* ---------- placement ---------- */
 function placeMatrix(c) {
   const pl = c.place, s = c.baseScale * pl.scale / 100;
+  const base = placeBase(c, pl, s);
+  return pl.xf ? new T.Matrix4().fromArray(pl.xf).multiply(base) : base;
+}
+function placeBase(c, pl, s) {
   return new T.Matrix4().makeTranslation(c.anchor.x + pl.x / 100, c.anchor.y + pl.y / 100, c.anchor.z + pl.z / 100)
     .multiply(new T.Matrix4().makeRotationY(pl.rot * Math.PI / 180))
     .multiply(new T.Matrix4().makeRotationX((pl.tilt || 0) * Math.PI / 180))
@@ -2393,7 +2492,7 @@ function makeCustomSource(root, name) {
   let verts = 0; for (const p of parts) verts += p.geo.attributes.position.count;
   return { name, parts, pivot, baseScale: base, anchor, verts,
     place: { scale: 100, x: 0, y: 0, z: 0, rot: 0, tilt: 0 },
-    pose: { armRaise: 0, armFwd: 0, elbow: 0, legSpread: 0, knee: 0 },
+    pose: { armRaise: 0, armFwd: 0, elbow: 0, legSpread: 0, knee: 0, footPitch: 0, footTwist: 0 },
     fit: { ease: 4, conform: 40, proxy: 3, smoothW: 6 } };
 }
 
@@ -2408,28 +2507,36 @@ function openFitting(src, editId) {
   }
   ghost.matrixAutoUpdate = false;
   scene.add(ghost);
-  F = { src, ghost, editId: editId || null, bones: findPoseBones(), seeThrough: true };
+  F = { src, ghost, editId: editId || null, bones: findPoseBones(), seeThrough: true, accessory: false };
+  const ed = editId ? S.customLib.get(editId) : null; F.accessory = !!(ed && ed.kind === 'accessory'); F.wasAcc = F.accessory;
   if (editId) { const e = S.equipped.get(editId); if (e && e.mesh) e.mesh.visible = false; }
   S.fitting = true;
   updateGhost(); applyFitPose(src.pose);
   S.bodyMeshes.forEach(m => (m.visible = true)); $('#bodyTog').checked = true;
-  renderFitPanel();
+  renderFitPanel(); fitGizmoAttach(); setSeeThrough(true); setFocus();
   $('#fitSec').hidden = false; $('#sculptBox').hidden = true; openSec('garmentSec');
   $('#garmentSec').scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
   if (typeof applyView === 'function') applyView();
   status(`Place ${src.name} on the body, then match the pose`);
 }
+function setFitAccessory(on) {
+  if (!F) return; F.accessory = on; renderFitPanel();
+}
+function setFocus() { document.body.classList.toggle('fit-focus', !!(S.fitting || S.accMode)); }
 function updateGhost() { if (cagePrev) scheduleCagePreview(); if (!F) return; F.ghost.matrix.copy(placeMatrix(F.src)); F.ghost.matrixWorldNeedsUpdate = true; }
 function setSeeThrough(on) {
-  F.seeThrough = on;
-  F.ghost.traverse(o => { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { m.opacity = on ? 0.55 : 1; m.transparent = on; m.depthWrite = !on; m.needsUpdate = true; }); });
+  F.seeThrough = on; const tint = new T.Color($('#seeCol') ? $('#seeCol').value : '#9fd8ff');
+  F.ghost.traverse(o => { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => {
+    if (!m.userData.col0 && m.color) m.userData.col0 = m.color.clone();
+    if (m.color) m.color.copy(on ? tint : m.userData.col0);
+    m.opacity = on ? 0.55 : 1; m.transparent = on; m.depthWrite = !on; m.needsUpdate = true; }); });
 }
 function closeFitting() {
   if (!F) return;
-  clearCagePreview();
+  clearCagePreview(); if (F.snap) { snapPlane(false); drawSnap({}); } fitGizmoDetach();
   scene.remove(F.ghost);
   F.ghost.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose()); });
-  F = null; S.fitting = false;
+  F = null; S.fitting = false; setFocus();
   $('#fitSec').hidden = true; $('#sculptBox').hidden = false;
   if (typeof renderSculptBox === 'function') renderSculptBox();
   restPose();
@@ -2529,14 +2636,15 @@ function posedBody() {
 }
 function disposeGroup(g) { g.traverse(o => { if (o.isMesh) { o.geometry.dispose(); (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose()); } }); }
 function bindCustomEntry(entry) {
+  if (entry.kind === 'accessory') { const r = bindAccessory(entry); installAccessory(entry, r); return r; }
   const src = entry.custom;
   const hadF = !!F;
   if (!hadF) { F = { src, bones: findPoseBones() }; }
   applyFitPose(src.pose);
   const r = fitAndBind(src);
   if (!hadF) { F = null; restPose(); }
-  if (entry.mesh) { garmentGroup.remove(entry.mesh); disposeGroup(entry.mesh); }
-  if (entry.proxy) { proxyGroup.remove(entry.proxy.mesh); entry.proxy.mesh.geometry.dispose(); }
+  if (entry.mesh) { entry.mesh.removeFromParent(); disposeGroup(entry.mesh); }
+  if (entry.proxy) { entry.proxy.mesh.removeFromParent(); entry.proxy.mesh.geometry.dispose(); }
   garmentGroup.add(r.group); entry.mesh = r.group;
   proxyGroup.add(r.proxy.mesh); entry.proxy = r.proxy;
   captureFit(entry);
@@ -2553,14 +2661,18 @@ async function commitFitting() {
       id = newId(); isNew = true;
       const def = { id, name: F.src.name, cat: 'Custom', slot: id, custom: true, tag: 'unsorted', order: 0 };
       entry = { def, custom: F.src, mesh: null, fileBuf: F.src.fileBuf, fileName: F.src.fileName };
+      if (F.accessory) { entry.kind = 'accessory'; entry.acc = ACC_DEFAULT(); if (S.sections.some(s => s.id === 'acc')) def.tag = 'acc'; }
       S.customLib.set(id, entry);
     } else entry = S.customLib.get(id);
+    const wantMask = !!F.accessory && (isNew || !F.wasAcc);
+    if (!isNew && F.accessory !== F.wasAcc) { entry.kind = F.accessory ? 'accessory' : undefined; entry.acc = F.accessory ? (entry.acc || ACC_DEFAULT()) : null; if (F.accessory) entry.sculptDelta = null; }
     const r = bindCustomEntry(entry);
-    if (isNew) libraryAdd(entry); else saveItem(entry);
+    if (isNew) { const tag = entry.def.tag; libraryAdd(entry); if (wantMask && tag === 'acc') { entry.def.tag = 'acc'; saveItem(entry); renderLibrary(); } } else saveItem(entry);
     S.equipped.set(id, entry); S.selected = id;
     closeFitting();
     resolveLayers();
     renderGrid(); renderWearList();
+    if (wantMask) { S.busy = false; startMaskPaint(entry, true); }
     status(`Bound ${entry.def.name} · ${r.verts.toLocaleString()} verts · ${r.ms} ms. Try Walk or Wave.`);
   } catch (err) { console.error(err); status('Fitting failed'); toast('Could not fit that garment. Check its placement and try again.'); }
   finally { S.busy = false; }
@@ -2589,24 +2701,27 @@ async function importGarment(file) {
 }
 
 /* ---------- fitting panel UI ---------- */
-function sliderHTML(group, [k, label, mn, mx, un, st], val) {
+function sliderHTML(group, [k, label, mn, mx, un, st], val, off) {
   const shown = un === '%' || un === '°' || un === '' ? `${val}${un}` : `${val} ${un}`;
-  return `<div class="sl"><label for="f-${group}-${k}"><span class="lbl">${label}${tipIcon(group + '.' + k, label)}</span><output id="fo-${group}-${k}">${shown}</output></label>
-    <input type="range" id="f-${group}-${k}" data-g="${group}" data-k="${k}" data-u="${un}" min="${mn}" max="${mx}" step="${st || 1}" value="${val}"></div>`;
+  return `<div class="sl${off ? ' off' : ''}"${off ? ' title="Not used for accessories"' : ''}><label for="f-${group}-${k}"><span class="lbl">${label}${tipIcon(group + '.' + k, label)}</span><output id="fo-${group}-${k}">${shown}</output></label>
+    <input type="range" id="f-${group}-${k}" data-g="${group}" data-k="${k}" data-u="${un}" min="${mn}" max="${mx}" step="${st || 1}" value="${val}"${off ? ' disabled' : ''}></div>`;
 }
 function renderFitPanel() {
   if (!F) return;
   const s = F.src, rig = !!F.bones;
   $('#fitName').textContent = s.name;
   $('#fitMeta').textContent = `${s.verts.toLocaleString()} v · ${s.parts.length} part${s.parts.length > 1 ? 's' : ''}`;
-  $('#fitPlace').innerHTML = PLACE_SLIDERS.map(d => sliderHTML('place', d, s.place[d[0]] || 0)).join('');
-  $('#fitPose').innerHTML = rig ? POSE_SLIDERS.map(d => sliderHTML('pose', [d[0], d[1], d[2], d[3], d[4], 1], s.pose[d[0]])).join('')
+  $('#fitPlace').innerHTML = `<div class="row-l"><span class="lbl">Gizmo${tipIcon('place.gizmo', 'Gizmo')}</span><div class="mb-seg" role="group" aria-label="Gizmo mode">${[['translate', 'Move', 'W'], ['rotate', 'Rotate', 'E'], ['scale', 'Scale', 'R']].map(([k, l, key]) => `<button type="button" data-fgm="${k}" aria-pressed="${(F.gmode || 'translate') === k}" title="${l} (${key})">${l}</button>`).join('')}<button type="button" class="seg-ic" id="resetPos" title="Reset position" aria-label="Reset position"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 11.2a5.6 5.6 0 1 0 1.7-5.1"/><path d="M4.3 3.7v3.1h3.1"/></svg></button></div></div>${snapRow()}
+    ${F.snap ? fitSnapHTML() : `<button class="btn block" type="button" id="fitSnapBtn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="5" cy="14" r="2"/><circle cx="15" cy="6" r="2"/><path d="M6.5 12.5 13.5 7.5" stroke-dasharray="2 2"/></svg>Snap two points</button>`}`;
+  $('#fitPose').innerHTML = rig ? POSE_SLIDERS.map(d => sliderHTML('pose', [d[0], d[1], d[2], d[3], d[4], 1], s.pose[d[0]] ?? 0)).join('')
     : '<p class="note">This character has no skeleton, so it cannot be posed. The garment will be fitted as a static mesh.</p>';
   $('#autoPose').hidden = !rig;
   if (s.fit.proxy === undefined) s.fit.proxy = 3;
-  $('#fitFit').innerHTML = FIT_SLIDERS.map(d => sliderHTML('fit', d, s.fit[d[0]])).join('');
+  const cs = s.fit.cageSrc === 'avatar' ? 'avatar' : 'garment';
+  $('#fitFit').innerHTML = `<div class="row-l"><span class="lbl">Cage from${tipIcon('fit.cageSrc', 'Cage from')}</span><div class="mb-seg" role="group" aria-label="Cage source"><button type="button" data-csrc="garment" aria-pressed="${cs === 'garment'}">${F.accessory ? 'Object' : 'Garment'}</button><button type="button" data-csrc="avatar" aria-pressed="${cs === 'avatar'}">Avatar</button></div></div>` + FIT_SLIDERS.map(d => F.accessory && d[0] === 'proxy' ? ['proxy', d[1], 0.2, 8, 'cm', 0.1] : d).map(d => sliderHTML('fit', d, s.fit[d[0]], F.accessory && (d[0] === 'conform' || d[0] === 'smoothW'))).join('');
+  $('#fitAccBtn').setAttribute('aria-pressed', String(!!F.accessory)); $('#fitAccTxt').textContent = F.accessory ? 'Accessory · on' : 'Import as accessory';
   $('#seeThrough').checked = F.seeThrough !== false;
-  $('#bindBtn').textContent = 'Done';
+  $('#bindBtn').textContent = F.accessory && (!F.editId || !F.wasAcc) ? 'Next: paint mask' : 'Done';
 }
 $('#fitSec').addEventListener('input', ev => {
   const t = ev.target; if (!F || !t.dataset.g) return;
@@ -2632,8 +2747,10 @@ function scheduleCagePreview() {
       const welds = F.pw.map(w => { const pos = new Float32Array(w.pos.length);
         for (let i = 0; i < w.m; i++) { v.fromArray(w.pos, i * 3).applyMatrix4(M); pos[i*3] = v.x; pos[i*3+1] = v.y; pos[i*3+2] = v.z; }
         return { pos, m: w.m, tris: w.tris }; });
-      const none = { nearest: () => -1 };
-      const px = buildProxy(welds, (F.src.fit.proxy || 3) / 100, { fine: none, coarse: none });
+      const none = { nearest: () => -1 }, fromAv = F.src.fit.cageSrc === 'avatar';
+      let body = { fine: none, coarse: none };
+      if (fromAv) { const key = JSON.stringify(F.src.pose); if (!F.prevBody || F.prevBody.key !== key) { const pb = posedBody(); F.prevBody = { key, PB: pb.PB, NB: pb.NB, fine: buildHash(pb.PB, S.B.n, 0.025), coarse: buildHash(pb.PB, S.B.n, 0.15) }; } body = F.prevBody; }
+      const px = makeCage(welds, (F.src.fit.proxy || 3) / 100, body, fromAv);
       const geo = new T.BufferGeometry(); geo.setAttribute('position', new T.BufferAttribute(px.P, 3)); geo.setIndex(new T.BufferAttribute(px.topo.tris, 1));
       clearCagePreview(); cagePrev = new T.Mesh(geo, cagePrevMat); cagePrev.renderOrder = 7; scene.add(cagePrev);
       const out = $('#fo-fit-proxy'); if (out) out.textContent = `${F.src.fit.proxy} cm · ${px.topo.m.toLocaleString()} pts`;
@@ -2641,10 +2758,120 @@ function scheduleCagePreview() {
   });
 }
 $('#seeThrough').addEventListener('change', ev => F && setSeeThrough(ev.target.checked));
+$('#fitAccBtn').addEventListener('click', ev => { if (ev.target.closest('.tip')) return; if (F) setFitAccessory(!F.accessory); });
+$('#seeCol').addEventListener('input', () => { if (F && F.seeThrough) setSeeThrough(true); });
+$('#tipAcc').dataset.tip = 'For solid or partly solid objects: bags, helmets, belts, jewellery. They keep their modelled shape instead of being wrapped, so Conform and Weight smoothing are not used. After Next you paint the parts that should bend with the body, like straps.';
 $('#autoPose').addEventListener('click', autoMatch);
 $('#bindBtn').addEventListener('click', commitFitting);
 $('#cancelFit').addEventListener('click', () => cancelFitting(false));
-$('#resetPlace').addEventListener('click', () => { if (!F) return; F.src.place = { scale: 100, x: 0, y: 0, z: 0, rot: 0 }; F.src.pose = { armRaise: 0, armFwd: 0, elbow: 0, legSpread: 0, knee: 0 }; updateGhost(); applyFitPose(F.src.pose); renderFitPanel(); });
+$('#resetPlace').addEventListener('click', () => { if (!F) return; F.src.place = { scale: 100, x: 0, y: 0, z: 0, rot: 0, tilt: 0 }; F.src.pose = { armRaise: 0, armFwd: 0, elbow: 0, legSpread: 0, knee: 0, footPitch: 0, footTwist: 0 }; updateGhost(); applyFitPose(F.src.pose); renderFitPanel(); fitGizmoAttach(); });
+/* ---------- snap two points while fitting ---------- */
+function fitSnapHTML() {
+  const sn = F.snap, pm = F.planeMode || 'rotate';
+  return `<div class="snap-box"><ol class="snap-steps"><li class="${sn.step === 'A' ? 'on' : 'done'}">Click a point on the ${F.accessory ? 'accessory' : 'garment'}</li><li class="${sn.step === 'B' ? 'on' : sn.step === 'ready' ? 'done' : ''}">Click where it attaches on the avatar or a garment</li><li class="${sn.step === 'ready' ? 'on' : ''}">Turn or move the plane with its gizmo, then Snap to</li></ol>
+    ${sn.step === 'ready' ? `<div class="row-l"><span class="lbl">Plane</span><div class="mb-seg" role="group" aria-label="Plane gizmo"><button type="button" data-pm="rotate" aria-pressed="${pm === 'rotate'}">Rotate</button><button type="button" data-pm="translate" aria-pressed="${pm === 'translate'}">Move</button><button type="button" class="seg-ic" id="fsPlaneReset" title="Reset plane" aria-label="Reset plane"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 11.2a5.6 5.6 0 1 0 1.7-5.1"/><path d="M4.3 3.7v3.1h3.1"/></svg></button></div></div>
+    <p class="note">The object lands face down on the plane; the yellow line is its up direction.</p>` : ''}
+    <button class="btn block primary" type="button" id="fsTo"${sn.step === 'ready' ? '' : ' disabled'}>Snap to</button>
+    <button class="link-btn" type="button" id="fsRedo" style="justify-self:start">Pick points again</button>
+    <div class="done-row"><button class="btn" type="button" id="fsCancel">Cancel</button><button class="btn primary" type="button" id="fsOk">Confirm</button></div></div>`;
+}
+// the target plane: a disc you rotate and move freely with the gizmo
+function snapPlane(on) {
+  if (!on) { if (F && F.disc) { if (TC && TC.object === F.disc) TC.detach(); scene.remove(F.disc); F.disc = null; } return; }
+  const sn = F.snap;
+  if (!F.disc) {
+    const d = new T.Group(), r = 0.05;
+    d.add(new T.Mesh(new T.CircleGeometry(r, 40), new T.MeshBasicMaterial({ color: 0x5cc9d5, transparent: true, opacity: 0.25, side: T.DoubleSide, depthWrite: false })));
+    d.add(new T.LineLoop(new T.BufferGeometry().setFromPoints([...Array(48)].map((_, i) => new T.Vector3(Math.cos(i / 48 * Math.PI * 2) * r, Math.sin(i / 48 * Math.PI * 2) * r, 0))), new T.LineBasicMaterial({ color: 0x5cc9d5 })));
+    d.add(new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(), new T.Vector3(0, r, 0)]), new T.LineBasicMaterial({ color: 0xffd166 })));
+    d.add(new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(), new T.Vector3(0, 0, r * 0.8)]), new T.LineBasicMaterial({ color: 0x5cc9d5 })));
+    d.renderOrder = 61; scene.add(d); F.disc = d;
+  }
+  F.disc.position.copy(sn.B0); F.disc.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), sn.nB0); F.disc.updateMatrixWorld(true);
+  planeToSnap();
+  const tc = gizmo(); if (tc) { tc.setMode(F.planeMode || 'rotate'); tc.attach(F.disc); tc.visible = true; tc.enabled = true; }
+  GZ = { onChange: planeToSnap, onRelease: null, onGrab: null };
+}
+function planeToSnap() {
+  const sn = F && F.snap, d = F && F.disc; if (!sn || !d) return;
+  d.updateMatrixWorld(true);
+  const n = new T.Vector3(0, 0, 1).applyQuaternion(d.quaternion).normalize();
+  const q0 = new T.Quaternion().setFromUnitVectors(new T.Vector3(0, 0, 1), n), qt = q0.invert().multiply(d.quaternion);
+  sn.B = d.position.clone(); sn.nB = n; sn.twist = 2 * Math.atan2(qt.z, qt.w) * 180 / Math.PI; sn.gap = 0;
+}
+function fitSnapStart() {
+  if (!F) return;
+  F.snap = { step: 'A', twist: 0, gap: 0 }; F.snapXf0 = F.src.place.xf ? F.src.place.xf.slice() : null;
+  if (TC) { TC.detach(); TC.visible = false; }
+  renderFitPanel(); status(`Click a point on the ${F.accessory ? 'accessory' : 'garment'}`);
+}
+function fitSnapEnd(keep) {
+  if (!F || !F.snap) return;
+  if (!keep) { F.src.place.xf = F.snapXf0; updateGhost(); }
+  F.snap = null; snapPlane(false); GZ = null; drawSnap({}); renderFitPanel(); fitGizmoAttach(); status(keep ? 'Snapped' : 'Snap cancelled');
+}
+function fitSnapClick(ev) {
+  const sn = F.snap; setRay(ev); F.ghost.updateMatrixWorld(true);
+  const faceN = h => { const n = h.face.normal.clone().transformDirection(h.object.matrixWorld).normalize(); if (n.dot(ray.ray.direction) > 0) n.negate(); return n; };
+  if (sn.step === 'A') { const h = ray.intersectObjects(F.ghost.children, false)[0]; if (!h) return;
+    sn.A = h.point.clone(); sn.nA = faceN(h); sn.step = 'B'; status('Now click where it attaches on the avatar or a garment'); }
+  else { const targets = [...S.bodyMeshes]; for (const [id, g] of S.equipped) if (id !== F.editId && g.mesh && g.mesh.visible && !g.hidden) targets.push(...targetsOf(g));
+    const h = ray.intersectObjects(targets, false)[0]; if (!h) return;
+    sn.B0 = h.point.clone(); sn.nB0 = faceN(h); sn.step = 'ready'; status('Turn the plane with its gizmo if needed, then Snap to'); }
+  drawSnap({ A: sn.A, nA: sn.nA }); renderFitPanel(); if (sn.step === 'ready') snapPlane(true);
+}
+function fitSnapDo() {
+  const sn = F && F.snap; if (!sn || sn.step !== 'ready') return;
+  const M = snapMatrix(sn), X = F.src.place.xf ? new T.Matrix4().fromArray(F.src.place.xf) : new T.Matrix4();
+  F.src.place.xf = M.multiply(X).toArray(); updateGhost();
+  sn.A = sn.B.clone(); sn.nA = sn.nB.clone().negate();   // the picked point now sits on the target
+  drawSnap({ A: sn.A, nA: sn.nA }); status('Snapped. Confirm to keep it');
+}
+let fsDown = null;
+stage.addEventListener('pointerdown', ev => { if (F && F.snap && ev.target === canvas && ev.button === 0 && !(TC && TC.axis)) fsDown = { x: ev.clientX, y: ev.clientY }; }, true);
+stage.addEventListener('pointerup', ev => {
+  if (!F || !F.snap || !fsDown || ev.target !== canvas || (TC && TC.dragging)) { fsDown = null; return; }
+  const moved = Math.hypot(ev.clientX - fsDown.x, ev.clientY - fsDown.y); fsDown = null; if (moved > 5) return;
+  fitSnapClick(ev);
+}, true);
+$('#fitSec').addEventListener('click', ev => {
+  const t = ev.target.closest('button'); if (!t || !F) return;
+  if (t.id === 'fitSnapBtn') fitSnapStart();
+  else if (t.id === 'fsTo') fitSnapDo();
+  else if (t.id === 'fsRedo') { snapPlane(false); F.snap = { step: 'A', twist: 0, gap: 0 }; drawSnap({}); renderFitPanel(); }
+  else if (t.dataset.pm) { F.planeMode = t.dataset.pm; if (TC) TC.setMode(F.planeMode); renderFitPanel(); }
+  else if (t.id === 'fsPlaneReset' && F.snap) snapPlane(true);
+  else if (t.id === 'fsCancel') fitSnapEnd(false);
+  else if (t.id === 'fsOk') fitSnapEnd(true);
+});
+/* ---------- placement gizmo while fitting ---------- */
+function fitGizmoAttach() {
+  if (!F || F.snap) return; const tc = gizmo(); if (!tc) return;
+  if (!F.pivot) { F.pivot = new T.Group(); scene.add(F.pivot); }
+  F.ghost.updateMatrixWorld(true);
+  const box = new T.Box3().setFromObject(F.ghost), c = box.getCenter(new T.Vector3());
+  F.pivot.position.copy(c); F.pivot.quaternion.identity(); F.pivot.scale.set(1, 1, 1); F.pivot.updateMatrixWorld(true);
+  F.gStart = F.pivot.matrixWorld.clone(); F.xf0 = F.src.place.xf ? F.src.place.xf.slice() : null;
+  GZ = { onChange: fitGizmoChange, onRelease: () => fitGizmoAttach(), onGrab: null };
+  tc.setMode(F.gmode || 'translate'); tc.attach(F.pivot); tc.visible = true; tc.enabled = true;
+}
+function fitGizmoChange() {
+  if (!F || !F.pivot) return;
+  F.pivot.updateMatrixWorld(true);
+  const delta = F.pivot.matrixWorld.clone().multiply(F.gStart.clone().invert()), X0 = F.xf0 ? new T.Matrix4().fromArray(F.xf0) : new T.Matrix4();
+  F.src.place.xf = delta.multiply(X0).toArray(); updateGhost();
+}
+function fitGizmoDetach() { if (TC) { TC.detach(); TC.visible = false; TC.enabled = false; } if (F && F.pivot) { scene.remove(F.pivot); F.pivot = null; } if (GZ && GZ.onChange === fitGizmoChange) GZ = null; }
+$('#fitSec').addEventListener('click', ev => {
+  const cb = ev.target.closest('[data-csrc]'); if (cb && F) { F.src.fit.cageSrc = cb.dataset.csrc; renderFitPanel(); scheduleCagePreview(); return; }
+  const m = ev.target.closest('[data-fgm]'); if (m && F) { F.gmode = m.dataset.fgm; if (TC) TC.setMode(F.gmode); renderFitPanel(); return; }
+  if (ev.target.closest('#resetPos') && F) { const p = F.src.place; p.xf = null; p.scale = 100; p.x = p.y = p.z = p.rot = p.tilt = 0; updateGhost(); fitGizmoAttach(); status('Position reset'); }
+});
+document.addEventListener('keydown', ev => {
+  if (!F || !F.pivot || /^(INPUT|TEXTAREA|SELECT)$/.test((ev.target || {}).tagName || '') || ev.ctrlKey || ev.metaKey) return;
+  const k = ev.key.toLowerCase(), m = k === 'w' ? 'translate' : k === 'e' ? 'rotate' : k === 'r' ? 'scale' : null;
+  if (m) { F.gmode = m; if (TC) TC.setMode(m); renderFitPanel(); }
+});
 $('#importGarmentBtn').addEventListener('click', () => $('#garmentIn').click());
 $('#garmentIn').addEventListener('change', ev => { const f = ev.target.files[0]; if (f) importGarment(f); ev.target.value = ''; });
 // file drop chooser
@@ -2676,7 +2903,7 @@ function syncLayerOrder() {
   if (S.selected && !S.equipped.has(S.selected)) { if (K) endSculpt(); S.selected = null; renderSculptBox(); }
 }
 function editTargetsOf(e) { return e && e.proxy ? [e.proxy.mesh] : targetsOf(e); }
-function targetsOf(e) { if (!e || !e.mesh) return []; return e.def.custom ? e.mesh.children.filter(o => o.isMesh && !o.userData.overlay) : [e.mesh]; }
+function targetsOf(e) { if (!e || !e.mesh) return []; return e.def.custom ? e.mesh.children.filter(o => o.isMesh && !o.userData.overlay && !o.userData.cage) : [e.mesh]; }
 function weldOf(geo) {
   let w = WELD.get(geo);
   if (!w) { w = weldGeo(geo); w.rep = new Int32Array(w.m).fill(-1); for (let j = 0; j < w.map.length; j++) if (w.rep[w.map[j]] < 0) w.rep[w.map[j]] = j; WELD.set(geo, w); }
@@ -2758,24 +2985,78 @@ function weldedNormals(wd, body) {
 const catF32 = arrs => { let n = 0; for (const a of arrs) n += a.length; const o = new Float32Array(n); let k = 0; for (const a of arrs) { o.set(a, k); k += a.length; } return o; };
 
 /* push every garment outside the ones below it in the stack */
+/* ---------- layer transition ----------
+   Where an outer garment runs past the edge of the one underneath (a shirt hanging below the waistband),
+   the push that lifts it over the inner garment is carried on across the surface and faded out over the
+   transition distance, instead of dropping straight back to the skin. Painted transition weights (sculpt >
+   Transition) let the lift carry further, up to TRANSITION_REACH, wherever they are painted. */
+const LAYER_BLEND_DEFAULT = 5, TRANSITION_REACH = 0.35;
+function featherPush(wd, D, hit, blend, paint) {
+  const m = wd.m, st = wd.w.start, nbr = wd.w.nbr, W = wd.W;
+  const reach = Math.max(blend, paint ? TRANSITION_REACH : 0); if (reach <= 0) return;
+  // multi-source Dijkstra over the surface from every pushed point
+  const dist = new Float64Array(m).fill(Infinity), src = new Int32Array(m).fill(-1);
+  const heap = [], push = (d, i) => { heap.push([d, i]); let c = heap.length - 1; while (c > 0) { const pa = (c - 1) >> 1; if (heap[pa][0] <= heap[c][0]) break; [heap[pa], heap[c]] = [heap[c], heap[pa]]; c = pa; } };
+  const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let c = 0; for (;;) { const l = c * 2 + 1, r = l + 1; let b = c; if (l < heap.length && heap[l][0] < heap[b][0]) b = l; if (r < heap.length && heap[r][0] < heap[b][0]) b = r; if (b === c) break; [heap[b], heap[c]] = [heap[c], heap[b]]; c = b; } } return top; };
+  let any = false;
+  for (let i = 0; i < m; i++) if (hit[i]) { dist[i] = 0; src[i] = i; push(0, i); any = true; }
+  if (!any) return;
+  while (heap.length) {
+    const [d, i] = pop(); if (d > dist[i] || d > reach) continue;
+    for (let q = st[i]; q < st[i+1]; q++) { const j = nbr[q];
+      const nd = d + Math.hypot(W[i*3] - W[j*3], W[i*3+1] - W[j*3+1], W[i*3+2] - W[j*3+2]);
+      if (nd < dist[j]) { dist[j] = nd; src[j] = src[i]; push(nd, j); } }
+  }
+  const out = new Float32Array(D);
+  for (let i = 0; i < m; i++) {
+    if (dist[i] === 0 || src[i] < 0 || dist[i] > reach) continue;
+    const t = blend > 0 ? Math.max(0, 1 - dist[i] / blend) : 0, auto = t * t * (3 - 2 * t);
+    const pw = paint ? paint[i] * Math.max(0, 1 - dist[i] / TRANSITION_REACH) : 0;
+    const w = Math.max(auto, pw); if (w <= 0) continue;
+    const j = src[i], cx = D[j*3] * w, cy = D[j*3+1] * w, cz = D[j*3+2] * w;
+    if (cx*cx + cy*cy + cz*cz > D[i*3]**2 + D[i*3+1]**2 + D[i*3+2]**2) { out[i*3] = cx; out[i*3+1] = cy; out[i*3+2] = cz; }
+  }
+  smoothField(out, 3, wd.w, 2);
+  D.set(out);
+}
+// layer forces: how much a garment gives way to the layers above it (Receive from above)
+const LF_DEFAULT = () => ({ on: false, balance: 50, levels: 1, inf: {} });
+const lfOf = e => e.lforce || (e.lforce = LF_DEFAULT());
 function resolveLayers() {
   syncLayerOrder();
   if (K) endSculpt();
   if (!S.B || !S.charRoot) { renderLayers(); return; }
   const order = S.layerOrder.filter(id => targetsOf(S.equipped.get(id)).length);
+  const lvl = new Map(order.map((id, i) => [id, i]));
   const snap = snapBones(); restPose();
   const mats = currentMats(), body = bodyRest(), gap = 0.003;
-  const accP = [], accN = []; let innerH = null, IP = null, IN = null;
+  const accP = [], accN = [], segs = []; let innerH = null, IP = null, IN = null, IO = null, accInfl = 0;
+  const addSurface = (e, t, wd, owned) => { segs.push({ e, t, wd, start: accP.reduce((n, a) => n + a.length / 3, 0), n: wd.m, owned, inw: null }); accP.push(wd.W.slice()); accN.push(weldedNormals(wd, body)); };
+  // share of a collision the inner layer takes (moves in) when layer `o` sits on it
+  const giveOf = (inner, o) => { const f = inner.lforce; if (!f || !f.on) return 0; const dl = lvl.get(o.def.id) - lvl.get(inner.def.id);
+    if (dl < 1 || (f.levels > 0 && dl > f.levels)) return 0; const inf = f.inf[o.def.id] ?? 100; return (f.balance / 100) * (inf / 100); };
   for (const id of order) {
     const e = S.equipped.get(id), ts = editTargetsOf(e), gapE = e.proxy ? 0.006 : gap;
     if (!e.fitPos || e.fitPos.length !== ts.length) e.fitPos = ts.map(t => t.geometry.attributes.position.array.slice());
     ts.forEach((t, k) => { const p = t.geometry.attributes.position; if (e.fitPos[k].length === p.array.length) { p.array.set(e.fitPos[k]); p.needsUpdate = true; } });
     deformFromProxy(e);
     let moved = false;
+    const segGive = segs.map(sg => giveOf(sg.e, e)), anyGive = segGive.some(v => v > 0);
     for (const t of ts) {
       const wd = worldData(t, mats);
-      if (innerH) {
-        const D = new Float32Array(wd.m * 3);
+      if (innerH && !e.noRecv) {
+        const D = new Float32Array(wd.m * 3), hit = new Uint8Array(wd.m), tgt = new Float32Array(wd.m).fill(gapE);
+        if (anyGive) {
+          // every point of a giving inner layer looks at this layer as it arrives and takes its share of the overlap
+          const W0 = wd.W, oh = buildHash(W0, wd.m, 0.02);
+          segs.forEach((sg, si) => { const g = segGive[si]; if (!(g > 0)) return;
+            if (!sg.inw) sg.inw = new Float32Array(sg.n);
+            for (let j = 0; j < sg.n; j++) { const P0 = sg.start + j, x = IP[P0*3], y = IP[P0*3+1], z = IP[P0*3+2];
+              const q = oh.nearest(x, y, z); if (q < 0) continue;
+              const ox = W0[q*3] - x, oy = W0[q*3+1] - y, oz = W0[q*3+2] - z; if (ox*ox + oy*oy + oz*oz > 0.0025) continue;
+              const d = ox * IN[P0*3] + oy * IN[P0*3+1] + oz * IN[P0*3+2];
+              if (d < gapE) { const give = (gapE - d) * g; if (give > sg.inw[j]) sg.inw[j] = give; } } });
+        }
         for (let round = 0; round < 3; round++) {
           for (let i = 0; i < wd.m; i++) {
             const x = wd.W[i*3] + D[i*3], y = wd.W[i*3+1] + D[i*3+1], z = wd.W[i*3+2] + D[i*3+2];
@@ -2783,23 +3064,118 @@ function resolveLayers() {
             const ox = x - IP[q*3], oy = y - IP[q*3+1], oz = z - IP[q*3+2];
             if (ox*ox + oy*oy + oz*oz > 0.0025) continue;
             const d = ox * IN[q*3] + oy * IN[q*3+1] + oz * IN[q*3+2];
-            if (d < gapE) { const s = gapE - d; D[i*3] += IN[q*3] * s; D[i*3+1] += IN[q*3+1] * s; D[i*3+2] += IN[q*3+2] * s; }
+            if (round === 0 && anyGive && d < gapE) {
+              // the inner layer gives way by its share; this layer stops short by the same amount
+              const g = segGive[IO[q]];
+              if (g > 0) tgt[i] = gapE - (gapE - d) * g;
+            }
+            if (d < tgt[i]) { const s = tgt[i] - d; D[i*3] += IN[q*3] * s; D[i*3+1] += IN[q*3+1] * s; D[i*3+2] += IN[q*3+2] * s; hit[i] = 1; }
           }
           if (round < 2) smoothField(D, 3, wd.w, 2);
         }
+        const k = ts.indexOf(t), paint = e.blendW && e.blendW[k] && e.blendW[k].length === wd.m ? e.blendW[k] : null;
+        const accM = isAcc(e) ? accMaskWelded(e, k, wd) : null;
+        if (!accM) featherPush(wd, D, hit, Math.max((e.blend ?? LAYER_BLEND_DEFAULT) / 100, accInfl), paint);
+        // the feathered field must still clear the garment underneath
+        for (let i = 0; i < wd.m; i++) {
+          const x = wd.W[i*3] + D[i*3], y = wd.W[i*3+1] + D[i*3+1], z = wd.W[i*3+2] + D[i*3+2];
+          const q = innerH.nearest(x, y, z); if (q < 0) continue;
+          const ox = x - IP[q*3], oy = y - IP[q*3+1], oz = z - IP[q*3+2];
+          if (ox*ox + oy*oy + oz*oz > 0.0025) continue;
+          const d = ox * IN[q*3] + oy * IN[q*3+1] + oz * IN[q*3+2];
+          if (d < tgt[i]) { const s = tgt[i] - d; D[i*3] += IN[q*3] * s; D[i*3+1] += IN[q*3+1] * s; D[i*3+2] += IN[q*3+2] * s; }
+        }
+        if (accM) for (let i = 0; i < wd.m; i++) { D[i*3] *= accM[i]; D[i*3+1] *= accM[i]; D[i*3+2] *= accM[i]; }   // solid parts are never pushed
         for (let i = 0; i < wd.m; i++) if (D[i*3] || D[i*3+1] || D[i*3+2]) { addDelta(wd, i, D[i*3], D[i*3+1], D[i*3+2]); moved = true; }
         writeBind(t, wd);
       }
-      if (!e.proxy) { accP.push(wd.W.slice()); accN.push(weldedNormals(wd, body)); }
+      if ((!e.proxy || isAcc(e)) && !e.noCast) addSurface(e, t, wd, true);
     }
     if (moved) { if (e.proxy) deformFromProxy(e); else ts.forEach(t => t.geometry.computeVertexNormals()); }
-    if (e.proxy) for (const t of targetsOf(e)) { const wd = worldData(t, mats); accP.push(wd.W.slice()); accN.push(weldedNormals(wd, body)); }
-    IP = catF32(accP); IN = catF32(accN); innerH = buildHash(IP, IP.length / 3, 0.02);
+    if (e.proxy && !isAcc(e) && !e.noCast) for (const t of targetsOf(e)) addSurface(e, t, worldData(t, mats), false);
+    if (isAcc(e) && !e.noCast) accInfl = Math.max(accInfl, (accOf(e).influence ?? 4) / 100);
+    if (accP.length) { IP = catF32(accP); IN = catF32(accN); innerH = buildHash(IP, IP.length / 3, 0.02);
+      IO = new Int32Array(IP.length / 3); segs.forEach((sg, si) => IO.fill(si, sg.start, sg.start + sg.n)); }
   }
+  // layers that receive from above give way inward by their share (never into the skin)
+  const touched = new Set();
+  for (const sg of segs) {
+    if (!sg.inw) continue;
+    const { e, t, wd } = sg, m = sg.n, Din = new Float32Array(m * 3), off = sg.start;
+    for (let i = 0; i < m; i++) { const a = sg.inw[i]; if (!a) continue; Din[i*3] = -IN[(off + i)*3] * a; Din[i*3+1] = -IN[(off + i)*3+1] * a; Din[i*3+2] = -IN[(off + i)*3+2] * a; }
+    smoothField(Din, 3, wd.w, 2);
+    const accM = isAcc(e) && sg.owned ? accMaskWelded(e, 0, wd) : null, floor = 0.0015;
+    for (let i = 0; i < m; i++) {
+      let dx = Din[i*3], dy = Din[i*3+1], dz = Din[i*3+2]; if (!dx && !dy && !dz) continue;
+      if (accM) { dx *= accM[i]; dy *= accM[i]; dz *= accM[i]; }
+      const x = wd.W[i*3] + dx, y = wd.W[i*3+1] + dy, z = wd.W[i*3+2] + dz;
+      let b = body.fine.nearest(x, y, z); if (b < 0) b = body.coarse.nearest(x, y, z);
+      if (b >= 0) { const nx = body.NB[b*3], ny = body.NB[b*3+1], nz = body.NB[b*3+2], d = (x - body.PB[b*3]) * nx + (y - body.PB[b*3+1]) * ny + (z - body.PB[b*3+2]) * nz;
+        if (d < floor) { const c = floor - d; dx += nx * c; dy += ny * c; dz += nz * c; } }
+      addDelta(wd, i, dx, dy, dz);
+    }
+    writeBind(t, wd); touched.add(e);
+    if (!sg.owned || !e.proxy) t.geometry.computeVertexNormals();
+  }
+  for (const e of touched) if (e.proxy && isAcc(e)) deformFromProxy(e);
   restoreBones(snap);
   renderLayers();
 }
 
+/* ---------- Layer forces panel (Garment options) ---------- */
+let lfOpen = false;
+function layerForcesHTML(e) {
+  const f = lfOf(e), order = S.layerOrder, me = order.indexOf(e.def.id), above = order.slice(me + 1);
+  const shown = f.levels > 0 ? above.slice(0, f.levels) : above, n = order.length;
+  const sum = f.on ? `${f.balance}% · ${f.levels > 0 ? f.levels + ' level' + (f.levels > 1 ? 's' : '') : 'all'}` : 'off';
+  const head = `<button class="btn block lf-toggle" type="button" id="lfToggle" aria-expanded="${lfOpen}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0M3 10c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0M3 14c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0"/></svg>Layer forces<span class="tg-val">${sum}</span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>`;
+  if (!lfOpen) return head;
+  return head + `<div class="lf-panel">
+    <div class="row-l"><span>Receive from Garments</span><button type="button" class="switch" role="switch" id="lfOn" aria-checked="${f.on}" aria-label="Receive from Garments"></button></div>
+    <div class="sl${f.on ? '' : ' off'}"><label for="lfBal"><span class="lbl">Balance</span><output id="lfBalOut">${f.balance}%</output></label><input type="range" id="lfBal" min="0" max="100" step="1" value="${f.balance}"${f.on ? '' : ' disabled'}>
+      <div class="lf-ends"><span>Self</span><span>Layers above</span></div></div>
+    <div class="row-l${f.on ? '' : ' off'}"><span>Levels above</span><div class="mb-seg" role="group" aria-label="Levels above">${[[1, '1'], [2, '2'], [3, '3'], [0, 'All']].map(([v, l]) => `<button type="button" data-lflv="${v}" aria-pressed="${f.levels === v}"${f.on ? '' : ' disabled'}>${l}</button>`).join('')}</div></div>
+    ${shown.length ? shown.map(id => { const o = S.equipped.get(id), v = f.inf[id] ?? 100, ln = order.indexOf(id) + 1;
+      return `<div class="sl${f.on ? '' : ' off'}"><label for="lfi-${id}"><span class="lbl">Layer ${ln}<small class="lf-nm">${esc(o.def.name)}</small></span><output id="lfo-${id}">${v}%</output></label><input type="range" id="lfi-${id}" data-lfi="${id}" min="0" max="100" step="1" value="${v}"${f.on ? '' : ' disabled'}></div>`; }).join('')
+      : '<p class="note">No layers above this one yet.</p>'}
+  </div>`;
+}
+$('#sculptBox').addEventListener('click', ev => {
+  const e = S.equipped.get(S.selected); if (!e) return;
+  if (ev.target.closest('#lfToggle')) { lfOpen = !lfOpen; renderSculptBox(); return; }
+  if (ev.target.closest('#lfOn')) { lfOf(e).on = !lfOf(e).on; saveItem(e); renderSculptBox(); renderLayers(); relayer(); return; }
+  const lv = ev.target.closest('[data-lflv]'); if (lv) { lfOf(e).levels = +lv.dataset.lflv; saveItem(e); renderSculptBox(); relayer(); }
+});
+$('#sculptBox').addEventListener('input', ev => {
+  const e = S.equipped.get(S.selected); if (!e) return; const t = ev.target;
+  if (t.id === 'lfBal') $('#lfBalOut').textContent = `${t.value}%`;
+  else if (t.dataset.lfi) $(`#lfo-${t.dataset.lfi}`).textContent = `${t.value}%`;
+});
+$('#sculptBox').addEventListener('change', ev => {
+  const e = S.equipped.get(S.selected); if (!e) return; const t = ev.target;
+  if (t.id === 'lfBal') { lfOf(e).balance = +t.value; saveItem(e); relayer(); renderSculptBox(); }
+  else if (t.dataset.lfi) { lfOf(e).inf[t.dataset.lfi] = +t.value; saveItem(e); relayer(); }
+});
+/* ---------- layer influence popover (Receive / Cast) ---------- */
+function closeForce() { const m = $('#forcePop'); if (m) m.remove(); document.removeEventListener('pointerdown', forceOut, true); }
+function forceOut(ev) { if (!ev.target.closest('#forcePop') && !ev.target.closest('[data-force]')) closeForce(); }
+function openForce(btn) {
+  const id = btn.dataset.force, e = S.equipped.get(id); if (!e) return;
+  if ($('#forcePop') && $('#forcePop').dataset.id === id) { closeForce(); return; }
+  closeForce();
+  const m = document.createElement('div'); m.id = 'forcePop'; m.className = 'force-pop'; m.dataset.id = id;
+  const row = (k, label, on) => `<div class="fp-row"><span><b>${label}</b></span><button type="button" class="switch" role="switch" data-fk="${k}" aria-checked="${on}" aria-label="${label}"></button></div>`;
+  m.innerHTML = `<div class="fp-head">Layer influence</div>${row('recv', 'Receive', !e.noRecv)}${row('cast', 'Cast', !e.noCast)}${row('above', 'Receive from Garments', !!(e.lforce && e.lforce.on))}`;
+  document.body.appendChild(m);
+  const r = btn.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left)) + 'px'; m.style.top = (r.bottom + 6) + 'px';
+  m.addEventListener('click', ev => { const t = ev.target.closest('[data-fk]'); if (!t || S.busy) return;
+    const fk = t.dataset.fk;
+    if (fk === 'recv') e.noRecv = !e.noRecv; else if (fk === 'cast') e.noCast = !e.noCast; else lfOf(e).on = !lfOf(e).on;
+    t.setAttribute('aria-checked', String(fk === 'recv' ? !e.noRecv : fk === 'cast' ? !e.noCast : lfOf(e).on)); renderSculptBox();
+    saveItem(e); S.busy = true; status('Updating layers', true);
+    requestAnimationFrame(() => { try { resolveLayers(); } catch (err) { console.error(err); } S.busy = false; status('Layers updated'); scheduleSave(); if ($('#forcePop')) { const keep = $('#forcePop'); renderLayers(); document.body.appendChild(keep); } }); });
+  setTimeout(() => document.addEventListener('pointerdown', forceOut, true), 0);
+}
 /* ---------- layers UI ---------- */
 function layerLabel(e) { return e.def.custom ? 'custom' : e.def.slot === 'feet' ? 'shoes' : e.def.slot; }
 function renderLayers() {
@@ -2812,14 +3188,18 @@ function renderLayers() {
     const th = e.def.thumb ? `style="background-image:url('${e.def.thumb}')"` : e.color ? `style="background:${e.color}"` : '';
     return `<li class="ly-row${S.selected === id ? ' sel' : ''}${e.hidden ? ' off' : ''}" draggable="true" data-ly="${id}">
       <svg class="grip" viewBox="0 0 10 16" aria-hidden="true"><circle cx="3" cy="3" r="1.3"/><circle cx="7" cy="3" r="1.3"/><circle cx="3" cy="8" r="1.3"/><circle cx="7" cy="8" r="1.3"/><circle cx="3" cy="13" r="1.3"/><circle cx="7" cy="13" r="1.3"/></svg>
-      <i class="sw" ${th}></i><button class="ly-name" type="button" data-sel="${id}"><b>${nm}</b><small>layer ${n - k}</small></button>
+      <button class="x-btn ly-force${e.noRecv || e.noCast ? ' part' : ''}${e.lforce && e.lforce.on ? ' above' : ''}" type="button" data-force="${id}" aria-haspopup="true" title="Layer influence: ${e.noRecv ? 'no receive' : 'receive'} · ${e.noCast ? 'no cast' : 'cast'}" aria-label="Layer influence for ${q}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0"/><path d="M3 10c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0"/><path d="M3 14c2.3-1.6 4.7 1.6 7 0s4.7-1.6 7 0"/></svg></button>
+      <i class="sw" ${th}></i><button class="ly-name" type="button" data-sel="${id}" title="${q}" aria-label="${q}, layer ${n - k}"><b>Layer ${n - k}</b>${isAcc(e) ? '<small>accessory</small>' : ''}</button>
       <button class="x-btn ly-eye" type="button" data-eye="${id}" aria-pressed="${!e.hidden}" aria-label="${e.hidden ? 'Show' : 'Hide'} ${q}" title="${e.hidden ? 'Show' : 'Hide'} (stays worn and layered)">${e.hidden ? '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l14 14M8.3 4.7A8.6 8.6 0 0 1 10 4.5c5 0 8 5.5 8 5.5a14 14 0 0 1-2.4 3M5.2 6.2A13.5 13.5 0 0 0 2 10s3 5.5 8 5.5a8 8 0 0 0 3.2-.7M8.4 8.4a2.4 2.4 0 0 0 3.2 3.2"/></svg>' : '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10z"/><circle cx="10" cy="10" r="2.4"/></svg>'}</button>
-      <span class="ly-btns"><button class="x-btn" type="button" data-mv="up" data-id="${id}" aria-label="Move ${q} outward"${k === 0 ? ' disabled' : ''}>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
-      <button class="x-btn" type="button" data-mv="down" data-id="${id}" aria-label="Move ${q} inward"${k === n - 1 ? ' disabled' : ''}>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button></span>
       <button class="x-btn" type="button" data-off="${id}" aria-label="Take off ${q}" title="Take off"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button></li>`;
   }).join('');
+  updateLayerTools();
+}
+function updateLayerTools() {
+  const up = $('#lyUp'), dn = $('#lyDown'); if (!up) return;
+  const i = S.selected ? S.layerOrder.indexOf(S.selected) : -1, n = S.layerOrder.length;
+  up.disabled = i < 0 || i >= n - 1; dn.disabled = i <= 0;
+  $('#lyTools').title = i < 0 ? 'Select a layer to move it' : '';
 }
 function restack(id, newIdx) {
   if (S.busy) return;
@@ -2836,6 +3216,12 @@ function restack(id, newIdx) {
   });
 }
 $('#layerList').addEventListener('click', ev => {
+  const fb = ev.target.closest('[data-force]'); if (fb) { ev.stopPropagation(); openForce(fb); return; }
+  const rc = ev.target.closest('[data-recv],[data-cast]');
+  if (rc) { const id = rc.dataset.recv || rc.dataset.cast, e = S.equipped.get(id); if (!e || S.busy) return;
+    if (rc.dataset.recv) e.noRecv = !e.noRecv; else e.noCast = !e.noCast;
+    saveItem(e); renderLayers(); S.busy = true; status('Updating layers', true);
+    requestAnimationFrame(() => { try { resolveLayers(); } catch (err) { console.error(err); } S.busy = false; status('Layers updated'); scheduleSave(); }); return; }
   const eye = ev.target.closest('[data-eye]');
   if (eye) { const e = S.equipped.get(eye.dataset.eye); if (e) { e.hidden = !e.hidden; renderLayers(); applyView(); scheduleSave(); } return; }
   const off = ev.target.closest('[data-off]');
@@ -2844,6 +3230,8 @@ $('#layerList').addEventListener('click', ev => {
   if (mv) { const id = mv.dataset.id, i = S.layerOrder.indexOf(id); restack(id, i + (mv.dataset.mv === 'up' ? 1 : -1)); return; }
   const s = ev.target.closest('[data-sel]'); if (s) selectGarment(s.dataset.sel);
 });
+$('#lyUp').addEventListener('click', () => { const i = S.layerOrder.indexOf(S.selected); if (i >= 0) restack(S.selected, i + 1); });
+$('#lyDown').addEventListener('click', () => { const i = S.layerOrder.indexOf(S.selected); if (i >= 0) restack(S.selected, i - 1); });
 let dragLy = null;
 $('#layerList').addEventListener('dragstart', ev => { const li = ev.target.closest('[data-ly]'); if (!li) return; dragLy = li.dataset.ly; ev.dataTransfer.setData('text/plain', 'layer:' + dragLy); ev.dataTransfer.effectAllowed = 'move'; li.classList.add('dragging'); });
 $('#layerList').addEventListener('dragend', () => { dragLy = null; document.querySelectorAll('.ly-row').forEach(r => r.classList.remove('dragging', 'drop-above', 'drop-below')); });
@@ -2894,7 +3282,7 @@ function pickGarmentAt(ev) {
 let downAt = null;
 stage.addEventListener('pointerdown', ev => { if (ev.target === canvas) downAt = { x: ev.clientX, y: ev.clientY, t: performance.now() }; }, true);
 stage.addEventListener('pointerup', ev => {
-  if (!downAt || ev.target !== canvas || K || S.fitting) { downAt = null; return; }
+  if (!downAt || ev.target !== canvas || K || S.fitting || S.accMode) { downAt = null; return; }
   const moved = Math.hypot(ev.clientX - downAt.x, ev.clientY - downAt.y), dt = performance.now() - downAt.t; downAt = null;
   if (moved > 5 || dt > 400) return;
   const id = pickGarmentAt(ev); if (id) selectGarment(id);
@@ -2902,13 +3290,14 @@ stage.addEventListener('pointerup', ev => {
 
 /* ---------- sculpt ---------- */
 const brush = { tool: 'inflate', radius: 4, strength: 35, mirror: true, cage: true, ease: null };
-const TOOLS = [['inflate', 'Inflate'], ['smooth', 'Smooth'], ['grab', 'Grab'], ['flatten', 'Flatten'], ['construct', 'Construct'], ['tighten', 'Tighten']];
+const TOOLS = [['inflate', 'Inflate'], ['smooth', 'Smooth'], ['grab', 'Grab'], ['flatten', 'Flatten'], ['construct', 'Construct'], ['tighten', 'Tighten'], ['blend', 'Transition']];
 const TOOL_TIPS = {
   inflate: 'Pushes the surface out along its normal. Right click pulls it in.',
-  smooth: 'Relaxes bumps by averaging each point with its neighbours.',
+  smooth: 'Relaxes the cage: evens out the spacing so the cells stay square, like a quad mesh, and smooths bumps. Points slide along the surface and stay wrapped to the body.',
   grab: 'Drags the area under the brush with the mouse.',
   flatten: 'Presses the area onto the average plane under the brush.',
-  construct: 'Slides the cage back toward its fitted layout along the surface, keeping its distance from the skin. Use it to undo stretching and shearing without losing the shrink-wrap.',
+  blend: 'Paints where this garment keeps the lift it gets from the garment underneath past that garment\'s edge, so the step into the skin becomes a gradual slope. Brighter means more lift. Right click erases. The layers update when you release the brush.',
+  construct: 'Restores the spacing the cage had when it was generated: points slide along the surface until each cell is back to its original size, then reproject so the distance from the skin stays the same. Use it to undo stretching and shearing.',
   tighten: 'Left click moves the surface to the Target ease distance from the skin. Right click restores the fitted Ease from skin.'
 };
 const ring = new T.Mesh(new T.RingGeometry(0.93, 1, 56), new T.MeshBasicMaterial({ color: 0x3fae83, transparent: true, opacity: 0.95, depthTest: false, side: T.DoubleSide }));
@@ -2934,7 +3323,7 @@ function startSculpt() {
   K.session = { pos: editTargetsOf(e).map(t => t.geometry.attributes.position.array.slice()), fitPos: e.fitPos.map(a => a.slice()), sculptDelta: e.sculptDelta ? e.sculptDelta.map(a => a.slice()) : null };
   K.parts = editTargetsOf(e).map(makePart);
   openSec('garmentSec');
-  if (brush.tool === 'deflate') brush.tool = 'inflate';
+  if (brush.tool === 'deflate' || brush.tool === 'blend') brush.tool = 'inflate';
   if (brush.ease == null || brush.easeFor !== e.def.id) { brush.ease = fittedEase() + 4; brush.easeFor = e.def.id; }
   if (e.proxy) e.proxy.mesh.visible = brush.cage;
   $('#bodyTog').checked = true; S.bodyMeshes.forEach(m => (m.visible = true));
@@ -2946,13 +3335,17 @@ function sculptCancel() {
   const e = K.e, ss = K.session;
   editTargetsOf(e).forEach((t, k) => { const p = t.geometry.attributes.position; if (ss.pos[k] && ss.pos[k].length === p.array.length) { p.array.set(ss.pos[k]); p.needsUpdate = true; if (!e.proxy) t.geometry.computeVertexNormals(); } });
   e.fitPos = ss.fitPos; e.sculptDelta = ss.sculptDelta;
+  const bm = K.blendMode, b0 = K.blend0;
   deformFromProxy(e);
   endSculpt();
+  if (bm) { e.blendW = b0; saveItem(e); relayer(); status(`Discarded transition painting on ${e.def.name}`); return; }
   status(`Discarded sculpting on ${e.def.name}`);
 }
 function endSculpt() {
   if (!K) return;
   const e = K.e;
+  showBlendPaint(false);
+  if (K.isolated) isolateView(K, false);
   K.parts.forEach(p => { p.proxy.geometry.dispose(); p.proxy.material.dispose(); });
   if (K.e.proxy) K.e.proxy.mesh.visible = false;
   K = null; S.sculpting = false; ring.visible = false; controls.enabled = true; $('#brushHud').hidden = true;
@@ -2986,9 +3379,11 @@ function dab(h, invert) {
   const sign = invert ? -1 : 1, B = K.body, M3 = new T.Matrix3();
   const tightTarget = (invert ? fittedEase() : brush.ease) / 1000 + cageExtra();
   // average normal / plane under the brush (for flatten)
+  if (brush.tool === 'blend') { paintBlend(centers, r2, s, invert, K.stroke && K.stroke.mode); return; }
+  if (brush.tool === 'smooth' || brush.tool === 'construct') { for (const p of K.parts) if (relaxDab(p, centers, r2, s, brush.tool)) touch(p); return; }
   for (const p of K.parts) {
     const W = p.wd.W, N = p.N, m = p.wd.m; let hit = false;
-    const src = brush.tool === 'smooth' ? W.slice() : null;
+    const src = null;
     for (const [cx, cy, cz] of centers) {
       let fx = 0, fy = 0, fz = 0, px = 0, py = 0, pz = 0, fw = 0;
       if (brush.tool === 'flatten') {
@@ -3037,6 +3432,139 @@ function dab(h, invert) {
     if (hit) touch(p);
   }
 }
+/* ---------- Smooth / Construct: relax toward the cage's rest spacing ----------
+   Every cage edge keeps the length it had when the cage was generated (before shrink-wrap). Diagonals get
+   their own rest length, so a cell made of two triangles relaxes like one square quad instead of collapsing
+   toward its short diagonal. Points only slide along the body surface; afterwards they are reprojected to
+   their distance from the skin (Construct keeps it, Smooth also evens it out to remove bumps). */
+/* ---------- Transition weight paint (on the cage when there is one) ---------- */
+const proxyPaintMat = new T.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.85, metalness: 0, toneMapped: false, envMapIntensity: 0.35, side: T.DoubleSide });
+function blendWeights(e) {
+  const ts = editTargetsOf(e);
+  if (!e.blendW || e.blendW.length !== ts.length) e.blendW = ts.map(() => null);
+  return ts.map((t, k) => { const m = weldOf(t.geometry).m; if (!e.blendW[k] || e.blendW[k].length !== m) e.blendW[k] = new Float32Array(m); return e.blendW[k]; });
+}
+function showBlendPaint(on) {
+  if (!K) return;
+  const e = K.e, ts = editTargetsOf(e), Wt = on ? blendWeights(e) : null;
+  ts.forEach((t, k) => {
+    const g = t.geometry;
+    if (!on) { if (t.userData.paintMat) { t.material = t.userData.paintMat; delete t.userData.paintMat; g.deleteAttribute('color'); } if (e.proxy && t === e.proxy.mesh) t.visible = brush.cage; return; }
+    const map = weldOf(g).map, n = g.attributes.position.count;
+    let col = g.attributes.color; if (!col || col.count !== n || col.itemSize !== 3) { col = new T.BufferAttribute(new Float32Array(n * 3), 3); g.setAttribute('color', col); }
+    const w = Wt[k], rgb = [0, 0, 0];
+    for (let j = 0; j < n; j++) { maskRGB(w[map[j]], rgb); col.setXYZ(j, rgb[0] ** 2.2, rgb[1] ** 2.2, rgb[2] ** 2.2); }
+    col.needsUpdate = true;
+    if (!t.userData.paintMat) { t.userData.paintMat = t.material; t.material = proxyPaintMat; }
+    t.visible = true;
+  });
+  if (e.proxy) targetsOf(e).forEach(m => { m.visible = !on; });
+}
+// smooth: toward the neighbour average; clamp: toward 0 or 1
+function filterBlend(p, w, sel, mode, amt) {
+  const st = p.wd.w.start, nb = p.wd.w.nbr;
+  const out = sel.map(([i, f]) => { const v = w[i]; let t;
+    if (mode === 'clamp') t = v >= 0.5 ? 1 : 0;
+    else { let a = 0, c = 0; for (let q = st[i]; q < st[i+1]; q++) { a += w[nb[q]]; c++; } t = c ? a / c : v; }
+    return v + (t - v) * Math.min(1, f * amt); });
+  sel.forEach(([i], n) => { w[i] = Math.min(1, Math.max(0, out[n])); });
+}
+function smoothBlendAll() {
+  const Wt = blendWeights(K.e);
+  K.parts.forEach((p, k) => { const sel = []; for (let i = 0; i < p.wd.m; i++) sel.push([i, 1]); for (let it = 0; it < 3; it++) filterBlend(p, Wt[k], sel, 'smooth', 0.6); });
+  K.painted = true; showBlendPaint(true);
+}
+function paintBlend(centers, r2, s, invert, mode) {
+  const Wt = blendWeights(K.e);
+  K.parts.forEach((p, k) => {
+    const W = p.wd.W, w = Wt[k]; let hit = false; const sel = [];
+    for (let i = 0; i < p.wd.m; i++) {
+      let f = 0; for (const [cx, cy, cz] of centers) { const dx = W[i*3]-cx, dy = W[i*3+1]-cy, dz = W[i*3+2]-cz, d2 = dx*dx+dy*dy+dz*dz; if (d2 < r2) f = Math.max(f, (1 - d2 / r2) ** 2); }
+      if (!f) continue;
+      if (mode) { sel.push([i, f]); hit = true; continue; }
+      w[i] = Math.min(1, Math.max(0, w[i] + (invert ? -1 : 1) * s * f * 0.35)); hit = true;
+    }
+    if (mode && sel.length) filterBlend(p, w, sel, mode, s * 0.6);
+    if (hit) K.painted = true;
+  });
+  showBlendPaint(true);
+}
+// re-run the layer stack with the new weights, then continue in sculpt mode with the same brush
+function reapplyTransition() {
+  if (!K) return;
+  const e = K.e, tool = brush.tool, keep = { blendMode: K.blendMode, blend0: K.blend0 }, iso = K.isolated; K.painted = false;
+  S.busy = true; status('Updating the transition', true);
+  requestAnimationFrame(() => {
+    try { showBlendPaint(false); endSculpt(); resolveLayers(); } catch (err) { console.error(err); }
+    S.busy = false;
+    try { S.selected = e.def.id; startSculpt(); if (K) { Object.assign(K, keep); if (iso) isolateView(K, true); } brush.tool = tool; renderSculptBox(); if (brush.tool === 'blend') showBlendPaint(true); } catch (err) { console.error(err); }
+    status('Transition updated');
+  });
+}
+function restLengths(p) {
+  if (p.L0) return p.L0;
+  const w = p.wd.w, nbr = w.nbr, st = w.start, m = p.wd.m, L0 = new Float32Array(nbr.length);
+  const P0 = K.e.proxy && K.e.proxy.P0 && p.t === K.e.proxy.mesh ? K.e.proxy.P0 : null, R = P0 || p.base;
+  for (let i = 0; i < m; i++) {
+    const a = P0 ? w.rep[i] : i;
+    for (let q = st[i]; q < st[i+1]; q++) { const b = P0 ? w.rep[nbr[q]] : nbr[q];
+      L0[q] = Math.hypot(R[a*3] - R[b*3], R[a*3+1] - R[b*3+1], R[a*3+2] - R[b*3+2]); }
+  }
+  return (p.L0 = L0);
+}
+function relaxDab(p, centers, r2, s, mode) {
+  const W = p.wd.W, m = p.wd.m, st = p.wd.w.start, nbr = p.wd.w.nbr, L0 = restLengths(p), B = K.body;
+  const sel = [], fall = [];
+  for (let i = 0; i < m; i++) {
+    let f = 0;
+    for (const [cx, cy, cz] of centers) { const dx = W[i*3]-cx, dy = W[i*3+1]-cy, dz = W[i*3+2]-cz, d2 = dx*dx+dy*dy+dz*dz; if (d2 < r2) f = Math.max(f, (1 - d2 / r2) ** 2); }
+    if (f > 0 && st[i+1] > st[i]) { sel.push(i); fall.push(f); }
+  }
+  if (!sel.length) return false;
+  // body frame + current distance from the skin for every point we touch (and their neighbours, for Smooth)
+  const hInfo = new Map();
+  const frame = i => { let h = hInfo.get(i); if (h) return h;
+    const b = nearBody(W[i*3], W[i*3+1], W[i*3+2]); if (b < 0) { hInfo.set(i, null); return null; }
+    const nx = B.NB[b*3], ny = B.NB[b*3+1], nz = B.NB[b*3+2];
+    h = { nx, ny, nz, d: (W[i*3] - B.PB[b*3]) * nx + (W[i*3+1] - B.PB[b*3+1]) * ny + (W[i*3+2] - B.PB[b*3+2]) * nz }; hInfo.set(i, h); return h; };
+  const floor = (fittedEase() / 1000 + cageExtra()) * 0.9;
+  const target = new Float32Array(sel.length);
+  sel.forEach((i, k) => {
+    const h = frame(i); if (!h) { target[k] = NaN; return; }
+    if (mode === 'construct') { target[k] = h.d; return; }
+    let sd = 0, c = 0; for (let q = st[i]; q < st[i+1]; q++) { const hj = frame(nbr[q]); if (hj) { sd += hj.d; c++; } }
+    const kk = Math.min(1, s * fall[k] * 1.2), avg = c ? sd / c : h.d;
+    target[k] = Math.max(Math.min(h.d, floor), h.d + (avg - h.d) * kk);
+  });
+  // tangential relaxation toward rest edge lengths (Jacobi, a few passes)
+  const gain = mode === 'construct' ? 0.9 : 1.1, iters = mode === 'construct' ? 4 : 3, mv = new Float32Array(sel.length * 3);
+  for (let it = 0; it < iters; it++) {
+    sel.forEach((i, k) => {
+      const h = hInfo.get(i); if (!h) { mv[k*3] = mv[k*3+1] = mv[k*3+2] = 0; return; }
+      const xi = W[i*3], yi = W[i*3+1], zi = W[i*3+2]; let tx = 0, ty = 0, tz = 0, c = 0;
+      for (let q = st[i]; q < st[i+1]; q++) {
+        const j = nbr[q], dx = xi - W[j*3], dy = yi - W[j*3+1], dz = zi - W[j*3+2], len = Math.hypot(dx, dy, dz);
+        if (len < 1e-7 || !L0[q]) continue;
+        const r = L0[q] / len; tx += W[j*3] + dx * r; ty += W[j*3+1] + dy * r; tz += W[j*3+2] + dz * r; c++;
+      }
+      if (!c) { mv[k*3] = mv[k*3+1] = mv[k*3+2] = 0; return; }
+      let dx = tx / c - xi, dy = ty / c - yi, dz = tz / c - zi;
+      const dn = dx * h.nx + dy * h.ny + dz * h.nz; dx -= h.nx * dn; dy -= h.ny * dn; dz -= h.nz * dn;   // slide on the surface only
+      const kk = Math.min(1, s * fall[k] * gain);
+      mv[k*3] = dx * kk; mv[k*3+1] = dy * kk; mv[k*3+2] = dz * kk;
+    });
+    sel.forEach((i, k) => { if (mv[k*3] || mv[k*3+1] || mv[k*3+2]) addDelta(p.wd, i, mv[k*3], mv[k*3+1], mv[k*3+2]); });
+  }
+  // reproject: back to the wanted distance from the skin
+  sel.forEach((i, k) => {
+    if (Number.isNaN(target[k])) return;
+    const x = W[i*3], y = W[i*3+1], z = W[i*3+2], b = nearBody(x, y, z); if (b < 0) return;
+    const nx = B.NB[b*3], ny = B.NB[b*3+1], nz = B.NB[b*3+2];
+    const d = (x - B.PB[b*3]) * nx + (y - B.PB[b*3+1]) * ny + (z - B.PB[b*3+2]) * nz, c = target[k] - d;
+    if (Math.abs(c) > 1e-6) addDelta(p.wd, i, nx * c, ny * c, nz * c);
+  });
+  return true;
+}
 function beginGrab(h) {
   const r = brush.radius / 100, r2 = r * r, P = h.point;
   const n = new T.Vector3(); camera.getWorldDirection(n);
@@ -3063,6 +3591,7 @@ function moveGrab(ev) {
 function endStroke() {
   if (!K || !K.stroke) return;
   commitDiff(K.stroke.before); K.stroke = null;
+  if (brush.tool === 'blend' && K.painted) { saveItem(K.e); reapplyTransition(); }
 }
 function sculptUndo() {
   if (!K || !K.undo.length) { toast('Nothing to undo.'); return; }
@@ -3137,7 +3666,7 @@ stage.addEventListener('pointerdown', ev => {
   const before = snapshotBind(); K.undo.push(before); if (K.undo.length > 30) K.undo.shift(); K.redo = [];
   if (nav === 'maya' && ev.altKey) return;
   const inv = ev.button === 2 || ev.ctrlKey || (nav !== 'maya' && ev.altKey);
-  K.stroke = { before, last: h.point.clone(), invert: inv };
+  K.stroke = { before, last: h.point.clone(), invert: inv, mode: K.blendMode && ev.shiftKey ? (ev.button === 2 ? 'clamp' : 'smooth') : null };
   if (brush.tool === 'grab') beginGrab(h); else dab(h, inv);
 }, true);
 stage.addEventListener('pointermove', ev => {
@@ -3166,10 +3695,63 @@ window.addEventListener('keydown', ev => {
   else if (ev.key === 'Escape') sculptCancel();
 });
 
+/* ---------- Layer transition group + transition paint mode ---------- */
+let ltOpen = false;
+const ISO_IC = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="3.2"/><path d="M10 2.5v2.5M10 15v2.5M2.5 10H5M15 10h2.5"/></svg>';
+function isoBtnHTML(on) { return `<button class="btn block iso-btn" type="button" data-iso aria-pressed="${!!on}">${ISO_IC}Isolate object</button>`; }
+function maskViewHTML(lo, hi) {
+  return `<div class="row-l"><span>View</span><div class="mb-seg" role="group" aria-label="Paint colours"><button type="button" data-mview="bw" aria-pressed="${MASK_VIEW.mode === 'bw'}">Black · white</button><button type="button" data-mview="heat" aria-pressed="${MASK_VIEW.mode === 'heat'}">Heat map</button></div></div>
+      <div class="mask-legend ${MASK_VIEW.mode}"></div><div class="mask-leg-l"><span>${lo}</span><span>${hi}</span></div>`;
+}
+function layerTransHTML(e) {
+  const v = e.blend ?? LAYER_BLEND_DEFAULT, painted = e.blendW && e.blendW.some(a => a && a.some(x => x > 0));
+  const head = `<button class="btn block lf-toggle" type="button" id="ltToggle" aria-expanded="${ltOpen}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 15h4c3 0 3-6 6-6h4"/><path d="M3 5h14" stroke-dasharray="2 2.5"/></svg>Layer transition<span class="tg-val">${v ? v + ' cm' : 'off'}${painted ? ' · painted' : ''}</span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>`;
+  if (!ltOpen) return head;
+  return head + `<div class="lf-panel">
+    <div class="sl"><label for="gBlend"><span class="lbl">Distance<span class="tip" tabindex="0" role="button" data-tip="Where this garment hangs past the edge of a garment underneath it (a shirt over the waistband of trousers), the lift is carried on and faded out over this distance instead of dropping straight to the skin. 0 turns it off." aria-label="About Layer transition">?</span></span><output id="gBlendOut">${v} cm</output></label>
+      <input type="range" id="gBlend" min="0" max="20" step="0.5" value="${v}"></div>
+    <button class="btn block" type="button" id="gBlendPaint"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5 16.5 6.5 8 15H5v-3z"/><path d="M4 17.5h12" stroke-dasharray="2 2"/></svg>Layer transition brush<span class="tip" tabindex="0" role="button" data-tip="${TOOL_TIPS.blend.replace(/"/g, '&quot;')}" aria-label="About the Layer transition brush" style="margin-left:auto">?</span></button>
+    ${painted ? '<p class="note">Painted transition weights are active. <button class="link-btn" type="button" id="gBlendClear">Clear painted weights</button></p>' : ''}
+  </div>`;
+}
+function blendPanelHTML(e, nm) {
+  return `<div class="mode-bar"><span>Transition</span><b>${nm}</b></div>
+    <p class="note">Paint where this garment keeps the lift from the garment underneath past its edge. Right click erases, <span class="kbd">Shift</span> smooths, <span class="kbd">Shift</span> + right click clamps. Layers update when you release the brush.</p>
+    ${maskViewHTML('No lift', 'Full lift')}
+    ${isoBtnHTML(K.isolated)}
+    <div class="sliders">
+      <div class="sl"><label for="br-radius">Brush size<output id="bo-radius">${brush.radius.toFixed(1)} cm</output></label><input type="range" id="br-radius" data-br="radius" min="0.5" max="25" step="0.5" value="${brush.radius}"></div>
+      <div class="sl"><label for="br-strength">Strength<output id="bo-strength">${Math.round(brush.strength)}%</output></label><input type="range" id="br-strength" data-br="strength" min="1" max="100" step="1" value="${Math.round(brush.strength)}"></div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="br-mirror"${brush.mirror ? ' checked' : ''}> Mirror left and right</label>
+    <div class="row-l"><span>Whole garment</span></div>
+    <div class="whole-row"><button class="btn small" type="button" data-tb="1">Fill</button><button class="btn small" type="button" data-tb="0">Clear</button><button class="btn small" type="button" data-tb="smooth">Smooth</button></div>
+    <div class="done-row"><button class="btn" type="button" id="sCancel">Cancel</button><button class="btn primary" type="button" id="sDone">Done</button></div>`;
+}
+function startBlendPaint() {
+  const e = S.equipped.get(S.selected); if (!e || isAcc(e)) return;
+  startSculpt(); if (!K) return;
+  K.blendMode = true; K.blend0 = e.blendW ? e.blendW.map(a => a && a.slice()) : null;
+  brush.tool = 'blend'; renderSculptBox(); showBlendPaint(true);
+  status(`Painting the layer transition on ${e.def.name} · right click erases`);
+}
+$('#sculptBox').addEventListener('click', ev => {
+  if (ev.target.closest('#ltToggle')) { ltOpen = !ltOpen; renderSculptBox(); return; }
+  if (ev.target.closest('#gBlendPaint') && !ev.target.closest('.tip')) { startBlendPaint(); return; }
+  if (!K || !K.blendMode) return;
+  const v = ev.target.closest('[data-mview]'); if (v) { MASK_VIEW.mode = v.dataset.mview; showBlendPaint(true); renderSculptBox(); return; }
+  if (ev.target.closest('[data-iso]')) { isolateView(K, !K.isolated); renderSculptBox(); return; }
+  const f = ev.target.closest('[data-tb]'); if (f && f.dataset.tb === 'smooth') { smoothBlendAll(); saveItem(K.e); reapplyTransition(); return; }
+  if (f) { blendWeights(K.e).forEach(w => w.fill(+f.dataset.tb)); saveItem(K.e); showBlendPaint(true); reapplyTransition(); }
+});
+
 /* ---------- sculpt panel ---------- */
 function renderSculptBox() {
   const box = $('#sculptBox'); if (!box) return;
   const e = S.selected && S.equipped.get(S.selected);
+  $('#sculptDesel').hidden = !e || !!K || !!S.accMode;
+  const fr = $('#fitReturn'); if (fr) fr.hidden = true;
+  if (e && isAcc(e) && !K) { box.innerHTML = accPanelHTML(e); return; }
   if (!e) { box.innerHTML = `<p class="note">Pick a garment in Layers or click it on the avatar to see its options.</p>`; return; }
   const nm = e.def.name.replace(/</g, ''), th = e.def.thumb ? `style="background-image:url('${e.def.thumb}')"` : '';
   const sec = e.def.tag && S.sections ? (S.sections.find(x => x.id === e.def.tag) || {}).name : '';
@@ -3177,12 +3759,14 @@ function renderSculptBox() {
     box.innerHTML = `<div class="g-head"><i class="g-thumb" ${th}></i><div><b>${nm}</b><span>${sec || 'Garment'}${e.sculptDelta ? ' · sculpted' : ''}</span></div></div>
       ${e.def.custom ? `<button class="btn block" type="button" id="gAdjust"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="4" r="1.8"/><path d="M4 8.5 10 7l6 1.5M10 7v5.5M10 12.5l-3 5M10 12.5l3 5"/></svg>Adjust fit and pose</button>` : ''}
       <button class="btn block" type="button" id="sculptGo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 16c3 0 4-1.5 4-3.5a2.5 2.5 0 0 1 5 0c0 2-2 3.5-5 3.5M11 9.5l5.5-6"/></svg>Sculpt garment</button>
-      <button class="link-btn" type="button" id="sculptDesel" style="justify-self:start">Deselect</button>`;
+      ${layerTransHTML(e)}
+      ${layerForcesHTML(e)}`;
     return;
   }
+  if (K.blendMode) { box.innerHTML = blendPanelHTML(e, nm); return; }
   const cageInfo = e.proxy ? `<label class="toggle"><input type="checkbox" id="br-cage"${brush.cage ? ' checked' : ''}> Show cage (${e.proxy.topo.m.toLocaleString()} points)</label>` : '';
   box.innerHTML = `<div class="mode-bar"><span>Sculpt</span><b>${nm}</b></div>
-    <div class="tools" role="group" aria-label="Brush">${TOOLS.map(([k, l]) => `<button type="button" data-tool="${k}" aria-pressed="${brush.tool === k}" title="${TOOL_TIPS[k]}">${l}</button>`).join('')}</div>
+    <div class="tools" role="group" aria-label="Brush">${TOOLS.filter(([k]) => k !== 'blend').map(([k, l]) => `<button type="button" data-tool="${k}" aria-pressed="${brush.tool === k}" title="${TOOL_TIPS[k]}">${l}</button>`).join('')}</div>
     <p class="note">${TOOL_TIPS[brush.tool] || ''}</p>
     ${brush.tool === 'tighten' ? `<div class="sl"><label for="br-ease"><span class="lbl">Target ease from skin</span><output id="bo-ease">${brush.ease} mm</output></label><input type="range" id="br-ease" data-br="ease" min="0" max="40" step="0.5" value="${brush.ease}"></div><p class="note">Fitted ease is ${fittedEase()} mm. Right click brushes back to it.</p>` : ''}
     <div class="sliders">
@@ -3195,17 +3779,24 @@ function renderSculptBox() {
     <p class="note">Hold <span class="kbd">Space</span> and drag with the middle mouse: left and right sets size, up and down sets strength. Right click or <span class="kbd">Ctrl</span> inverts, <span class="kbd">Ctrl Z</span> undoes.</p>
     <div class="done-row"><button class="btn" type="button" id="sCancel">Cancel</button><button class="btn primary" type="button" id="sDone">Done</button></div>`;
 }
+$('#sculptDesel').addEventListener('click', () => { S.selected = null; renderSculptBox(); renderLayers(); if (typeof renderLibrary === 'function') renderLibrary(); if (typeof scheduleSave === 'function') scheduleSave(); });
 $('#sculptBox').addEventListener('click', ev => {
   const t = ev.target.closest('button'); if (!t) return;
   if (t.id === 'sculptGo') startSculpt();
   else if (t.id === 'gAdjust') { const e = S.equipped.get(S.selected); if (e && e.custom && !S.busy) openFitting(e.custom, e.def.id); }
-  else if (t.id === 'sculptDesel') { S.selected = null; renderSculptBox(); renderLayers(); if (typeof renderLibrary === 'function') renderLibrary(); }
-  else if (t.dataset.tool) { brush.tool = t.dataset.tool; renderSculptBox(); }
+  else if (t.id === 'gBlendClear') { const e = S.equipped.get(S.selected); if (e) { e.blendW = null; saveItem(e); relayer(); renderSculptBox(); } }
+  else if (t.dataset.tool) { brush.tool = t.dataset.tool; renderSculptBox(); showBlendPaint(brush.tool === 'blend'); }
   else if (t.id === 'sUndo') sculptUndo();
   else if (t.id === 'sFix') sculptFixClipping();
   else if (t.id === 'sReset') sculptReset();
   else if (t.id === 'sCancel') sculptCancel();
   else if (t.id === 'sDone') { const n = K && K.e.def.name; endSculpt(); status(`Finished sculpting ${n}`); }
+});
+let relayT = 0;
+function relayer() { clearTimeout(relayT); relayT = setTimeout(() => { if (S.busy || K) return; S.busy = true; status('Updating layers', true);
+  requestAnimationFrame(() => { try { resolveLayers(); } catch (err) { console.error(err); } S.busy = false; status('Layers updated'); }); }, 60); }
+$('#sculptBox').addEventListener('change', ev => {
+  if (ev.target.id === 'gBlend') { const e = S.equipped.get(S.selected); if (!e) return; e.blend = +ev.target.value; saveItem(e); relayer(); const tv = $('#ltToggle .tg-val'); if (tv) tv.textContent = e.blend ? e.blend + ' cm' : 'off'; }
 });
 $('#sculptBox').addEventListener('input', ev => {
   const k = ev.target.dataset.br; if (!k) return;
@@ -3213,6 +3804,7 @@ $('#sculptBox').addEventListener('input', ev => {
 });
 $('#sculptBox').addEventListener('change', ev => {
   if (ev.target.id === 'br-mirror') brush.mirror = ev.target.checked;
+  if (ev.target.id === 'gBlend') { const o = $('#gBlendOut'); if (o) o.textContent = `${ev.target.value} cm`; return; }
   if (ev.target.id === 'br-cage') { brush.cage = ev.target.checked; if (K && K.e.proxy) K.e.proxy.mesh.visible = brush.cage; }
 });
 renderSculptBox(); renderLayers();
@@ -3232,6 +3824,50 @@ function buildTopo(m, tris) {
   return { m, tris, start, nbr, vtStart: vtc, vt };
 }
 /* vertex-clustering decimation of the garment, then Taubin smoothing: a clean cage without wrinkles */
+/* cage source: the garment's own shape (default) or the patch of avatar skin it covers */
+function makeCage(welds, h, body, fromAvatar) { return fromAvatar ? avatarCage(welds, h, body) : buildProxy(welds, h, body); }
+function bodyAdj() {
+  const B = S.B; if (B._adj) return B._adj;
+  const n = B.n, tri = B.tri, deg = new Int32Array(n + 1);
+  for (let t = 0; t < tri.length; t++) deg[tri[t] + 1] += 2;
+  for (let i = 0; i < n; i++) deg[i + 1] += deg[i];
+  const nbr = new Int32Array(deg[n]), fill = deg.slice(0, n);
+  for (let t = 0; t < tri.length; t += 3) { const a = tri[t], b = tri[t+1], c = tri[t+2];
+    nbr[fill[a]++] = b; nbr[fill[a]++] = c; nbr[fill[b]++] = a; nbr[fill[b]++] = c; nbr[fill[c]++] = a; nbr[fill[c]++] = b; }
+  return (B._adj = { start: deg, nbr });
+}
+function avatarCage(welds, h, body) {
+  const B = S.B, n = B.n, PB = body.PB, adj = bodyAdj();
+  // 1. skin under the object: nearest body point of every object point
+  const dist = new Float64Array(n).fill(Infinity), heap = [];
+  const push = (d, i) => { heap.push([d, i]); let c = heap.length - 1; while (c > 0) { const p = (c - 1) >> 1; if (heap[p][0] <= heap[c][0]) break; [heap[p], heap[c]] = [heap[c], heap[p]]; c = p; } };
+  const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let c = 0; for (;;) { const l = 2 * c + 1, r = l + 1; let b = c; if (l < heap.length && heap[l][0] < heap[b][0]) b = l; if (r < heap.length && heap[r][0] < heap[b][0]) b = r; if (b === c) break; [heap[b], heap[c]] = [heap[c], heap[b]]; c = b; } } return top; };
+  for (const w of welds) { const st = Math.max(1, Math.floor(w.m / 60000));
+    for (let i = 0; i < w.m; i += st) { let b = body.fine.nearest(w.pos[i*3], w.pos[i*3+1], w.pos[i*3+2]); if (b < 0) b = body.coarse.nearest(w.pos[i*3], w.pos[i*3+1], w.pos[i*3+2]);
+      if (b >= 0 && dist[b] > 0) { dist[b] = 0; push(0, b); } } }
+  // 2. grow the patch over the skin, which also closes holes and gaps between straps
+  // the avatar mesh can be much coarser than the object: scale the reach with its local edge length
+  let el = 0, ec = 0; for (let i = 0; i < n; i++) if (dist[i] === 0) for (let q = adj.start[i]; q < adj.start[i+1]; q++) { const j = adj.nbr[q]; el += Math.hypot(PB[i*3] - PB[j*3], PB[i*3+1] - PB[j*3+1], PB[i*3+2] - PB[j*3+2]); ec++; }
+  const margin = Math.max(0.025, h * 1.5, ec ? 1.5 * el / ec : 0);
+  while (heap.length) { const [d, i] = pop(); if (d > dist[i] || d > margin) continue;
+    for (let q = adj.start[i]; q < adj.start[i+1]; q++) { const j = adj.nbr[q], nd = d + Math.hypot(PB[i*3] - PB[j*3], PB[i*3+1] - PB[j*3+1], PB[i*3+2] - PB[j*3+2]);
+      if (nd < dist[j] && nd <= margin) { dist[j] = nd; push(nd, j); } } }
+  // 3. that patch of skin (lifted slightly off it) becomes the source of a regular cage
+  const remap = new Int32Array(n).fill(-1); let m = 0; const T3 = [];
+  for (let t = 0; t < B.tri.length; t += 3) { const a = B.tri[t], b = B.tri[t+1], c = B.tri[t+2]; if ((dist[a] <= margin) + (dist[b] <= margin) + (dist[c] <= margin) >= 2) T3.push(a, b, c); }
+  if (T3.length < 24) return buildProxy(welds, h, body);
+  for (const v of T3) if (remap[v] < 0) remap[v] = m++;
+  const pos = new Float32Array(m * 3), lift = 0.004;
+  for (let i = 0; i < n; i++) if (remap[i] >= 0) { const o = remap[i]; for (let c = 0; c < 3; c++) pos[o*3+c] = PB[i*3+c] + body.NB[i*3+c] * lift; }
+  const px = buildProxy([{ pos, m, tris: new Uint32Array(T3.map(v => remap[v])) }], h, body);
+  // 4. seeds: nearest cage point for every object point
+  const hf = buildHash(px.P, px.topo.m, px.h), hc = buildHash(px.P, px.topo.m, Math.max(0.15, px.h * 6));
+  px.seeds = welds.map(w => { const sd = new Int32Array(w.m);
+    for (let i = 0; i < w.m; i++) { let c = hf.nearest(w.pos[i*3], w.pos[i*3+1], w.pos[i*3+2]); if (c < 0) c = hc.nearest(w.pos[i*3], w.pos[i*3+1], w.pos[i*3+2]); sd[i] = c; }
+    return sd; });
+  px.fromAvatar = true;
+  return px;
+}
 function buildProxy(welds, h, body) {
   for (let attempt = 0; attempt < 4; attempt++, h *= 0.6) {
     const key = new Map(), acc = [], cnt = [];
@@ -3366,6 +4002,21 @@ function evalBinding(P, N, topo, bd, outW, map, outPos, nf, outNrm) {
 }
 function deformFromProxy(e) {
   const px = e && e.proxy; if (!px) return;
+  if (px.acc) {   // accessories: solid parts stay exactly as modelled; painted points take the cage's movement, interpolated
+    const Pc = px.mesh.geometry.attributes.position.array, C0 = px.acc.cageBind, tr = px.topo.tris;
+    const SD = e.sculptDelta && e.sculptDelta[0] && e.sculptDelta[0].length === Pc.length ? e.sculptDelta[0] : null;
+    if (SD || (typeof K !== 'undefined' && K && K.e === e)) { accSculptApply(e, px, Pc, C0, SD, !!(K && K.e === e)); return; }
+    targetsOf(e).forEach((t, k) => {
+      const sb = px.acc.subs[k], R = px.acc.rest[k], mk = px.acc.detMask[k]; if (!sb || !R) return;
+      const pa = t.geometry.attributes.position, a = pa.array, disp = sb.disp; disp.fill(0);
+      for (let q = 0; q < sb.idx.length; q++) { const i = sb.idx[q], tt = sb.tri[q], v0 = tr[tt*3], v1 = tr[tt*3+1], v2 = tr[tt*3+2], b0 = sb.bary[q*3], b1 = sb.bary[q*3+1], b2 = sb.bary[q*3+2];
+        for (let r = 0; r < 3; r++) disp[i*3+r] = b0 * (Pc[v0*3+r] - C0[v0*3+r]) + b1 * (Pc[v1*3+r] - C0[v1*3+r]) + b2 * (Pc[v2*3+r] - C0[v2*3+r]); }
+      a.set(R);
+      for (let j = 0; j < sb.map.length; j++) { const s = mk[j]; if (!(s > 0)) continue; const i = sb.map[j]; a[j*3] += disp[i*3] * s; a[j*3+1] += disp[i*3+1] * s; a[j*3+2] += disp[i*3+2] * s; }
+      pa.needsUpdate = true; t.geometry.computeBoundingSphere();
+    });
+    return;
+  }
   const P = px.mesh.geometry.attributes.position.array; proxyNormals(P, px.topo, px.fs, px.N);
   targetsOf(e).forEach((t, k) => {
     const bd = px.binds[k]; if (!bd) return;
@@ -3376,6 +4027,33 @@ function deformFromProxy(e) {
   });
 }
 
+// accessory with sculpting: the sculpt offset of the cage carries every point; layer pushes on top only move painted points
+function accSubsAll(px, t, k) {
+  const A = px.acc; A.subsAll = A.subsAll || [];
+  if (A.subsAll[k]) return A.subsAll[k];
+  const w = weldGeo(t.geometry), m = w.m, R = A.rest[k], pos = new Float32Array(m * 3), seen = new Uint8Array(m);
+  for (let j = 0; j < w.map.length; j++) { const i = w.map[j]; if (seen[i]) continue; seen[i] = 1; pos[i*3] = R[j*3]; pos[i*3+1] = R[j*3+1]; pos[i*3+2] = R[j*3+2]; }
+  const C0 = A.cageBind, N0 = proxyNormals(C0, px.topo, px.fs), h = buildHash(C0, px.topo.m, px.size);
+  const bd = bindToProxy(pos, m, null, C0, N0, px.topo, h);
+  return (A.subsAll[k] = { tri: bd.tri, bary: bd.bary, map: w.map, m, disp: new Float32Array(m * 3) });
+}
+function accSculptApply(e, px, Pc, C0, SD, live) {
+  const tr = px.topo.tris;
+  targetsOf(e).forEach((t, k) => {
+    const R = px.acc.rest[k], mk = px.acc.detMask[k]; if (!R) return;
+    const sa = accSubsAll(px, t, k), a = t.geometry.attributes.position.array, d = sa.disp;
+    for (let i = 0; i < sa.m; i++) { const tt = sa.tri[i], v0 = tr[tt*3], v1 = tr[tt*3+1], v2 = tr[tt*3+2], b0 = sa.bary[i*3], b1 = sa.bary[i*3+1], b2 = sa.bary[i*3+2];
+      for (let r = 0; r < 3; r++) {
+        // while sculpting, the whole cage offset is sculpt (moves every point); otherwise split sculpt / layer push
+        const s0 = live ? Pc[v0*3+r] - C0[v0*3+r] : SD[v0*3+r], s1 = live ? Pc[v1*3+r] - C0[v1*3+r] : SD[v1*3+r], s2 = live ? Pc[v2*3+r] - C0[v2*3+r] : SD[v2*3+r];
+        const sc = b0 * s0 + b1 * s1 + b2 * s2;
+        const ly = b0 * (Pc[v0*3+r] - C0[v0*3+r] - s0) + b1 * (Pc[v1*3+r] - C0[v1*3+r] - s1) + b2 * (Pc[v2*3+r] - C0[v2*3+r] - s2);
+        d[i*3+r] = sc; sa.disp2 = sa.disp2 || new Float32Array(sa.m * 3); sa.disp2[i*3+r] = ly; } }
+    for (let j = 0; j < sa.map.length; j++) { const i = sa.map[j], s = mk[j] || 0;
+      a[j*3] = R[j*3] + d[i*3] + sa.disp2[i*3] * s; a[j*3+1] = R[j*3+1] + d[i*3+1] + sa.disp2[i*3+1] * s; a[j*3+2] = R[j*3+2] + d[i*3+2] + sa.disp2[i*3+2] * s; }
+    t.geometry.attributes.position.needsUpdate = true; t.geometry.computeVertexNormals(); t.geometry.computeBoundingSphere();
+  });
+}
 /* ---------- fit a custom garment through its cage ---------- */
 function topRows(Wd, nb, boneOf, rows, outI, outW, o) {
   // rows: [[rowIndex, weight], ...]
@@ -3402,7 +4080,7 @@ function fitAndBind(src) {
   const M = placeMatrix(src), NM = new T.Matrix3().getNormalMatrix(M);
   const parts = src.parts.map(part => { const geo = part.geo.clone(); geo.applyMatrix4(M); return { part, geo, W: weldGeo(geo) }; });
   // 1. cage
-  const px = buildProxy(parts.map(p => p.W), h, body);
+  const px = makeCage(parts.map(p => p.W), h, body, src.fit.cageSrc === 'avatar');
   const P = px.P, topo = px.topo, pm = topo.m;
   let N = proxyNormals(P, topo, px.fs);
   const pHash = buildHash(P, pm, px.h);
@@ -3419,6 +4097,8 @@ function fitAndBind(src) {
         p.nf[j*3] = nv.x*f[3]+nv.y*f[4]+nv.z*f[5]; p.nf[j*3+1] = nv.x*f[6]+nv.y*f[7]+nv.z*f[8]; p.nf[j*3+2] = nv.x*f[9]+nv.y*f[10]+nv.z*f[11]; }
     }
   });
+  // the cage as generated, before shrink-wrap: its edge lengths are the rest spacing Smooth and Construct restore
+  const P0 = P.slice();
   // 3. shrink-wrap the cage (smooth, low-res, so it cannot crumple)
   const D = new Float32Array(pm * 3), cageEase = ease + px.h * 0.15;
   for (let it = 0; it < 10; it++) {
@@ -3513,7 +4193,7 @@ function fitAndBind(src) {
   cage.frustumCulled = false; cage.visible = false; cage.renderOrder = 6; cage.name = src.name + ' cage';
   void NM;
   return { group, verts: total, ms: Math.round(performance.now() - t0),
-    proxy: { mesh: cage, topo, fs: px.fs, N: new Float32Array(pm * 3), binds, size: px.h } };
+    proxy: { mesh: cage, topo, fs: px.fs, N: new Float32Array(pm * 3), binds, size: px.h, P0 } };
 }
 
 /* ================= garment library (shelf with sections) ================= */
@@ -3560,7 +4240,7 @@ function saveItem(entry) {
   const src = entry.custom || {};
   const rec = { id: entry.def.id, name: entry.def.name, tag: entry.def.tag, order: entry.def.order, fileName: entry.fileName, buf: entry.fileBuf,
     thumb: entry.def.thumb || null, place: src.place || entry.saved?.place, pose: src.pose || entry.saved?.pose, fit: src.fit || entry.saved?.fit,
-    sculpt: entry.sculptDelta || null, maps: entry.maps || null, added: entry.added || Date.now() };
+    sculpt: entry.sculptDelta || null, maps: entry.maps || null, blend: entry.blend ?? null, blendW: entry.blendW || null, kind: entry.kind || null, acc: entry.acc || null, noRecv: !!entry.noRecv, noCast: !!entry.noCast, lforce: entry.lforce || null, added: entry.added || Date.now() };
   entry.added = rec.added;
   DB.putItem(rec);
 }
@@ -3574,7 +4254,7 @@ async function restoreLibrary() {
     if (!r || !r.buf || S.customLib.has(r.id)) continue;
     const tag = S.sections.some(s => s.id === r.tag) ? r.tag : 'unsorted';
     S.customLib.set(r.id, { def: { id: r.id, name: r.name, cat: 'Custom', slot: r.id, custom: true, tag, order: r.order ?? 0, thumb: r.thumb }, custom: null, mesh: null,
-      fileBuf: r.buf, fileName: r.fileName, saved: { place: r.place, pose: r.pose, fit: r.fit }, sculptDelta: r.sculpt || null, maps: r.maps || null, added: r.added });
+      fileBuf: r.buf, fileName: r.fileName, saved: { place: r.place, pose: r.pose, fit: r.fit }, sculptDelta: r.sculpt || null, maps: r.maps || null, blend: r.blend ?? undefined, blendW: r.blendW || null, kind: r.kind || undefined, acc: r.acc || null, noRecv: !!r.noRecv, noCast: !!r.noCast, lforce: r.lforce || null, added: r.added });
   }
   DB.putMeta('uiVersion', 7); saveSections();
   renderLibrary();
@@ -4222,7 +4902,7 @@ const BIND_CHAINS = [['pelvis', 'chest', 'neck', 'head'], ['chest', 'arm1', 'for
 const slotBone = key => { if (!bindBones) return null; const m = key.match(/^([a-z]+)(-?1)?$/); return m[2] ? bindBones[m[1]][+m[2]] : bindBones[m[1]]; };
 function refreshBindBones() { bindBones = findPoseBones(true); S._pr = null; if (F) F.bones = findPoseBones(true); }
 function buildBindDots() {
-  for (const c of [...bindRoot.children]) if (c !== bindLines && c !== bindPrev) bindRoot.remove(c);
+  for (const c of [...bindRoot.children]) if (c !== bindLines) bindRoot.remove(c);
   if (!bindBones) return;
   for (const [slot, , paired] of BIND_SLOTS) for (const key of paired ? [slot + '1', slot + '-1'] : [slot]) {
     if (!slotBone(key)) continue;
@@ -4289,9 +4969,12 @@ function boneRows() {
 function closeBindPick() { const m = $('#bindPick'); if (m) m.remove(); document.removeEventListener('pointerdown', bindPickOut, true); }
 function bindPickOut(ev) { if (!ev.target.closest('#bindPick') && !ev.target.closest('.bind-sel')) closeBindPick(); }
 function openBindPick(btn) {
-  closeBindPick();
   const slot = btn.dataset.slot, sd = btn.dataset.sd ? +btn.dataset.sd : 0, key = sd ? slot + sd : slot;
-  const cur = sd ? (S.boneMap[slot] || {})[sd] : S.boneMap[slot], auto = bindBones.auto[key];
+  openJointPicker(btn, { cur: sd ? (S.boneMap[slot] || {})[sd] : S.boneMap[slot], auto: bindBones.auto[key], onPick: v => applyBind(slot, sd, v) });
+}
+// searchable joint list with an A to Z / hierarchy toggle (Map binding, Parent to joint)
+function openJointPicker(btn, { cur, auto, onPick }) {
+  closeBindPick();
   const m = document.createElement('div'); m.id = 'bindPick'; m.className = 'bind-pop';
   m.innerHTML = `<div class="bp-top"><label class="bp-search"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <input type="search" placeholder="Search joints" aria-label="Search joints" autocomplete="off" spellcheck="false"></label>
@@ -4330,14 +5013,14 @@ function openBindPick(btn) {
   });
   list.addEventListener('pointerover', ev => { const o = ev.target.closest('.bp-opt'); if (o && o.dataset.v) { const b = S.skeleton.bones.find(x => x.name === o.dataset.v); previewBone(b); } });
   list.addEventListener('pointerleave', () => previewBone(null));
-  list.addEventListener('click', ev => { const o = ev.target.closest('.bp-opt'); if (!o) return; closeBindPick(); previewBone(null); applyBind(slot, sd, o.dataset.v); });
+  list.addEventListener('click', ev => { const o = ev.target.closest('.bp-opt'); if (!o) return; closeBindPick(); previewBone(null); onPick(o.dataset.v); });
   m.querySelector('.bp-tree').addEventListener('click', ev => { bindTree = !bindTree; try { localStorage.setItem('fitt3d.bindTree', bindTree ? '1' : '0'); } catch (e) { /* ok */ }
     const t = ev.currentTarget; t.setAttribute('aria-pressed', String(bindTree)); t.title = bindTree ? 'Showing hierarchy. Click for A to Z' : 'Showing A to Z. Click for hierarchy'; draw(); inp.focus(); });
   setTimeout(() => document.addEventListener('pointerdown', bindPickOut, true), 0);
 }
 /* hovering a joint in the list shows where it is on the avatar */
 const bindPrev = new T.Mesh(new T.SphereGeometry(0.02, 16, 12), new T.MeshBasicMaterial({ color: 0xffffff, depthTest: false, transparent: true, opacity: 0.9 }));
-bindPrev.renderOrder = 47; bindPrev.visible = false; bindRoot.add(bindPrev);
+bindPrev.renderOrder = 47; bindPrev.visible = false; scene.add(bindPrev);
 let bindPrevBone = null;
 function previewBone(b) { bindPrevBone = b || null; bindPrev.visible = !!b; if (b) bindPrev.position.copy(b.getWorldPosition(_bp)); }
 $('#bindPanel').addEventListener('click', ev => { const b = ev.target.closest('.bind-sel'); if (b) { ev.stopPropagation(); if ($('#bindPick')) closeBindPick(); else openBindPick(b); } });
@@ -4353,6 +5036,823 @@ async function loadBoneMap() {
   S._pr = null;
   if (bindOpen) { refreshBindBones(); buildBindDots(); renderBinding(); }
 }
+
+/* ================= Accessories: solid or partly solid objects (helmets, bags, belts, straps) =================
+   An accessory keeps its modelled shape. A painted Deform mask marks the parts that bend with the body
+   (a backpack's straps); everything else is solid and follows one spot on the body as a single unit.
+   Placement is set with a gizmo or a two-point snap, and the shape is edited with a lattice. */
+const ACC_DEFAULT = () => ({ mask: null, xform: null, latt: null, influence: 4, cage: 2.5, ease: 4, parent: false, joint: null });
+const isAcc = e => !!e && e.kind === 'accessory';
+const poseZero = p => !p || Object.values(p).every(v => !v);
+// the pose the accessory was fitted in (Pose to match); everything about it is built and edited in that pose
+function accPose(e) { if (e && e.custom && !poseZero(e.custom.pose) && S.skeleton) applyFitPose(e.custom.pose, findPoseBones()); else restPose(); }
+function accOf(e) { if (!e.acc) e.acc = ACC_DEFAULT(); return e.acc; }
+
+/* ---------- lattice (free-form deformation, Bernstein) ---------- */
+function binom(n, k) { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return r; }
+function bern(n, i, t) { return binom(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i); }
+function lattBox(parts) {
+  const box = new T.Box3(); for (const g of parts) { g.computeBoundingBox(); box.union(g.boundingBox); }
+  const pad = box.getSize(new T.Vector3()).multiplyScalar(0.03).addScalar(0.005); box.min.sub(pad); box.max.add(pad);
+  return box;
+}
+const lattN = L => L && L.n ? L.n : [3, 3, 3];
+function lattRest(box, n, i, j, k) {
+  return new T.Vector3(box.min.x + (box.max.x - box.min.x) * i / (n[0] - 1), box.min.y + (box.max.y - box.min.y) * j / (n[1] - 1), box.min.z + (box.max.z - box.min.z) * k / (n[2] - 1));
+}
+function lattActive(L) { return !!(L && L.d && L.d.some(v => Math.abs(v) > 1e-7)); }
+function latticePoints(src, n3, box, L, out) {
+  const n = lattN(L), d = L.d, sz = box.getSize(new T.Vector3());
+  const bu = new Float32Array(n[0]), bv = new Float32Array(n[1]), bw = new Float32Array(n[2]);
+  for (let v = 0; v < n3; v++) {
+    const x = src[v*3], y = src[v*3+1], z = src[v*3+2];
+    const u = Math.min(1, Math.max(0, (x - box.min.x) / (sz.x || 1))), s = Math.min(1, Math.max(0, (y - box.min.y) / (sz.y || 1))), t = Math.min(1, Math.max(0, (z - box.min.z) / (sz.z || 1)));
+    for (let i = 0; i < n[0]; i++) bu[i] = bern(n[0] - 1, i, u);
+    for (let j = 0; j < n[1]; j++) bv[j] = bern(n[1] - 1, j, s);
+    for (let k = 0; k < n[2]; k++) bw[k] = bern(n[2] - 1, k, t);
+    let dx = 0, dy = 0, dz = 0;
+    for (let i = 0; i < n[0]; i++) for (let j = 0; j < n[1]; j++) for (let k = 0; k < n[2]; k++) {
+      const w = bu[i] * bv[j] * bw[k]; if (w < 1e-6) continue; const o = ((i * n[1] + j) * n[2] + k) * 3; dx += d[o] * w; dy += d[o+1] * w; dz += d[o+2] * w; }
+    out[v*3] = x + dx; out[v*3+1] = y + dy; out[v*3+2] = z + dz;
+  }
+}
+function applyLattice(geo, box, L) {
+  const n = lattN(L), d = L.d, a = geo.attributes.position, sz = box.getSize(new T.Vector3());
+  const bu = new Float32Array(n[0]), bv = new Float32Array(n[1]), bw = new Float32Array(n[2]);
+  for (let v = 0; v < a.count; v++) {
+    const x = a.getX(v), y = a.getY(v), z = a.getZ(v);
+    const u = Math.min(1, Math.max(0, (x - box.min.x) / (sz.x || 1))), s = Math.min(1, Math.max(0, (y - box.min.y) / (sz.y || 1))), t = Math.min(1, Math.max(0, (z - box.min.z) / (sz.z || 1)));
+    for (let i = 0; i < n[0]; i++) bu[i] = bern(n[0] - 1, i, u);
+    for (let j = 0; j < n[1]; j++) bv[j] = bern(n[1] - 1, j, s);
+    for (let k = 0; k < n[2]; k++) bw[k] = bern(n[2] - 1, k, t);
+    let dx = 0, dy = 0, dz = 0;
+    for (let i = 0; i < n[0]; i++) for (let j = 0; j < n[1]; j++) for (let k = 0; k < n[2]; k++) {
+      const w = bu[i] * bv[j] * bw[k]; if (w < 1e-6) continue; const o = ((i * n[1] + j) * n[2] + k) * 3;
+      dx += d[o] * w; dy += d[o+1] * w; dz += d[o+2] * w;
+    }
+    a.setXYZ(v, x + dx, y + dy, z + dz);
+  }
+  a.needsUpdate = true; geo.computeVertexNormals();
+}
+
+/* ---------- geometry in the scene: placement -> lattice -> gizmo transform ---------- */
+function accPlacedGeos(e) {
+  const src = e.custom, M = placeMatrix(src);
+  const geos = src.parts.map(p => { const g = p.geo.clone(); g.applyMatrix4(M); return g; });
+  const box = lattBox(geos), A = accOf(e);
+  if (lattActive(A.latt)) geos.forEach(g => applyLattice(g, box, A.latt));
+  if (A.xform) { const X = new T.Matrix4().fromArray(A.xform); geos.forEach(g => g.applyMatrix4(X)); }
+  return { geos, box };
+}
+
+/* placed + lattice-deformed shape and its weld are cached; a gizmo move only transforms them */
+function accPlacedCached(e) {
+  const src = e.custom, A = accOf(e), L = A.latt;
+  const key = JSON.stringify(src.place) + '|' + (lattActive(L) ? L.n.join('x') + ':' + Array.from(L.d).map(v => v.toFixed(5)).join(',') : '-');
+  let c = e._accCache;
+  if (!c || c.key !== key || c.src !== src) {
+    const M = placeMatrix(src), geos = src.parts.map(p => { const g = p.geo.clone(); g.applyMatrix4(M); return g; });
+    const box = lattBox(geos); if (lattActive(L)) geos.forEach(g => applyLattice(g, box, L));
+    c = e._accCache = { key, src, geos, welds: geos.map(g => weldGeo(g)) };
+  }
+  const X = A.xform ? new T.Matrix4().fromArray(A.xform) : null, v = new T.Vector3();
+  const geos = c.geos.map(g => { const q = g.clone(); if (X) q.applyMatrix4(X); return q; });
+  const welds = c.welds.map(w => { if (!X) return w; const pos = new Float32Array(w.pos.length);
+    for (let i = 0; i < w.m; i++) { v.fromArray(w.pos, i * 3).applyMatrix4(X); v.toArray(pos, i * 3); } return { ...w, pos }; });
+  return { geos, welds };
+}
+/* ---------- bind (through a low-poly cage, like garments) ----------
+   Bending, skin weights, clearance and layer pushes are all worked out on the cage (a few thousand points).
+   The full mesh follows the cage; its solid areas are copied exactly and never touched. */
+const ACC_CAGE = 0.025;
+function restIsBind() {
+  if (!S.B || !S.B.skinned) return true;
+  S.charRoot.updateMatrixWorld(true); const sk = S.B.skeleton, M = new T.Matrix4();
+  return sk.bones.every((b, i) => M.multiplyMatrices(b.matrixWorld, sk.boneInverses[i]).elements.every((v, q) => Math.abs(v - (q % 5 === 0 ? 1 : 0)) < 1e-5));
+}
+// like unposeInto, but points riding on a single bone reuse that bone's inverse (most of a solid accessory)
+function unposeFast(src, m, sI, sW, mats, dst) {
+  const inv = new Map(), A = new T.Matrix4(), ae = A.elements, v = new T.Vector3();
+  for (let i = 0; i < m; i++) {
+    let M;
+    if (sW[i*4] >= 0.9999) { const b = sI[i*4]; M = inv.get(b); if (!M) { M = new T.Matrix4().fromArray(mats[b]).invert(); inv.set(b, M); } }
+    else { ae.fill(0); for (let k = 0; k < 4; k++) { const w = sW[i*4+k]; if (!w) continue; const e = mats[sI[i*4+k]]; for (let q = 0; q < 16; q++) ae[q] += w * e[q]; } A.invert(); M = A; }
+    v.set(src[i*3], src[i*3+1], src[i*3+2]).applyMatrix4(M); dst[i*3] = v.x; dst[i*3+1] = v.y; dst[i*3+2] = v.z;
+  }
+}
+function matsIdentity(mats) {
+  if (!mats) return true;
+  for (const e of mats) for (let q = 0; q < 16; q++) if (Math.abs(e[q] - (q % 5 === 0 ? 1 : 0)) > 1e-5) return false;
+  return true;
+}
+function bindAccessory(entry) {
+  const t0 = performance.now(), B = S.B, A = accOf(entry), src = entry.custom;
+  const snap = snapBones(); accPose(entry);
+  const { PB, NB, mats } = posedBody();
+  const body = { PB, NB, fine: buildHash(PB, B.n, 0.025), coarse: buildHash(PB, B.n, 0.15) };
+  const near = (x, y, z) => { let b = body.fine.nearest(x, y, z); if (b < 0) b = body.coarse.nearest(x, y, z); return b; };
+  const { geos, welds } = accPlacedCached(entry);
+  if (!A.mask || A.mask.length !== geos.length || A.mask.some((m, k) => !m || m.length !== geos[k].attributes.position.count)) A.mask = geos.map(g => new Float32Array(g.attributes.position.count));
+  // detail mask on welded points
+  const parented = !!(A.parent && B.skinned);
+  const mws = welds.map((w, k) => { const mw = new Float32Array(w.m), mk = A.mask[k]; if (!parented) for (let j = 0; j < w.map.length; j++) mw[w.map[j]] = Math.max(mw[w.map[j]], mk[j]); return mw; });
+  // 1. cage
+  const px = makeCage(welds, (src.fit.proxy ?? 3) / 100, body, src.fit.cageSrc === 'avatar'), P = px.P, topo = px.topo, pm = topo.m;
+  const cm = new Float32Array(pm), cn = new Float32Array(pm);
+  welds.forEach((w, k) => { const sd = px.seeds[k]; for (let i = 0; i < w.m; i++) { const c = sd[i]; if (c >= 0) { cm[c] += mws[k][i]; cn[c]++; } } });
+  for (let c = 0; c < pm; c++) cm[c] = cn[c] ? cm[c] / cn[c] : 0;
+  // 2. anchor: body point closest to the solid part of the cage
+  let bestD = Infinity, anchor = -1; const anyRigid = cm.some(v => v < 0.5);
+  for (let c = 0; c < pm; c++) { if (anyRigid && cm[c] >= 0.5) continue;
+    const b = near(P[c*3], P[c*3+1], P[c*3+2]); if (b < 0) continue;
+    const d = Math.hypot(P[c*3] - PB[b*3], P[c*3+1] - PB[b*3+1], P[c*3+2] - PB[b*3+2]); if (d < bestD) { bestD = d; anchor = b; } }
+  // 3. bendable cage points clear the skin (smoothed)
+  const ease = (src.fit.ease ?? 4) / 1000, D = new Float32Array(pm * 3);
+  for (let round = 0; round < 4; round++) {
+    for (let c = 0; c < pm; c++) { if (cm[c] <= 0) continue;
+      const x = P[c*3] + D[c*3], y = P[c*3+1] + D[c*3+1], z = P[c*3+2] + D[c*3+2], b = near(x, y, z); if (b < 0) continue;
+      const d = (x - PB[b*3]) * NB[b*3] + (y - PB[b*3+1]) * NB[b*3+1] + (z - PB[b*3+2]) * NB[b*3+2];
+      if (d < ease) { const s = (ease - d) * cm[c]; D[c*3] += NB[b*3] * s; D[c*3+1] += NB[b*3+1] * s; D[c*3+2] += NB[b*3+2] * s; } }
+    smoothField(D, 3, topo, 3);
+    for (let c = 0; c < pm; c++) if (cm[c] <= 0) D[c*3] = D[c*3+1] = D[c*3+2] = 0;
+  }
+  const Pc = new Float32Array(pm * 3); for (let q = 0; q < pm * 3; q++) Pc[q] = P[q] + D[q];
+  // 4. cage weights: solid = one bone at the anchor (exactly rigid), bendable = nearest skin (smoothed), blended by the mask
+  let anchorBone = 0, pI = null, pW = null, Wd = null, nb = 0, boneOf = [];
+  if (B.skinned) {
+    if (anchor >= 0) { let bw = -1; for (let q = 0; q < 4; q++) if (B.skinW[anchor*4+q] > bw) { bw = B.skinW[anchor*4+q]; anchorBone = B.skinIdx[anchor*4+q]; } }
+    A.autoJoint = S.skeleton.bones[anchorBone] ? S.skeleton.bones[anchorBone].name : null;
+    if (parented && A.joint) { const bi = S.skeleton.bones.findIndex(b => b.name === A.joint); if (bi >= 0) anchorBone = bi; }
+    const used = new Map(), use = bi => { if (!used.has(bi)) { used.set(bi, used.size); boneOf.push(bi); } return used.get(bi); };
+    use(anchorBone);
+    const nearC = new Int32Array(pm).fill(-1);
+    for (let c = 0; c < pm; c++) if (cm[c] > 0) { const b = near(Pc[c*3], Pc[c*3+1], Pc[c*3+2]); nearC[c] = b; if (b >= 0) for (let q = 0; q < 4; q++) use(B.skinIdx[b*4+q]); }
+    nb = used.size; Wd = new Float32Array(pm * nb);
+    for (let c = 0; c < pm; c++) { const t = cm[c]; Wd[c*nb] = 1 - t;
+      if (t > 0 && nearC[c] >= 0) for (let q = 0; q < 4; q++) Wd[c*nb + used.get(B.skinIdx[nearC[c]*4+q])] += B.skinW[nearC[c]*4+q] * t; }
+    const Ws = Wd.slice(); smoothField(Ws, nb, topo, 3);
+    for (let c = 0; c < pm; c++) if (cm[c] > 0) { const t = Math.min(1, cm[c] * 1.5); for (let q = 0; q < nb; q++) Wd[c*nb+q] = Wd[c*nb+q] * (1 - t) + Ws[c*nb+q] * t; }
+    pI = new Uint16Array(pm * 4); pW = new Float32Array(pm * 4);
+    for (let c = 0; c < pm; c++) topRows(Wd, nb, boneOf, [[c, 1]], pI, pW, c);
+  }
+  const ident = !B.skinned || matsIdentity(mats);
+  let PBind = Pc; if (B.skinned && !ident && !parented) { PBind = new Float32Array(pm * 3); unposeFast(Pc, pm, pI, pW, mats, PBind); }
+  const NBind = proxyNormals(PBind, topo, px.fs), hashB = buildHash(PBind, pm, px.h * B.unit);
+  // 5. detail: exact copy where solid; painted points follow the cage by an interpolated offset
+  const N0 = proxyNormals(P, topo, px.fs), hash0 = buildHash(P, pm, px.h);
+  const group = new T.Group(); group.name = src.name; const rest = [], detMask = [], subs = []; let total = 0;
+  const acc = new Float32Array(Math.max(1, nb)), top = new Int32Array(4);
+  geos.forEach((g, k) => {
+    const w = welds[k], m = w.m, mw = mws[k], nv = g.attributes.position.count;
+    // only bendable points need a cage binding
+    let nS = 0; for (let i = 0; i < m; i++) if (mw[i] > 0) nS++;
+    const sIdx = new Int32Array(nS), sPos = new Float32Array(nS * 3), sSeed = new Int32Array(nS);
+    for (let i = 0, q = 0; i < m; i++) if (mw[i] > 0) { sIdx[q] = i; sPos[q*3] = w.pos[i*3]; sPos[q*3+1] = w.pos[i*3+1]; sPos[q*3+2] = w.pos[i*3+2]; sSeed[q] = px.seeds[k][i]; q++; }
+    const bd = nS ? bindToProxy(sPos, nS, sSeed, P, N0, topo, hash0) : { tri: new Int32Array(0), bary: new Float32Array(0) };
+    const Wp = w.pos.slice();
+    for (let q = 0; q < nS; q++) { const i = sIdx[q], t = bd.tri[q], a = topo.tris[t*3], b = topo.tris[t*3+1], c = topo.tris[t*3+2], ba = bd.bary[q*3], bb = bd.bary[q*3+1], bc = bd.bary[q*3+2], s = mw[i];
+      for (let r = 0; r < 3; r++) Wp[i*3+r] += s * (ba * D[a*3+r] + bb * D[b*3+r] + bc * D[c*3+r]); }
+    let dI = null, dW = null;
+    if (B.skinned) {
+      dI = new Uint16Array(m * 4); dW = new Float32Array(m * 4);
+      for (let i = 0; i < m; i++) { dI[i*4] = anchorBone; dW[i*4] = 1; }
+      for (let q = 0; q < nS; q++) {
+        const i = sIdx[q], s = mw[i], t = bd.tri[q];
+        acc.fill(0);
+        for (let r = 0; r < 3; r++) { const row = topo.tris[t*3+r], wt = bd.bary[q*3+r]; for (let z = 0; z < nb; z++) acc[z] += Wd[row*nb+z] * wt; }
+        for (let z = 0; z < nb; z++) acc[z] *= s; acc[0] += 1 - s;
+        top.fill(-1); for (let z = 0; z < nb; z++) { const v = acc[z]; if (v <= 0) continue; for (let r = 0; r < 4; r++) { if (top[r] < 0 || v > acc[top[r]]) { for (let u = 3; u > r; u--) top[u] = top[u-1]; top[r] = z; break; } } }
+        let sum = 0; for (let r = 0; r < 4; r++) if (top[r] >= 0) sum += acc[top[r]]; sum = sum || 1;
+        for (let r = 0; r < 4; r++) { dI[i*4+r] = top[r] >= 0 ? boneOf[top[r]] : 0; dW[i*4+r] = top[r] >= 0 ? acc[top[r]] / sum : 0; }
+      }
+    }
+    let WB = Wp; if (B.skinned && !ident && !parented) { WB = new Float32Array(m * 3); unposeFast(Wp, m, dI, dW, mats, WB); }
+    subs.push({ idx: sIdx, tri: bd.tri, bary: bd.bary, map: w.map, m, disp: new Float32Array(m * 3) });
+    const geo = g; ['skinIndex', 'skinWeight', 'color'].forEach(a => geo.deleteAttribute(a));
+    const pos = new Float32Array(nv * 3); for (let j = 0; j < nv; j++) { const i = w.map[j]; pos[j*3] = WB[i*3]; pos[j*3+1] = WB[i*3+1]; pos[j*3+2] = WB[i*3+2]; }
+    geo.setAttribute('position', new T.BufferAttribute(pos, 3));
+    rest.push(pos.slice()); detMask.push(A.mask[k]);
+    let mesh; const mt = src.parts[k].material, mats2 = Array.isArray(mt) ? mt.map(x => x.clone()) : mt.clone();
+    if (B.skinned) {
+      const sI = new Uint16Array(nv * 4), sW = new Float32Array(nv * 4);
+      for (let j = 0; j < nv; j++) { const i = w.map[j]; for (let q = 0; q < 4; q++) { sI[j*4+q] = dI[i*4+q]; sW[j*4+q] = dW[i*4+q]; } }
+      geo.setAttribute('skinIndex', new T.Uint16BufferAttribute(sI, 4)); geo.setAttribute('skinWeight', new T.Float32BufferAttribute(sW, 4));
+      mesh = new T.SkinnedMesh(geo, mats2); mesh.bind(B.skeleton, new T.Matrix4());
+    } else mesh = new T.Mesh(geo, mats2);
+    geo.computeBoundingBox(); geo.computeBoundingSphere();
+    mesh.frustumCulled = false; mesh.castShadow = mesh.receiveShadow = true; mesh.userData.accPart = k;
+    group.add(mesh); total += nv;
+  });
+  // cage mesh, skinned like the accessory (hidden; the layer stack pushes it)
+  const cg = new T.BufferGeometry();
+  cg.setAttribute('position', new T.BufferAttribute(PBind, 3)); cg.setIndex(new T.BufferAttribute(topo.tris, 1));
+  if (B.skinned) { cg.setAttribute('skinIndex', new T.Uint16BufferAttribute(pI, 4)); cg.setAttribute('skinWeight', new T.Float32BufferAttribute(pW, 4)); }
+  const cage = B.skinned ? new T.SkinnedMesh(cg, proxyMat) : new T.Mesh(cg, proxyMat);
+  if (B.skinned) cage.bind(B.skeleton, new T.Matrix4());
+  cage.frustumCulled = false; cage.visible = false; cage.renderOrder = 6; cage.name = src.name + ' cage';
+  let parentBone = null, cageOut = cage, cageBind = PBind;
+  if (parented) {
+    // parented: plain meshes in the joint's space, carried by the joint (no skinning, no deformation at all)
+    parentBone = S.skeleton.bones[anchorBone]; S.charRoot.updateMatrixWorld(true);
+    const inv = parentBone.matrixWorld.clone().invert();
+    group.children.slice().forEach((sm, k) => { const g = sm.geometry; ['skinIndex', 'skinWeight'].forEach(a => g.deleteAttribute(a)); g.applyMatrix4(inv);
+      const pm2 = new T.Mesh(g, sm.material); pm2.frustumCulled = false; pm2.castShadow = pm2.receiveShadow = true; pm2.userData = sm.userData;
+      group.remove(sm); group.add(pm2); rest[k] = g.attributes.position.array.slice(); });
+    const cgl = new T.BufferGeometry(); cgl.setAttribute('position', new T.BufferAttribute(Pc.slice(), 3)); cgl.setIndex(new T.BufferAttribute(topo.tris, 1)); cgl.applyMatrix4(inv);
+    cageOut = new T.Mesh(cgl, proxyMat); cageOut.userData.cage = true; cageOut.visible = false; cageOut.frustumCulled = false; cageOut.name = src.name + ' cage';
+    cageBind = cgl.attributes.position.array.slice();
+  }
+  restoreBones(snap);
+  return { group, verts: total, ms: Math.round(performance.now() - t0), parentBone,
+    proxy: { mesh: cageOut, topo, fs: px.fs, N: new Float32Array(pm * 3), binds: [], size: px.h, P0: P.slice(), acc: { cm: parented ? new Float32Array(pm) : cm, rest, detMask, subs, cageBind: cageBind.slice() } } };
+}
+function installAccessory(entry, r) {
+  if (entry.mesh) { entry.mesh.removeFromParent(); disposeGroup(entry.mesh); }
+  if (entry.proxy) { entry.proxy.mesh.removeFromParent(); entry.proxy.mesh.geometry.dispose(); entry.proxy = null; }
+  (r.parentBone || garmentGroup).add(r.group); entry.mesh = r.group;
+  if (r.parentBone) r.group.add(r.proxy.mesh); else proxyGroup.add(r.proxy.mesh); entry.proxy = r.proxy;
+  captureFit(entry);
+  const m = accOf(entry).mask, bend = m ? m.reduce((n, a) => n + a.reduce((c, v) => c + (v > 0.5 ? 1 : 0), 0), 0) : 0;
+  entry.stats = `${r.verts.toLocaleString()} verts · accessory · cage ${r.proxy.topo.m.toLocaleString()} · ${r.parentBone ? 'parented to ' + r.parentBone.name : bend ? bend.toLocaleString() + ' bendable' : 'all solid'} · ${r.ms} ms`;
+}
+// the mask on the welded points of a bound mesh (used by the layer stack: solid parts are never pushed)
+function accMaskWelded(e, k, wd) {
+  const cm = e.proxy && e.proxy.acc && e.proxy.acc.cm; const out = new Float32Array(wd.m);
+  if (!cm) return out;
+  const map = wd.w.map; for (let j = 0; j < map.length && j < cm.length; j++) out[map[j]] = Math.max(out[map[j]], cm[j]);
+  return out;
+}
+function rebindAcc(e) {
+  if (!e || !e.custom) return;
+  const r = bindAccessory(e); installAccessory(e, r);
+  resolveLayers(); setPose(S.pose); if (typeof applyView === 'function') applyView();
+}
+
+/* ---------- convert ---------- */
+async function convertItem(id, toAcc, copy) {
+  const e0 = S.customLib.get(id); if (!e0 || S.busy) return;
+  let e = e0;
+  if (copy) {
+    const nid = newId();
+    e = { def: { ...e0.def, id: nid, slot: nid, name: `${e0.def.name} (${toAcc ? 'accessory' : 'garment'})` }, custom: null, mesh: null,
+      fileBuf: e0.fileBuf, fileName: e0.fileName, saved: e0.custom ? { place: { ...e0.custom.place }, pose: { ...e0.custom.pose }, fit: { ...e0.custom.fit } } : e0.saved,
+      maps: e0.maps || null, added: Date.now() };
+    if (toAcc && S.sections.some(s => s.id === 'acc')) e.def.tag = 'acc';
+    S.customLib.set(nid, e);
+  }
+  e.kind = toAcc ? 'accessory' : undefined;
+  if (toAcc) e.acc = e.acc || ACC_DEFAULT(); else { e.acc = null; }
+  if (toAcc) e.sculptDelta = null;
+  if (copy) { await ensureSource(e); libraryAdd(e); toast(`Added ${e.def.name} to your library.`); return; }
+  saveItem(e); renderLibrary();
+  if (S.equipped.has(id)) {
+    S.busy = true; status('Rebinding', true); await nextFrame();
+    try { await ensureSource(e); bindCustomEntry(e); resolveLayers(); setPose(S.pose); } catch (err) { console.error(err); }
+    S.busy = false; renderWearList(); status('Ready');
+    if (toAcc) { S.selected = id; renderSculptBox(); startMaskPaint(e, true); }
+  }
+  toast(toAcc ? `${e.def.name} is now an accessory.` : `${e.def.name} is now a garment.`);
+}
+
+/* ---------- viewport helpers ---------- */
+const accRoot = new T.Group(); accRoot.name = 'AccessoryTools'; scene.add(accRoot);
+let SNAP = 0; try { SNAP = +(localStorage.getItem('fitt3d.snap') || 0); } catch (e) { /* ok */ }
+function applyGizmoSnap() { if (!TC) return; TC.setRotationSnap(SNAP ? T.MathUtils.degToRad(SNAP) : null); }
+function setSnap(v) { SNAP = v; try { localStorage.setItem('fitt3d.snap', String(v)); } catch (e) { /* ok */ } applyGizmoSnap(); document.querySelectorAll('[data-snap]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.snap === SNAP))); }
+const snapRow = () => `<div class="row-l"><span class="lbl">Rotation snap</span><div class="mb-seg" role="group" aria-label="Rotation snap">${[[0, 'Off'], [45, '45°'], [90, '90°']].map(([v, l]) => `<button type="button" data-snap="${v}" aria-pressed="${SNAP === v}">${l}</button>`).join('')}</div></div>`;
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-snap]'); if (b) setSnap(+b.dataset.snap); });
+let TC = null, GZ = null;   // GZ: whoever owns the gizmo right now (an accessory mode or the fitting panel)
+function gizmo() {
+  if (TC || !T.TransformControls) return TC;
+  TC = new T.TransformControls(camera, canvas); TC.setSize(0.85); TC.visible = false; TC.enabled = false; applyGizmoSnap();
+  TC.addEventListener('dragging-changed', ev => { controls.enabled = !ev.value; const o = GZ || AM; if (!o) return; if (!ev.value && o.onRelease) o.onRelease(); if (ev.value && o.onGrab) o.onGrab(); });
+  TC.addEventListener('objectChange', () => { const o = GZ || AM; if (o && o.onChange) o.onChange(); });
+  scene.add(TC);
+  return TC;
+}
+let AM = null;          // current accessory mode: { kind: 'mask' | 'pos' | 'latt', e, ... }
+function accBanner(html) { const b = $('#accBanner'); if (!b) return; b.hidden = !html; b.innerHTML = html || ''; }
+function staticClone(e) {
+  // plain meshes sharing the bound geometry: skinned parts show their bind shape (= the rest pose), parented parts keep their joint transform
+  const g = new T.Group();
+  if (e.mesh && restIsBind() && poseZero(e.custom && e.custom.pose)) { e.mesh.updateMatrixWorld(true);
+    e.mesh.children.forEach(m => { if (!m.isMesh || m === (e.proxy && e.proxy.mesh)) return; const c = new T.Mesh(m.geometry, m.material); c.userData.shared = true;
+      if (!m.isSkinnedMesh) { c.matrixAutoUpdate = false; c.matrix.copy(m.matrixWorld); } g.add(c); });
+    return g; }
+  const { geos } = accPlacedGeos(e);
+  geos.forEach((geo, k) => { const mt = e.custom.parts[k].material; g.add(new T.Mesh(geo, Array.isArray(mt) ? mt.map(x => x.clone()) : mt.clone())); });
+  return g;
+}
+function enterAccMode(e, kind) {
+  if (AM) exitAccMode(false);
+  if (K) endSculpt();
+  S.accMode = kind; accPose(e); GZ = null; setFocus(); openSec('garmentSec');
+  AM = { kind, e, xform0: accOf(e).xform ? accOf(e).xform.slice() : null, latt0: accOf(e).latt ? { n: accOf(e).latt.n.slice(), d: accOf(e).latt.d.slice() } : null };
+  S.selected = e.def.id; renderSculptBox();
+}
+function exitAccMode(keep) {
+  if (!AM) return;
+  const m = AM; AM = null; S.accMode = null;
+  if (TC) { TC.detach(); TC.visible = false; TC.enabled = false; }
+  while (accRoot.children.length) { const c = accRoot.children.pop(); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
+  if (m.clone) scene.remove(m.clone);
+  if (m.cagePrev) { scene.remove(m.cagePrev); m.cagePrev.geometry.dispose(); }
+  if (m.e.mesh) m.e.mesh.visible = !m.e.hidden;
+  if (m.kind === 'mask') restoreMaskView(m);
+  if (!keep) { const A = accOf(m.e); A.xform = m.xform0; A.latt = m.latt0; if (m.kind === 'mask' && m.mask0) A.mask = m.mask0; if (m.dirty) { try { rebindAcc(m.e); } catch (err) { console.error(err); } } }
+  else { saveItem(m.e); }
+  if (m.isolated) isolateView(m, false);
+  accBanner(''); controls.enabled = true; ringA.visible = false; setFocus();
+  setPose(S.pose); renderSculptBox(); renderWearList();
+}
+
+/* ---------- Deform mask painting ---------- */
+const ringA = new T.Mesh(new T.RingGeometry(0.93, 1, 56), new T.MeshBasicMaterial({ color: 0x5cc9d5, transparent: true, opacity: 0.95, depthTest: false, side: T.DoubleSide }));
+ringA.renderOrder = 60; ringA.visible = false; scene.add(ringA);
+const maskMat = new T.MeshStandardMaterial({ vertexColors: true, roughness: 0.85, metalness: 0, toneMapped: false, envMapIntensity: 0.35 });
+const MB = { radius: 3, strength: 60 };
+const MASK_VIEW = { mode: 'bw' };
+const HEAT = [[0.18, 0.42, 1], [0.18, 0.82, 0.48], [1, 0.85, 0.29], [1, 0.29, 0.24]];
+function maskRGB(v, out) {
+  if (MASK_VIEW.mode === 'heat') { const x = Math.min(0.9999, Math.max(0, v)) * 3, i = Math.floor(x), t = x - i, a = HEAT[i], b = HEAT[i + 1];
+    out[0] = a[0] + (b[0] - a[0]) * t; out[1] = a[1] + (b[1] - a[1]) * t; out[2] = a[2] + (b[2] - a[2]) * t; }
+  else { const g = 0.04 + 0.92 * v; out[0] = out[1] = out[2] = g; }
+  return out;
+}
+function maskColors(e, only) {
+  const A = accOf(e);
+  (e.mesh ? e.mesh.children : []).forEach((mesh, k) => {
+    const g = mesh.geometry, n = g.attributes.position.count, mk = A.mask[k];
+    let col = g.attributes.color; if (!col || col.count !== n) { col = new T.BufferAttribute(new Float32Array(n * 3), 3); g.setAttribute('color', col); only = null; }
+    const c = col.array, rgb = [0, 0, 0], set = j => { maskRGB(mk[j], rgb); c[j*3] = rgb[0] ** 2.2; c[j*3+1] = rgb[1] ** 2.2; c[j*3+2] = rgb[2] ** 2.2; };   // sRGB -> linear
+    if (only && only[k]) { const L = only[k]; if (!L.length) return; let lo = Infinity, hi = -1; for (const j of L) { set(j); if (j < lo) lo = j; if (j > hi) hi = j; }
+      col.updateRange.offset = lo * 3; col.updateRange.count = (hi - lo + 1) * 3; }
+    else { for (let j = 0; j < n; j++) set(j); col.updateRange.count = -1; }
+    col.needsUpdate = true;
+  });
+}
+// bucket grid over the welded points, and welded -> original vertex lists, so a dab only touches what is under the brush
+function maskIndex(wd) {
+  const cell = 0.02, W = wd.W, m = wd.m, grid = new Map(), key = (x, y, z) => ((x + 512) * 1024 + (y + 512)) * 1024 + (z + 512);
+  for (let i = 0; i < m; i++) { const k = key(Math.floor(W[i*3] / cell), Math.floor(W[i*3+1] / cell), Math.floor(W[i*3+2] / cell)); let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(i); }
+  const map = wd.w.map, cnt = new Int32Array(m + 1); for (let j = 0; j < map.length; j++) cnt[map[j] + 1]++;
+  for (let i = 0; i < m; i++) cnt[i + 1] += cnt[i];
+  const verts = new Int32Array(map.length), fill = cnt.slice(0, m); for (let j = 0; j < map.length; j++) verts[fill[map[j]]++] = j;
+  return { cell, grid, key, start: cnt, verts };
+}
+function startMaskPaint(e, fromImport) {
+  if (!isAcc(e) || !e.mesh) return;
+  enterAccMode(e, 'mask');
+  const A = accOf(e);
+  AM.mask0 = A.mask ? A.mask.map(a => a.slice()) : null; AM.fromImport = !!fromImport;
+  AM.mats = e.mesh.children.map(m => m.material);
+  e.mesh.children.forEach(m => { m.material = maskMat; });
+  const mats = currentMats();
+  AM.wd = e.mesh.children.map(m => worldData(m, mats)); AM.idx = [];
+  maskColors(e);
+  renderSculptBox();
+  status('Paint the deform mask · right click erases');
+}
+function isolateView(m, on) {
+  m.isolated = on;
+  S.bodyMeshes.forEach(b => { if (on) { b.userData.isoVis = b.visible; b.visible = false; } else if (b.userData.isoVis !== undefined) { b.visible = b.userData.isoVis; delete b.userData.isoVis; } });
+  for (const [id, g] of S.equipped) if (g !== m.e && g.mesh) { if (on) { g.mesh.userData.isoVis = g.mesh.visible; g.mesh.visible = false; } else if (g.mesh.userData.isoVis !== undefined) { g.mesh.visible = g.mesh.userData.isoVis; delete g.mesh.userData.isoVis; } }
+}
+function backToFitting() {
+  if (!AM) return; const e = AM.e;
+  exitAccMode(true);
+  S.selected = e.def.id; openFitting(e.custom, e.def.id);
+}
+function restoreMaskView(m) { if (m.e.mesh && m.mats) m.e.mesh.children.forEach((mesh, k) => { mesh.material = m.mats[k]; mesh.geometry.deleteAttribute('color'); }); }
+function maskHit(ev) {
+  setRay(ev); const h = ray.intersectObjects(AM.e.mesh.children, false)[0]; return h || null;
+}
+function paintMask(point, erase, mode) {
+  const A = accOf(AM.e), r = MB.radius / 100, r2 = r * r, s = MB.strength / 100, only = [];
+  AM.e.mesh.children.forEach((mesh, k) => {
+    const wd = AM.wd[k], W = wd.W, mk = A.mask[k], X = AM.idx[k] || (AM.idx[k] = maskIndex(wd)), c = X.cell, L = [];
+    const x0 = Math.floor((point.x - r) / c), x1 = Math.floor((point.x + r) / c), y0 = Math.floor((point.y - r) / c), y1 = Math.floor((point.y + r) / c), z0 = Math.floor((point.z - r) / c), z1 = Math.floor((point.z + r) / c);
+    for (let gx = x0; gx <= x1; gx++) for (let gy = y0; gy <= y1; gy++) for (let gz = z0; gz <= z1; gz++) {
+      const a = X.grid.get(X.key(gx, gy, gz)); if (!a) continue;
+      for (const i of a) { const dx = W[i*3] - point.x, dy = W[i*3+1] - point.y, dz = W[i*3+2] - point.z, d2 = dx*dx + dy*dy + dz*dz; if (d2 >= r2) continue;
+        if (mode) { (L.sel || (L.sel = [])).push([i, (1 - d2 / r2) ** 2]); continue; }
+        const add = (1 - d2 / r2) ** 2 * s * 0.5;
+        for (let q = X.start[i]; q < X.start[i+1]; q++) { const j = X.verts[q]; mk[j] = Math.min(1, Math.max(0, mk[j] + (erase ? -add : add))); L.push(j); } }
+    }
+    only[k] = mode ? (L.sel ? maskFilter(k, L.sel, mode, s * 0.6) : []) : L;
+  });
+  AM.dirty = true; maskColors(AM.e, only);
+}
+/* Shift+drag smooths the mask, Shift+right drag clamps it toward fully solid / fully bendable */
+function maskFilter(k, sel, mode, amt) {
+  const A = accOf(AM.e), wd = AM.wd[k], mk = A.mask[k], X = AM.idx[k] || (AM.idx[k] = maskIndex(wd)), st = wd.w.start, nb = wd.w.nbr, L = [];
+  const val = i => { let v = 0, c = 0; for (let q = X.start[i]; q < X.start[i+1]; q++) { v += mk[X.verts[q]]; c++; } return c ? v / c : 0; };
+  const out = sel.map(([i, f]) => {
+    const v = val(i); let t;
+    if (mode === 'clamp') t = v >= 0.5 ? 1 : 0;
+    else { let s = 0, c = 0; for (let q = st[i]; q < st[i+1]; q++) { s += val(nb[q]); c++; } t = c ? s / c : v; }
+    return v + (t - v) * Math.min(1, f * amt);
+  });
+  sel.forEach(([i], n) => { for (let q = X.start[i]; q < X.start[i+1]; q++) { const j = X.verts[q]; mk[j] = Math.min(1, Math.max(0, out[n])); L.push(j); } });
+  return L;
+}
+function smoothMaskAll() {
+  const only = [];
+  AM.e.mesh.children.forEach((mesh, k) => { const m = AM.wd[k].m, sel = []; for (let i = 0; i < m; i++) sel.push([i, 1]); for (let it = 0; it < 3; it++) maskFilter(k, sel, 'smooth', 0.6); only[k] = null; });
+  AM.dirty = true; maskColors(AM.e);
+}
+async function finishMask(accept) {
+  if (!AM || AM.kind !== 'mask') return;
+  const e = AM.e, A = accOf(e);
+  if (!accept) A.mask = A.mask.map(a => new Float32Array(a.length));
+  restoreMaskView(AM); AM.mats = null;
+  S.busy = true; status('Binding the accessory', true); await nextFrame();
+  try { rebindAcc(e); } catch (err) { console.error(err); }
+  S.busy = false; AM.dirty = false; exitAccMode(true); status(accept ? 'Deform mask applied' : 'Accessory set to all solid');
+}
+
+/* ---------- Adjust position: gizmo + two-point snap ---------- */
+function startPosition(e) {
+  if (!isAcc(e) || !e.mesh) return;
+  enterAccMode(e, 'pos');
+  AM.gmode = 'translate'; AM.snap = null;
+  gizmo(); if (TC) { TC.setMode('translate'); TC.visible = true; TC.enabled = true; }
+  buildPosPreview(); renderSculptBox();
+  status('Drag the gizmo; garments update when you let go');
+}
+function buildPosPreview() {
+  if (AM.clone) scene.remove(AM.clone);
+  const e = AM.e, cl = staticClone(e), box = new T.Box3().setFromObject(cl), c = box.getCenter(new T.Vector3());
+  const pivot = new T.Group(); pivot.position.copy(c); cl.position.copy(c).negate(); pivot.add(cl);
+  scene.add(pivot); AM.clone = pivot; AM.cloneMeshes = cl.children; e.mesh.visible = false;
+  AM.start = pivot.matrixWorld.clone(); pivot.updateMatrixWorld(true); AM.start = pivot.matrixWorld.clone();
+  if (TC && AM.kind === 'pos' && !AM.snap) TC.attach(pivot);
+  AM.onRelease = () => { if (AM && AM.kind === 'pos') bakePivot(); };
+  AM.onChange = null; AM.onGrab = null;
+}
+async function bakePivot() {
+  const p = AM.clone; p.updateMatrixWorld(true);
+  const delta = p.matrixWorld.clone().multiply(AM.start.clone().invert());
+  const isId = delta.elements.every((v, i) => Math.abs(v - (i % 5 === 0 ? 1 : 0)) < 1e-6); if (isId) return;
+  applyXform(delta);
+}
+async function applyXform(delta) {
+  const A = accOf(AM.e), X = A.xform ? new T.Matrix4().fromArray(A.xform) : new T.Matrix4();
+  A.xform = delta.clone().multiply(X).toArray(); AM.dirty = true;
+  S.busy = true; status('Updating', true); await nextFrame();
+  try { rebindAcc(AM.e); accPose(AM.e); } catch (err) { console.error(err); }
+  S.busy = false;
+  if (AM) { buildPosPreview(); status('Position updated'); }
+}
+function setGizmoMode(m) { AM.gmode = m; if (TC) TC.setMode(m); if (m === 'scale') { TC.showX = TC.showY = TC.showZ = true; } renderSculptBox(); }
+// two-point snap
+const snapMatA = new T.MeshBasicMaterial({ color: 0xff5c93, depthTest: false }), snapMatB = new T.MeshBasicMaterial({ color: 0x5cc9d5, depthTest: false });
+function startSnap() {
+  if (!AM || AM.kind !== 'pos') return;
+  if (TC) { TC.detach(); TC.visible = false; }
+  AM.snap = { step: 'A', twist: 0, gap: 0 };
+  renderSculptBox(); status('Click a point on the accessory');
+}
+function snapClick(ev) {
+  const sn = AM.snap; setRay(ev);
+  if (sn.step === 'A') {
+    const h = ray.intersectObjects(AM.cloneMeshes, false)[0]; if (!h) return false;
+    sn.A = h.point.clone(); sn.nA = h.face.normal.clone().transformDirection(h.object.matrixWorld).normalize();
+    if (sn.nA.dot(ray.ray.direction) > 0) sn.nA.negate();
+    sn.step = 'B'; drawSnap(); renderSculptBox(); status('Now click where it attaches on the avatar or a garment'); return true;
+  }
+  const targets = [...S.bodyMeshes]; for (const [id, g] of S.equipped) if (g !== AM.e && g.mesh && !g.hidden) targets.push(...targetsOf(g));
+  const h = ray.intersectObjects(targets, false)[0]; if (!h) return false;
+  sn.B = h.point.clone(); let n = h.face.normal.clone().transformDirection(h.object.matrixWorld).normalize(); if (n.dot(ray.ray.direction) > 0) n.negate();
+  sn.nB = n; sn.step = 'ready'; drawSnap(); renderSculptBox(); status('Rotate the plane if needed, then Snap to');
+  return true;
+}
+function drawSnap(snOverride) {
+  while (accRoot.children.length) { const c = accRoot.children.pop(); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
+  const sn = snOverride || (AM && AM.snap); if (!sn) return;
+  const dot = (p, mat) => { const m = new T.Mesh(new T.SphereGeometry(0.008, 14, 10), mat); m.position.copy(p); m.renderOrder = 61; accRoot.add(m); };
+  const arrow = (p, n, col) => { const g = new T.BufferGeometry().setFromPoints([p, p.clone().addScaledVector(n, 0.06)]); const l = new T.Line(g, new T.LineBasicMaterial({ color: col, depthTest: false })); l.renderOrder = 61; accRoot.add(l); };
+  if (sn.A) { dot(sn.A, snapMatA); arrow(sn.A, sn.nA, 0xff5c93); }
+  if (sn.B) {
+    dot(sn.B, snapMatB); arrow(sn.B, sn.nB, 0x5cc9d5);
+    const disc = new T.Group(); disc.position.copy(sn.B).addScaledVector(sn.nB, 0.001);
+    disc.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), sn.nB).multiply(new T.Quaternion().setFromAxisAngle(new T.Vector3(0, 0, 1), sn.twist * Math.PI / 180));
+    const plane = new T.Mesh(new T.CircleGeometry(0.05, 40), new T.MeshBasicMaterial({ color: 0x5cc9d5, transparent: true, opacity: 0.22, side: T.DoubleSide, depthWrite: false }));
+    const rim = new T.LineLoop(new T.BufferGeometry().setFromPoints([...Array(48)].map((_, i) => new T.Vector3(Math.cos(i / 48 * Math.PI * 2) * 0.05, Math.sin(i / 48 * Math.PI * 2) * 0.05, 0))), new T.LineBasicMaterial({ color: 0x5cc9d5 }));
+    const up = new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(0, 0, 0), new T.Vector3(0, 0.05, 0)]), new T.LineBasicMaterial({ color: 0xffd166 }));
+    disc.add(plane, rim, up); accRoot.add(disc);
+  }
+}
+function snapMatrix(snOverride) {
+  const sn = snOverride || AM.snap, q1 = new T.Quaternion().setFromUnitVectors(sn.nA, sn.nB.clone().negate());
+  // keep the accessory's own "up" as close to the plane's marker direction as possible, then apply the twist
+  const q2 = new T.Quaternion().setFromAxisAngle(sn.nB, sn.twist * Math.PI / 180), R = new T.Matrix4().makeRotationFromQuaternion(q2.multiply(q1));
+  const Bp = sn.B.clone().addScaledVector(sn.nB, sn.gap / 1000);
+  return new T.Matrix4().makeTranslation(Bp.x, Bp.y, Bp.z).multiply(R).multiply(new T.Matrix4().makeTranslation(-sn.A.x, -sn.A.y, -sn.A.z));
+}
+async function doSnap() {
+  if (!AM || !AM.snap || AM.snap.step !== 'ready') return;
+  const M = snapMatrix(); AM.snapUndo = accOf(AM.e).xform ? accOf(AM.e).xform.slice() : null;
+  const sn = AM.snap;
+  await applyXform(M);
+  if (AM && AM.snap) { AM.snap.A = sn.B.clone().addScaledVector(sn.nB, sn.gap / 1000); AM.snap.nA = sn.nB.clone().negate(); AM.snap.snapped = true; drawSnap(); renderSculptBox(); }
+}
+function endSnap(confirm) {
+  if (!AM || !AM.snap) return;
+  if (!confirm && AM.snap.snapped) { accOf(AM.e).xform = AM.snapUndo; rebindAcc(AM.e); accPose(AM.e); }
+  AM.snap = null; drawSnap(); buildPosPreview(); if (TC) { TC.visible = true; TC.enabled = true; TC.attach(AM.clone); }
+  renderSculptBox(); status(confirm ? 'Snapped' : 'Snap cancelled');
+}
+
+/* ---------- Lattice deform ---------- */
+function startLattice(e) {
+  if (!isAcc(e) || !e.mesh) return;
+  enterAccMode(e, 'latt');
+  const A = accOf(e); if (!A.latt) A.latt = { n: [3, 3, 3], d: new Float32Array(27 * 3) };
+  AM.mirror = true; AM.sel = -1;
+  gizmo(); buildLattice(); renderSculptBox();
+  if (TC) { TC.setMode('translate'); TC.visible = false; TC.enabled = true; }
+  status('Click a lattice point, then drag it');
+}
+function lattFrame() {
+  // lattice box in placed space (before the gizmo transform), shown through that transform.
+  // A low-poly cage of the undeformed shape is kept for the live preview while dragging.
+  const e = AM.e, src = e.custom, M = placeMatrix(src);
+  const geos = src.parts.map(p => { const g = p.geo.clone(); g.applyMatrix4(M); return g; });
+  const box = lattBox(geos);
+  if (!AM.pc) {
+    const { PB, NB } = posedBody(), body = { PB, NB, fine: buildHash(PB, S.B.n, 0.025), coarse: buildHash(PB, S.B.n, 0.15) };
+    const px = buildProxy(geos.map(g => weldGeo(g)), ACC_CAGE, body);
+    AM.pc = { P: px.P.slice(), topo: px.topo };
+  }
+  geos.forEach(g => g.dispose());
+  return box;
+}
+function showCagePreview(on) {
+  if (!AM.pc) return;
+  if (!AM.cagePrev) {
+    const g = new T.BufferGeometry(); g.setAttribute('position', new T.BufferAttribute(new Float32Array(AM.pc.P.length), 3)); g.setIndex(new T.BufferAttribute(AM.pc.topo.tris, 1));
+    const m = new T.Mesh(g, new T.MeshStandardMaterial({ color: 0xcfd6e2, roughness: 0.9, metalness: 0, transparent: true, opacity: 0.85, side: T.DoubleSide }));
+    m.add(new T.LineSegments(new T.WireframeGeometry(g), new T.LineBasicMaterial({ color: 0x5cc9d5, transparent: true, opacity: 0.35 })));
+    AM.cagePrev = m; scene.add(m);
+  }
+  AM.cagePrev.visible = on; if (AM.clone) AM.clone.visible = !on;
+  if (on) updateCagePreview();
+}
+function updateCagePreview() {
+  const m = AM.cagePrev; if (!m) return;
+  const A = accOf(AM.e), pos = m.geometry.attributes.position, P = AM.pc.P, n = P.length / 3;
+  latticePoints(P, n, AM.box, A.latt, pos.array);
+  if (A.xform) { const X = new T.Matrix4().fromArray(A.xform), v = new T.Vector3(); for (let i = 0; i < n; i++) { v.fromArray(pos.array, i * 3).applyMatrix4(X); v.toArray(pos.array, i * 3); } }
+  pos.needsUpdate = true; m.geometry.computeVertexNormals(); m.geometry.computeBoundingSphere();
+  const wf = m.children[0]; wf.geometry.dispose(); wf.geometry = new T.WireframeGeometry(m.geometry);
+}
+function buildLattice() {
+  if (AM.clone) scene.remove(AM.clone);
+  while (accRoot.children.length) { const c = accRoot.children.pop(); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
+  const e = AM.e, A = accOf(e), L = A.latt, n = lattN(L), box = lattFrame();
+  AM.box = box;
+  const cl = staticClone(e); scene.add(cl); AM.clone = cl; e.mesh.visible = false;
+  const frame = new T.Group(); if (A.xform) { frame.matrixAutoUpdate = false; frame.matrix.fromArray(A.xform); }
+  accRoot.add(frame); AM.frame = frame;
+  AM.pts = [];
+  const r = Math.max(0.006, box.getSize(new T.Vector3()).length() * 0.012);
+  for (let i = 0; i < n[0]; i++) for (let j = 0; j < n[1]; j++) for (let k = 0; k < n[2]; k++) {
+    const idx = (i * n[1] + j) * n[2] + k, p = lattRest(box, n, i, j, k);
+    const s = new T.Mesh(new T.SphereGeometry(r, 12, 8), new T.MeshBasicMaterial({ color: idx === AM.sel ? 0xffd166 : 0x5cc9d5, depthTest: false }));
+    s.position.set(p.x + L.d[idx*3], p.y + L.d[idx*3+1], p.z + L.d[idx*3+2]); s.renderOrder = 62; s.userData = { idx, ijk: [i, j, k], rest: p };
+    frame.add(s); AM.pts.push(s);
+  }
+  const lines = new T.LineSegments(new T.BufferGeometry(), new T.LineBasicMaterial({ color: 0x8f7cf8, transparent: true, opacity: 0.8, depthTest: false }));
+  lines.renderOrder = 61; frame.add(lines); AM.lines = lines; drawLatticeLines();
+  AM.onChange = () => {
+    const s = AM.pts[AM.sel]; if (!s) return;
+    const [i, j, k] = s.userData.ijk, idx = s.userData.idx, d = L.d;
+    d[idx*3] = s.position.x - s.userData.rest.x; d[idx*3+1] = s.position.y - s.userData.rest.y; d[idx*3+2] = s.position.z - s.userData.rest.z;
+    if (AM.mirror) { const mi = n[0] - 1 - i; if (mi !== i) { const o = (mi * n[1] + j) * n[2] + k, ms = AM.pts[o];
+      d[o*3] = -d[idx*3]; d[o*3+1] = d[idx*3+1]; d[o*3+2] = d[idx*3+2];
+      ms.position.set(ms.userData.rest.x + d[o*3], ms.userData.rest.y + d[o*3+1], ms.userData.rest.z + d[o*3+2]); } }
+    drawLatticeLines(); AM.dirty = true;
+    updateCagePreview();
+  };
+  AM.onRelease = async () => { if (!AM || AM.kind !== 'latt') return; S.busy = true; status('Updating', true); await nextFrame();
+    try { rebindAcc(AM.e); accPose(AM.e); } catch (err) { console.error(err); } S.busy = false;
+    if (AM) { AM.e.mesh.visible = false; if (AM.clone) scene.remove(AM.clone); AM.clone = staticClone(AM.e); scene.add(AM.clone); showCagePreview(false); status('Lattice applied'); } };
+  AM.onGrab = () => showCagePreview(true);
+  if (AM.sel >= 0 && TC) { TC.attach(AM.pts[AM.sel]); TC.visible = true; }
+}
+function drawLatticeLines() {
+  const n = lattN(accOf(AM.e).latt), P = AM.pts, pos = [];
+  const at = (i, j, k) => P[(i * n[1] + j) * n[2] + k].position;
+  for (let i = 0; i < n[0]; i++) for (let j = 0; j < n[1]; j++) for (let k = 0; k < n[2]; k++) {
+    const a = at(i, j, k);
+    if (i + 1 < n[0]) { const b = at(i + 1, j, k); pos.push(a.x, a.y, a.z, b.x, b.y, b.z); }
+    if (j + 1 < n[1]) { const b = at(i, j + 1, k); pos.push(a.x, a.y, a.z, b.x, b.y, b.z); }
+    if (k + 1 < n[2]) { const b = at(i, j, k + 1); pos.push(a.x, a.y, a.z, b.x, b.y, b.z); }
+  }
+  AM.lines.geometry.setAttribute('position', new T.Float32BufferAttribute(pos, 3)); AM.lines.geometry.computeBoundingSphere();
+}
+function lattPick(ev) {
+  setRay(ev); ray.params.Points = { threshold: 0.01 };
+  const h = ray.intersectObjects(AM.pts, false)[0]; if (!h) return false;
+  AM.sel = h.object.userData.idx; AM.pts.forEach(p => p.material.color.set(p.userData.idx === AM.sel ? 0xffd166 : 0x5cc9d5));
+  if (TC) { TC.attach(h.object); TC.visible = true; }
+  return true;
+}
+async function setLattRes(v) {
+  const A = accOf(AM.e);
+  if (lattActive(A.latt) && !(await confirmDialog({ title: 'Change lattice resolution?', body: 'This resets the lattice shape.', confirm: 'Reset and change' }))) return;
+  A.latt = { n: [v, v, v], d: new Float32Array(v * v * v * 3) }; AM.sel = -1; if (TC) TC.detach();
+  AM.dirty = true; rebindAcc(AM.e); accPose(AM.e); buildLattice(); renderSculptBox();
+}
+async function resetLattice() { const A = accOf(AM.e), n = lattN(A.latt); A.latt = { n, d: new Float32Array(n[0] * n[1] * n[2] * 3) }; AM.sel = -1; if (TC) TC.detach(); AM.dirty = true; rebindAcc(AM.e); accPose(AM.e); buildLattice(); renderSculptBox(); }
+
+/* ---------- viewport input for the accessory modes ---------- */
+let accStroke = null;
+stage.addEventListener('pointerdown', ev => {
+  if (!AM || ev.target !== canvas || S.busy) return;
+  if (AM.kind === 'mask') {
+    if (ev.button !== 0 && ev.button !== 2) return;
+    const h = maskHit(ev); if (!h) return;
+    ev.preventDefault(); ev.stopPropagation(); controls.enabled = false;
+    try { canvas.setPointerCapture(ev.pointerId); } catch (e) { /* ok */ }
+    accStroke = { erase: ev.button === 2 || ev.ctrlKey, mode: ev.shiftKey ? (ev.button === 2 ? 'clamp' : 'smooth') : null, last: h.point.clone() }; paintMask(h.point, accStroke.erase, accStroke.mode);
+    return;
+  }
+  if (TC && TC.dragging) return;
+  if (ev.button !== 0) return;
+  AM.down = { x: ev.clientX, y: ev.clientY };
+}, true);
+stage.addEventListener('pointermove', ev => {
+  if (!AM) return;
+  if (AM.kind === 'mask') {
+    const h = ev.target === canvas ? maskHit(ev) : null;
+    if (h) { const n = h.face.normal.clone().transformDirection(h.object.matrixWorld); if (n.dot(ray.ray.direction) > 0) n.negate();
+      ringA.position.copy(h.point).addScaledVector(n, 0.002); ringA.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), n); ringA.scale.setScalar(MB.radius / 100); ringA.visible = true; }
+    else ringA.visible = false;
+    if (accStroke && h && h.point.distanceTo(accStroke.last) > MB.radius / 100 * 0.15) { paintMask(h.point, accStroke.erase, accStroke.mode); accStroke.last.copy(h.point); }
+  }
+});
+stage.addEventListener('pointerup', ev => {
+  if (!AM) return;
+  if (accStroke) { accStroke = null; controls.enabled = true; return; }
+  if (!AM.down || ev.target !== canvas) { AM.down = null; return; }
+  const moved = Math.hypot(ev.clientX - AM.down.x, ev.clientY - AM.down.y); AM.down = null; if (moved > 5) return;
+  if (AM.kind === 'pos' && AM.snap && !AM.snap.snapped) snapClick(ev);
+  else if (AM.kind === 'latt') lattPick(ev);
+}, true);
+canvas.addEventListener('contextmenu', ev => { if (AM && AM.kind === 'mask') ev.preventDefault(); });
+function abAction(a) {
+  if (!AM) return; const A = accOf(AM.e);
+  if (a === 'fill' || a === 'clear') { A.mask.forEach(m => m.fill(a === 'fill' ? 1 : 0)); AM.dirty = true; maskColors(AM.e); }
+  else if (a === 'smooth') smoothMaskAll();
+  else if (a === 'accept') finishMask(true);
+  else if (a === 'skip') finishMask(false);
+  else if (a === 'cancel') exitAccMode(false);
+  else if (a === 'fit') backToFitting();
+}
+$('#sculptBox').addEventListener('click', ev => {
+  if (!AM) return;
+  const v = ev.target.closest('[data-mview]'); if (v) { MASK_VIEW.mode = v.dataset.mview; maskColors(AM.e); renderSculptBox(); return; }
+  const b = ev.target.closest('[data-ab]'); if (b) abAction(b.dataset.ab);
+});
+$('#sculptBox').addEventListener('input', ev => { if (!AM) return; if (ev.target.id === 'abSize') { MB.radius = +ev.target.value; ev.target.previousElementSibling.querySelector('output').textContent = `${MB.radius} cm`; } });
+$('#sculptBox').addEventListener('click', ev => { if (AM && ev.target.closest('[data-iso]')) { isolateView(AM, !AM.isolated); renderSculptBox(); } });
+$('#fitReturn').addEventListener('click', () => backToFitting());
+$('#accBanner').addEventListener('input', ev => { if (ev.target.id === 'abSize') MB.radius = +ev.target.value; });
+$('#accBanner').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ab]'); if (!b || !AM) return;
+  const a = b.dataset.ab, A = accOf(AM.e);
+  if (a === 'fill' || a === 'clear') { A.mask.forEach(m => m.fill(a === 'fill' ? 1 : 0)); AM.dirty = true; maskColors(AM.e); }
+  else if (a === 'accept') finishMask(true);
+  else if (a === 'skip') finishMask(false);
+  else if (a === 'cancel') exitAccMode(false);
+});
+document.addEventListener('keydown', ev => {
+  if (!AM || /^(INPUT|TEXTAREA|SELECT)$/.test((ev.target || {}).tagName || '')) return;
+  if (ev.key === 'Escape') { if (AM.snap) endSnap(false); else if (AM.kind !== 'mask' || !AM.fromImport) exitAccMode(false); }
+  if (AM && AM.kind === 'pos' && !AM.snap) { const k = ev.key.toLowerCase(); if (k === 'w') setGizmoMode('translate'); else if (k === 'e') setGizmoMode('rotate'); else if (k === 'r') setGizmoMode('scale'); }
+});
+
+/* ---------- Garment options panel for accessories ---------- */
+const ACC_TIPS = {
+  influence: 'How far garments on top of this accessory keep their lift past its edge before settling back. Larger values make a softer bulge around bags, belts and straps.',
+  mask: 'Paint which parts bend with the body (cyan) and which stay solid (pink). Solid parts follow one spot on the body together.',
+  position: 'Move, rotate or scale the accessory with a gizmo, or snap a point on it face to face onto the avatar or a garment. Garments around it update when you let go.',
+  cage: 'Cell size of the low-poly cage that bending, clearance and layers are worked out on. Smaller follows the shape closer, larger is faster and smoother. The accessory itself keeps its full detail.',
+  ease: 'Minimum gap between the bendable parts and the skin, in millimetres. Solid parts are never moved.',
+  parent: 'Attaches the whole accessory to one joint, like a prop in a hand or a helmet on the head. It moves with that joint as a solid object and never deforms; the deform mask is ignored.',
+  lattice: 'Reshape the accessory with a lattice around its bounding box. Drag a lattice point; the whole shape bends smoothly with it.'
+};
+const tipI = (k, l) => `<span class="tip" tabindex="0" role="button" data-tip="${ACC_TIPS[k].replace(/"/g, '&quot;')}" aria-label="About ${l}">?</span>`;
+function accPanelHTML(e) {
+  const fr = $('#fitReturn'); if (fr) fr.hidden = !(AM && AM.kind === 'mask' && AM.fromImport);
+  const A = accOf(e), nm = e.def.name.replace(/</g, ''), th = e.def.thumb ? `style="background-image:url('${e.def.thumb}')"` : '';
+  if (!AM) {
+    const bend = A.mask ? A.mask.some(m => m.some(v => v > 0.5)) : false;
+    return `<div class="g-head"><i class="g-thumb" ${th}></i><div><b>${nm}</b><span>Accessory · ${A.parent ? 'parented' : bend ? 'partly bendable' : 'solid'}</span></div></div>
+      <button class="btn block" type="button" data-acc="fit">${MIc('<circle cx="10" cy="4" r="1.8"/><path d="M4 8.5 10 7l6 1.5M10 7v5.5M10 12.5l-3 5M10 12.5l3 5"/>')}Adjust fit and pose</button>
+      <button class="btn block" type="button" data-acc="sculpt">${MIc('<path d="M4 16c3 0 4-1.5 4-3.5a2.5 2.5 0 0 1 5 0c0 2-2 3.5-5 3.5M11 9.5l5.5-6"/>')}Sculpt accessory</button>
+      <button class="btn block" type="button" data-acc="lattice">${MIc('<rect x="3" y="3" width="14" height="14" rx="1.5"/><path d="M3 10h14M10 3v14"/><circle cx="10" cy="10" r="1.6"/>')}Lattice deform</button>
+      <button class="btn block" type="button" data-acc="mask"${A.parent ? ' disabled title="Not used while parented to a joint"' : ''}>${MIc('<path d="M13.5 3.5 16.5 6.5 8 15H5v-3z"/><path d="M4 17.5h12" stroke-dasharray="2 2"/>')}Paint deform mask</button>
+      <div class="sl"><label for="accInfl"><span class="lbl">Extended influence${tipI('influence', 'Extended influence')}</span><output id="accInflOut">${A.influence} cm</output></label>
+        <input type="range" id="accInfl" min="0" max="20" step="0.5" value="${A.influence}"></div>
+      ${S.skeleton ? `<label class="toggle"><input type="checkbox" id="accParent"${A.parent ? ' checked' : ''}> Parent to joint${tipI('parent', 'Parent to joint')}</label>
+      ${A.parent ? `<div class="row-l"><span>Joint</span><button type="button" class="bind-sel${A.joint ? ' set' : ''}" id="accJoint" style="max-width:180px" title="${A.joint ? 'Set by you' : 'Auto'}"><i aria-hidden="true"></i><span>${esc((A.joint || A.autoJoint || 'nearest').replace(/^.*[:|]/, ''))}</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>` : ''}` : ''}
+      ${layerForcesHTML(e)}`;
+  }
+  if (AM.kind === 'mask') return `<div class="mode-bar"><span>Mask</span><b>${nm}</b></div>
+      <p class="note">${AM.fromImport ? 'Paint the parts that bend with the body, like straps and belts. Unpainted parts stay solid.' : ACC_TIPS.mask} Right click erases, <span class="kbd">Shift</span> smooths, <span class="kbd">Shift</span> + right click clamps.</p>
+      ${maskViewHTML('Solid', 'Bends')}
+      ${isoBtnHTML(AM.isolated)}
+      <div class="sl"><label for="abSize">Brush size<output>${MB.radius} cm</output></label><input type="range" id="abSize" min="0.5" max="15" step="0.5" value="${MB.radius}"></div>
+      <div class="sl"><label for="mbStr">Strength<output id="mbStrOut">${MB.strength}%</output></label><input type="range" id="mbStr" min="5" max="100" step="1" value="${MB.strength}"></div>
+      <div class="row-l"><span>Whole mask</span></div>
+      <div class="whole-row"><button class="btn small" type="button" data-ab="fill">Fill</button><button class="btn small" type="button" data-ab="clear">Clear</button><button class="btn small" type="button" data-ab="smooth">Smooth</button></div>
+      <div class="done-row">${AM.fromImport ? '<button class="btn" type="button" data-ab="skip">Skip · all solid</button><button class="btn primary" type="button" data-ab="accept">Accept mask</button>'
+        : '<button class="btn" type="button" data-ab="cancel">Cancel</button><button class="btn primary" type="button" data-ab="accept">Done</button>'}</div>`;
+  if (AM.kind === 'pos') {
+    const sn = AM.snap;
+    if (sn) return `<div class="mode-bar"><span>Snap</span><b>${nm}</b></div>
+      <ol class="snap-steps"><li class="${sn.step === 'A' ? 'on' : 'done'}">Click a point on the accessory</li><li class="${sn.step === 'B' ? 'on' : sn.step === 'ready' ? 'done' : ''}">Click where it attaches on the avatar or a garment</li><li class="${sn.step === 'ready' ? 'on' : ''}">Rotate the plane, then Snap to</li></ol>
+      <div class="sl"><label for="snTwist">Plane rotation<output id="snTwistOut">${sn.twist}°</output></label><input type="range" id="snTwist" min="-180" max="180" step="1" value="${sn.twist}"${sn.step === 'ready' ? '' : ' disabled'}></div>
+      <div class="sl"><label for="snGap">Gap<output id="snGapOut">${sn.gap} mm</output></label><input type="range" id="snGap" min="-20" max="40" step="0.5" value="${sn.gap}"${sn.step === 'ready' ? '' : ' disabled'}></div>
+      <button class="btn block primary" type="button" data-acc="snapTo"${sn.step === 'ready' ? '' : ' disabled'}>Snap to</button>
+      <button class="link-btn" type="button" data-acc="snapRedo" style="justify-self:start">Pick points again</button>
+      <div class="done-row"><button class="btn" type="button" data-acc="snapCancel">Cancel</button><button class="btn primary" type="button" data-acc="snapOk">Confirm</button></div>`;
+    return `<div class="mode-bar"><span>Position</span><b>${nm}</b></div>
+      <div class="tools" role="group" aria-label="Gizmo">${[['translate', 'Move', 'W'], ['rotate', 'Rotate', 'E'], ['scale', 'Scale', 'R']].map(([k, l, key]) => `<button type="button" data-gm="${k}" aria-pressed="${AM.gmode === k}" title="${l} (${key})">${l}</button>`).join('')}</div>
+      ${snapRow()}
+      <button class="btn block" type="button" data-acc="snap">${MIc('<circle cx="5" cy="14" r="2"/><circle cx="15" cy="6" r="2"/><path d="M6.5 12.5 13.5 7.5" stroke-dasharray="2 2"/>')}Snap two points</button>
+      <button class="link-btn" type="button" data-acc="resetPos" style="justify-self:start">Reset position</button>
+      <p class="note">${ACC_TIPS.position}</p>
+      <div class="done-row"><button class="btn" type="button" data-acc="cancel">Cancel</button><button class="btn primary" type="button" data-acc="done">Done</button></div>`;
+  }
+  const n = lattN(accOf(e).latt)[0];
+  return `<div class="mode-bar"><span>Lattice</span><b>${nm}</b></div>
+    <div class="row-l"><span>Resolution</span><div class="mb-seg">${[2, 3, 4].map(v => `<button type="button" data-lres="${v}" aria-pressed="${n === v}">${v}×${v}×${v}</button>`).join('')}</div></div>
+    <label class="toggle"><input type="checkbox" id="lattMirror"${AM.mirror ? ' checked' : ''}> Mirror left and right</label>
+    <p class="note">${ACC_TIPS.lattice}</p>
+    <button class="link-btn" type="button" data-acc="lattReset" style="justify-self:start">Reset lattice</button>
+    <div class="done-row"><button class="btn" type="button" data-acc="cancel">Cancel</button><button class="btn primary" type="button" data-acc="done">Done</button></div>`;
+}
+$('#sculptBox').addEventListener('click', ev => {
+  const cs = ev.target.closest('[data-acsrc]'); if (!cs) return;
+  const e = S.equipped.get(S.selected); if (!e || S.busy) return;
+  e.custom.fit.cageSrc = cs.dataset.acsrc; S.busy = true; status('Rebinding', true);
+  requestAnimationFrame(() => { try { rebindAcc(e); } catch (err) { console.error(err); } S.busy = false; saveItem(e); renderSculptBox(); status('Cage rebuilt'); });
+});
+$('#sculptBox').addEventListener('click', ev => {
+  const jb = ev.target.closest('#accJoint'); if (!jb) return;
+  const e = S.equipped.get(S.selected); if (!e) return; ev.stopPropagation();
+  if ($('#bindPick')) { closeBindPick(); return; }
+  const A = accOf(e), auto = A.autoJoint ? S.skeleton.bones.find(x => x.name === A.autoJoint) : null;
+  openJointPicker(jb, { cur: A.joint || null, auto, onPick: v => { A.joint = v || null; S.busy = true; status('Rebinding', true);
+    requestAnimationFrame(() => { try { rebindAcc(e); } catch (err) { console.error(err); } S.busy = false; saveItem(e); renderSculptBox(); status(`Parented to ${e.mesh && e.mesh.parent ? e.mesh.parent.name : 'joint'}`); }); } });
+});
+$('#sculptBox').addEventListener('click', async ev => {
+  const b = ev.target.closest('[data-acc],[data-gm],[data-lres]'); if (!b) return;
+  const e = S.equipped.get(S.selected); if (!e) return;
+  if (b.dataset.gm) { setGizmoMode(b.dataset.gm); return; }
+  if (b.dataset.lres) { setLattRes(+b.dataset.lres); return; }
+  const a = b.dataset.acc;
+  if (a === 'fit') { if (e.custom && !S.busy) openFitting(e.custom, e.def.id); }
+  else if (a === 'position') startPosition(e);
+  else if (a === 'sculpt') startSculpt();
+  else if (a === 'lattice') startLattice(e);
+  else if (a === 'mask') startMaskPaint(e, false);
+  else if (a === 'toGarment') { if (await confirmDialog({ title: `Convert ${e.def.name} to a garment?`, body: 'It will be fitted and wrapped like clothing again. The deform mask, position and lattice are removed.', confirm: 'Convert' })) convertItem(e.def.id, false, false); }
+  else if (a === 'toAcc') { if (await confirmDialog({ title: `Convert ${e.def.name} to an accessory?`, body: 'It keeps its modelled shape and follows the body as a solid object. You can then paint the parts that should bend, like straps.', confirm: 'Convert' })) convertItem(e.def.id, true, false); }
+  else if (a === 'done') exitAccMode(true);
+  else if (a === 'cancel') exitAccMode(false);
+  else if (a === 'snap') startSnap();
+  else if (a === 'snapTo') doSnap();
+  else if (a === 'snapRedo') { AM.snap = { step: 'A', twist: AM.snap.twist, gap: AM.snap.gap }; drawSnap(); renderSculptBox(); }
+  else if (a === 'snapOk') endSnap(true);
+  else if (a === 'snapCancel') endSnap(false);
+  else if (a === 'resetPos') { accOf(e).xform = null; AM.dirty = true; rebindAcc(e); accPose(e); buildPosPreview(); }
+  else if (a === 'lattReset') resetLattice();
+});
+$('#sculptBox').addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.id === 'accInfl') $('#accInflOut').textContent = `${t.value} cm`;
+  else if (t.id === 'accCage') $('#accCageOut').textContent = `${t.value} cm`;
+  else if (t.id === 'accEase') $('#accEaseOut').textContent = `${t.value} mm`;
+  else if (t.id === 'mbStr') { MB.strength = +t.value; $('#mbStrOut').textContent = `${t.value}%`; }
+  else if (t.id === 'snTwist' && AM && AM.snap) { AM.snap.twist = +t.value; $('#snTwistOut').textContent = `${t.value}°`; drawSnap(); }
+  else if (t.id === 'snGap' && AM && AM.snap) { AM.snap.gap = +t.value; $('#snGapOut').textContent = `${t.value} mm`; }
+});
+$('#sculptBox').addEventListener('change', ev => {
+  const t = ev.target, e = S.equipped.get(S.selected); if (!e) return;
+  if (t.id === 'accInfl') { accOf(e).influence = +t.value; saveItem(e); relayer(); }
+  else if (t.id === 'accCage' || t.id === 'accEase' || t.id === 'accParent') {
+    const A = accOf(e);
+    if (t.id === 'accCage') e.custom.fit.proxy = +t.value; else if (t.id === 'accEase') e.custom.fit.ease = +t.value; else if (t.id === 'accParent') A.parent = t.checked; else A.joint = t.value || null;
+    S.busy = true; status('Rebinding', true);
+    requestAnimationFrame(() => { try { rebindAcc(e); } catch (err) { console.error(err); } S.busy = false; saveItem(e); renderSculptBox(); status(A.parent ? `Parented to ${e.mesh && e.mesh.parent ? e.mesh.parent.name : 'joint'}` : 'Accessory updated'); });
+  }
+  else if (t.id === 'lattMirror' && AM) AM.mirror = t.checked;
+});
 
 /* ================= Menu bar: File · Edit · Settings · Info ================= */
 const DISCORD_URL = '';            // set the invite link here to enable File > Join Discord
@@ -4538,7 +6038,7 @@ async function saveBytes(name, data, type) {
 }
 
 /* ---------- patch notes: assets/patch-notes.json (newest first) ---------- */
-const PATCH_NOTES_FALLBACK = [{ version: '0.1.1', date: '2026-09-27', notes: ['Menu bar: File, Edit, Settings and Info.', 'Save and open projects as .ft3d files.', 'Undo and redo for wearing, layers and sculpting.', 'Settings for autosave, antialiasing and frame cap.', 'Custom keyboard shortcuts.', 'Loading intro.'] }];
+const PATCH_NOTES_FALLBACK = [{ version: '0.1.5', date: '2026-09-28', notes: ['Accessories: deform mask, lattice, sculpt, parent to joint.', 'Cage from Avatar.', 'Gizmo placement and Snap two points in Adjust fit and pose.', 'Layer forces and the Layer transition brush.', 'Smooth and clamp brushes for mask painting.'] }];
 async function showPatchNotes() {
   let list = PATCH_NOTES_FALLBACK;
   try { const r = await fetch(assetURL('patch-notes.json'), { cache: 'no-cache' }); if (r.ok) { const j = await r.json(); if (Array.isArray(j) && j.length) list = j; } } catch (e) { /* fallback */ }
@@ -4546,7 +6046,7 @@ async function showPatchNotes() {
   root.innerHTML = `<div class="overlay" id="pnOverlay"><div class="window" role="dialog" aria-modal="true" aria-label="Patch notes">
     <div class="win-head"><h3>Patch notes</h3><button class="icon-btn ghost" type="button" id="pnClose" aria-label="Close">${MIc('<path d="M5 5l10 10M15 5 5 15"/>')}</button></div>
     <div class="win-body" style="padding-top:4px">${list.map(v => `<section class="pn-ver"><h4>Version ${esc(v.version)}${v.version === APP_VERSION ? '<span class="cur">Current</span>' : ''}<small>${esc(v.date || '')}</small></h4>
-      <ul>${(v.notes || []).map(n => `<li>${esc(n)}</li>`).join('')}</ul></section>`).join('')}</div></div></div>`;
+      ${(v.sections || [{ notes: v.notes || [] }]).map(g => `${g.title ? `<h5>${esc(g.title)}</h5>` : ''}<ul>${(g.notes || []).map(n => `<li>${esc(n)}</li>`).join('')}</ul>`).join('')}</section>`).join('')}</div></div></div>`;
   const close = () => { root.innerHTML = ''; document.removeEventListener('keydown', key, true); };
   const key = ev => { if (ev.key === 'Escape') { ev.stopPropagation(); close(); } };
   document.addEventListener('keydown', key, true);
@@ -4639,7 +6139,7 @@ async function buildProject() {
   const garments = (S.layerOrder || []).filter(id => S.customLib.has(id)).map(id => {
     const e = S.customLib.get(id), src = e.custom || {};
     return { id, name: e.def.name, tag: e.def.tag, order: e.def.order, thumb: e.def.thumb || null, fileName: e.fileName, buf: e.fileBuf,
-      place: src.place || e.saved?.place, pose: src.pose || e.saved?.pose, fit: src.fit || e.saved?.fit, sculpt: e.sculptDelta || null, maps: e.maps || null };
+      place: src.place || e.saved?.place, pose: src.pose || e.saved?.pose, fit: src.fit || e.saved?.fit, sculpt: e.sculptDelta || null, maps: e.maps || null, blend: e.blend ?? null, blendW: e.blendW || null, kind: e.kind || null, acc: e.acc || null, noRecv: !!e.noRecv, noCast: !!e.noCast, lforce: e.lforce || null };
   });
   let avatar;
   if (S.isMannequin) avatar = { kind: 'mannequin', params: { ...S.params } };
@@ -4744,7 +6244,7 @@ async function openProject(file, handle) {
       const old = S.customLib.get(g.id); if (old && old.custom) old.custom = null;
       const tag = S.sections.some(s => s.id === g.tag) ? g.tag : 'unsorted';
       const e = { def: { id: g.id, name: g.name, cat: 'Custom', slot: g.id, custom: true, tag, order: g.order ?? 0, thumb: g.thumb }, custom: null, mesh: null,
-        fileBuf: g.buf, fileName: g.fileName, saved: { place: g.place, pose: g.pose, fit: g.fit }, sculptDelta: g.sculpt || null, maps: g.maps || null, added: Date.now() };
+        fileBuf: g.buf, fileName: g.fileName, saved: { place: g.place, pose: g.pose, fit: g.fit }, sculptDelta: g.sculpt || null, maps: g.maps || null, blend: g.blend ?? undefined, blendW: g.blendW || null, kind: g.kind || undefined, acc: g.acc || null, noRecv: !!g.noRecv, noCast: !!g.noCast, lforce: g.lforce || null, added: Date.now() };
       S.customLib.set(g.id, e); saveItem(e);
     }
     renderLibrary();
@@ -5031,6 +6531,9 @@ function openItemMenu(id, anchor) {
   const m = document.createElement('div'); m.className = 'menu'; m.id = 'itemMenu'; m.setAttribute('role', 'menu');
   m.innerHTML = `<button type="button" role="menuitem" data-act="rename">${MI('<path d="M4 16h3.2L16 7.2 12.8 4 4 12.8V16Z"/><path d="m11.2 5.6 3.2 3.2"/>')}Rename</button>
     <button type="button" role="menuitem" data-act="info">${MI('<circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.2v.1"/>')}Garment info and maps</button><hr>
+    ${S.customLib.get(id) && S.customLib.get(id).kind === 'accessory'
+      ? `<button type="button" role="menuitem" data-act="toGar">${MI('<path d="M7 3.5 4 5.5v3l2 .5V17h8V9l2-.5v-3l-3-2c-.5 1.2-1.6 2-3 2s-2.5-.8-3-2z"/>')}Convert to garment</button><button type="button" role="menuitem" data-act="toGarCopy">${MI('<rect x="6" y="6" width="10" height="11" rx="1.5"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13"/>')}Convert copy to garment</button><hr>`
+      : `<button type="button" role="menuitem" data-act="toAcc">${MI('<path d="M6 7V5.5a4 4 0 0 1 8 0V7M4 7h12l-1 10H5z"/>')}Convert to accessory</button><button type="button" role="menuitem" data-act="toAccCopy">${MI('<rect x="6" y="6" width="10" height="11" rx="1.5"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13"/>')}Convert copy to accessory</button><hr>`}
     <button type="button" role="menuitem" data-act="exOrig">${MI('<path d="M10 3v10M6.5 9.5 10 13l3.5-3.5M3.5 14.5V17h13v-2.5"/>')}Export original</button>
     <button type="button" role="menuitem" data-act="exMorph">${MI('<path d="M10 3v10M6.5 9.5 10 13l3.5-3.5M3.5 14.5V17h13v-2.5"/><circle cx="16" cy="4" r="1.6"/>')}Export morphed</button><hr>
     <button type="button" role="menuitem" data-act="reload">${MI('<path d="M16 10a6 6 0 1 1-1.8-4.3M16 3.5v3.5h-3.5"/>')}Reload from disk</button>`;
@@ -5047,6 +6550,10 @@ function itemAction(act, id) {
   const e = S.customLib.get(id); if (!e) return;
   if (act === 'rename') startItemRename(id);
   else if (act === 'info') showGarmentWindow(id, 'info');
+  else if (act === 'toAcc') convertItem(id, true, false);
+  else if (act === 'toAccCopy') convertItem(id, true, true);
+  else if (act === 'toGar') convertItem(id, false, false);
+  else if (act === 'toGarCopy') convertItem(id, false, true);
   else if (act === 'exOrig') exportOriginal(e);
   else if (act === 'exMorph') exportMorphed(e);
   else if (act === 'reload') { S._reloadId = id; $('#reloadIn').click(); }
@@ -5346,7 +6853,7 @@ function showTip(t) {
   tipEl.style.left = x + 'px'; tipEl.style.top = Math.max(8, y) + 'px';
 }
 function hideTip() { if (tipEl) { tipEl.remove(); tipEl = null; } }
-for (const host of [$('#mPanel'), $('#mHeight')]) {
+for (const host of [$('#mPanel'), $('#mHeight'), $('#sculptBox')]) {
   host.addEventListener('pointerover', ev => { const t = ev.target.closest('[data-tip]'); if (t) showTip(t); });
   host.addEventListener('pointerout', ev => { if (ev.target.closest('[data-tip]')) hideTip(); });
   host.addEventListener('focusin', ev => { const t = ev.target.closest('[data-tip]'); if (t) showTip(t); });
@@ -5361,3 +6868,5 @@ fitSecEl.addEventListener('click', ev => { const t = ev.target.closest('.tip[dat
 document.querySelector('.inspector .scroll').addEventListener('scroll', hideTip);
 })();
 </script>
+
+</body></html>
