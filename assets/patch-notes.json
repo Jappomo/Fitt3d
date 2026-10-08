@@ -1,5 +1,39 @@
 [
   {
+    "version": "0.1.6",
+    "date": "2026-10-08",
+    "sections": [
+      {
+        "title": "Cages",
+        "notes": [
+          "New cage builder: the fabric is remeshed to an even spacing, and hems, cuffs and necklines are kept exactly on the garment's border instead of being pulled in and crumbled.",
+          "Separate pieces are sorted automatically: Shell (gets the cage), Overlay (pockets, patches, inner layers follow the shell) and Rigid (buttons, rivets, pulls ride the shell as solid objects). See and change them under Parts in Adjust fit and pose.",
+          "Pieces cut along a seam whose edges almost touch are joined, so the cage stays in one piece there.",
+          "Smoother deformation: cage frames no longer jump from one triangle to the next."
+        ]
+      },
+      {
+        "title": "Animation",
+        "notes": [
+          "New Idle animation (Animation > Idle), made for the default avatar's skeleton. It also plays on avatars rigged with Build rig; other rigs keep the simple built-in idle."
+        ]
+      },
+      {
+        "title": "Experimental",
+        "notes": [
+          "Build rig for unrigged avatars (turn it on in Settings > Experimental). Importing an avatar without a skeleton offers to build one from the default avatar: joints are placed automatically, you can move them with mirroring and test poses, and the skin weights are copied over with a Smooth weights control. The rigged avatar is saved like any imported one."
+        ]
+      },
+      {
+        "title": "Interface",
+        "notes": [
+          "Short guided tour on first launch. Restart it any time from Info > Restart tutorial.",
+          "Settings > Delete browser data clears the wardrobe library, autosaved session and settings stored in this browser, then asks to refresh."
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.1.5",
     "date": "2026-09-28",
     "sections": [

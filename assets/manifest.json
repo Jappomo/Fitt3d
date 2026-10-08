@@ -6,9 +6,19 @@
       "id": "male_01",
       "name": "Male 01",
       "file": "avatars/male_01/Male_01.fbx",
-      "maps": { "albedo": null, "normal": null, "normalScale": 1 }
+      "maps": {
+        "albedo": null,
+        "normal": null,
+        "normalScale": 1
+      }
     }
   ],
-  "animations": [],
+  "animations": [
+    {
+      "name": "Idle",
+      "file": "animations/idle_m.json",
+      "slot": "idle"
+    }
+  ],
   "garments": []
 }

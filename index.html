@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>FITT3D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -614,6 +613,32 @@ body.fit-focus #garmentSec.closed .sec-body { display: grid; }
 .row-l.off{opacity:.38;pointer-events:none}
 .ly-force.above{box-shadow:inset 0 -2px 0 var(--accent)}
 .pn-ver h5{margin:14px 0 6px;font:600 11px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#8f7cf8)}
+.mb-item[data-danger]{color:#ff8fb4}.mb-item[data-danger] svg{color:#ff8fb4}
+.mb-item[data-danger]:hover:not([disabled]){background:rgba(232,70,126,.14);color:#ffb3cc}
+.tour{position:fixed;inset:0;z-index:90;opacity:0;transition:opacity .22s ease}
+.tour.on{opacity:1}
+.tour-hole{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,9,12,.62),0 0 0 1.5px #5cc9d5,0 0 18px 2px rgba(92,201,213,.35);transition:left .32s cubic-bezier(.3,.7,.2,1),top .32s cubic-bezier(.3,.7,.2,1),width .32s cubic-bezier(.3,.7,.2,1),height .32s cubic-bezier(.3,.7,.2,1);pointer-events:none}
+.tour.center .tour-hole{box-shadow:0 0 0 9999px rgba(8,9,12,.62)}
+.tour-card{position:fixed;width:min(320px,calc(100vw - 24px));padding:18px 18px 14px;border-radius:18px;background:linear-gradient(180deg,#2d323a,#262a31);border:1px solid var(--line-2);box-shadow:0 30px 60px -18px rgba(0,0,0,.75);transition:left .32s cubic-bezier(.3,.7,.2,1),top .32s cubic-bezier(.3,.7,.2,1)}
+.tour-step{font:500 10.5px/1 var(--f-mono);letter-spacing:.06em;color:#5cc9d5;margin-bottom:10px}
+.tour-card h3{margin:0 0 8px;font:600 16px/1.25 var(--f);color:#fff}
+.tour-card p{margin:0 0 16px;font:400 13px/1.55 var(--f);color:var(--ink-2)}
+.tour-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tour-nav{display:flex;gap:6px}
+.tour-nav .btn[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.tour,.tour-hole,.tour-card{transition:none}}
+.exp-tag{display:inline-block;margin-left:8px;padding:3px 6px;border-radius:6px;background:rgba(255,184,76,.14);color:#ffc26b;font:600 9.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.mode-bar .exp-tag{margin-left:auto}
+body.rig-focus #avatarSec, body.rig-focus #layersSec, body.rig-focus #garmentSec, body.rig-focus #fitReturn { display: none !important; }
+.rig-sec{padding-top:14px}
+.rig-sec[hidden]{display:none}
+.rig-sec .sec-body{display:grid;gap:12px}
+.parts-list{gap:6px}
+.part-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 6px;border-radius:9px}
+.part-row:hover{background:var(--panel-3)}
+.pr-n{font:500 12.5px/1.2 var(--f);color:var(--ink-2);display:flex;flex-direction:column}
+.pr-n small{font:400 10.5px/1.3 var(--f-mono);color:var(--faint)}
+.part-row select{background:var(--panel-2,#22262c);color:var(--ink-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;font:500 12px/1 var(--f);max-width:130px}
 </style>
 <div id="splash" role="status" aria-live="polite" aria-label="Loading FITT3D">
   <img src="data:image/png;base64,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" alt="" width="56" height="56">
@@ -730,10 +755,12 @@ body.fit-focus #garmentSec.closed .sec-body { display: grid; }
     </section>
     <aside class="panel inspector" aria-label="Inspector">
       <div class="scroll">
+        <section class="card-sec rig-sec" id="rigSec" hidden><div class="sec-body" id="rigBox"></div></section>
         <section class="card-sec" id="avatarSec" data-col="avatar">
           <button class="sec-toggle" type="button" aria-expanded="true"><span class="chev" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 2 7 5 3.5 8"/></svg></span><h2>Avatar</h2><span class="meta" id="rigInfo"></span></button>
           <div class="sec-body" id="charSec">
             <div class="src"><b id="srcName">Avatar</b><button class="link-btn" id="mannequinBtn" type="button" hidden>Use default avatar</button></div>
+            <button class="btn block" type="button" id="buildRigBtn" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="5.5" cy="16" r="1.6"/><circle cx="14.5" cy="16" r="1.6"/><path d="M10 5.6v2.8M9 11.3l-2.6 3.3M11 11.3l2.6 3.3"/></svg>Build rig<span class="exp-tag" style="margin-left:auto">Experimental</span></button>
             <button class="btn block" type="button" id="measToggle" aria-expanded="false" aria-controls="measPanel"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="10" r="5.5"/><circle cx="8" cy="10" r="1.6"/><path d="M13.5 10h4.5v3.5M15 10v2M17 10v1.5"/></svg>Measurements<span class="tg-val" id="measHVal"></span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>
             <div class="meas-panel" id="measPanel" hidden>
             <div class="m-height" id="mHeight"></div>
@@ -1367,15 +1394,16 @@ function matte(m) {
 }
 
 /* ---------- app version + user settings (per browser, localStorage) ---------- */
-const APP_VERSION = '0.1.5';
-const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, keys: {} };
+const APP_VERSION = '0.1.6';
+const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, exp: { autoRig: false }, keys: {} };
 const SETTINGS = (() => {
   let s = null; try { s = JSON.parse(localStorage.getItem('fitt3d.settings') || 'null'); } catch (e) { /* private mode */ }
   const d = JSON.parse(JSON.stringify(SETTINGS_DEFAULT));
-  if (s && typeof s === 'object') { Object.assign(d.autosave, s.autosave || {}); Object.assign(d.render, s.render || {}); d.keys = (s.keys && typeof s.keys === 'object') ? s.keys : {}; }
+  if (s && typeof s === 'object') { Object.assign(d.autosave, s.autosave || {}); Object.assign(d.render, s.render || {}); Object.assign(d.exp, s.exp || {}); d.keys = (s.keys && typeof s.keys === 'object') ? s.keys : {}; }
   return d;
 })();
-function saveSettings() { try { localStorage.setItem('fitt3d.settings', JSON.stringify(SETTINGS)); } catch (e) { /* ok */ } }
+let WIPED = false;   // set by Settings > Delete browser data: nothing is written again until the page reloads
+function saveSettings() { if (WIPED) return; try { localStorage.setItem('fitt3d.settings', JSON.stringify(SETTINGS)); } catch (e) { /* ok */ } }
 
 /* ================= Shipped assets: public/assets/manifest.json =================
    Everything FITT3D ships with (default avatar, its maps, animation clips, demo garments)
@@ -1421,7 +1449,7 @@ async function manifestAvatarMaps() {
 
 /* animation clips: added to the Pose menu for any avatar whose bone names match */
 async function loadManifestAnimations() {
-  const m = await loadManifest(); const list = m.animations || [];
+  const m = await loadManifest(); const list = (m.animations || []).filter(a => !a.slot);
   if (!list.length || !S.skeleton || !S.charRoot) return;
   const names = new Set(S.skeleton.bones.map(b => T.PropertyBinding.sanitizeNodeName(b.name)));
   const root = S.charRoot.children[0];
@@ -1464,6 +1492,60 @@ document.addEventListener('click', async ev => {
   } catch (e) { console.error(e); toast(`Could not load ${g.name}.`); }
   finally { b.disabled = false; }
 });
+
+/* built-in animation slots (Animation > Idle ...): retargeted clips stored as world-space rotation offsets
+   from the default avatar's bind pose, rebuilt as a normal clip for any skeleton with the same joint names */
+const SLOT = {};
+const slotReady = (async () => {
+  const m = await loadManifest();
+  for (const a of (m.animations || []).filter(a => a.slot)) {
+    try { const r = await fetch(assetURL(a.file)); if (r.ok) SLOT[a.slot] = await r.json(); } catch (e) { console.warn('animation', a.file, e); }
+  }
+  if (SLOT[S.pose] && S.skeleton && !S.action) setPose(S.pose);
+})();
+function slotClip(slot) {
+  const d = SLOT[slot]; if (!d || !S.skeleton || !S.charRoot) return null;
+  if (S._slotFor !== S.skeleton) { S._slotFor = S.skeleton; S._slotClips = {}; }
+  if (slot in S._slotClips) return S._slotClips[slot];
+  const bones = S.skeleton.bones, byName = new Map(bones.map(b => [b.name, b])), have = d.bones.filter(n => byName.has(n)).length;
+  if (have < d.bones.length * 0.7) return (S._slotClips[slot] = null);
+  restPose(); S.charRoot.updateMatrixWorld(true);
+  const set = new Set(bones), depth = b => { let k = 0, p = b.parent; while (p) { k++; p = p.parent; } return k; };
+  const order = bones.slice().sort((a, b) => depth(a) - depth(b));
+  const Wr = new Map(bones.map(b => [b, b.getWorldQuaternion(new T.Quaternion())]));
+  const Lr = new Map(bones.map(b => [b, b.quaternion.clone()]));
+  const Ps = new Map(bones.map(b => [b, b.parent ? b.parent.getWorldQuaternion(new T.Quaternion()) : new T.Quaternion()]));
+  const col = new Map(d.bones.map((n, k) => [n, k]));
+  // absolute pose of the default avatar: rigs that share its joint frames (itself, or one built by Build rig) follow it whatever their bind pose
+  const RQ = d.rest ? d.rest.map(q => new T.Quaternion().fromArray(q)) : [];
+  // arms take the absolute pose (so a T-pose rig still drops its arms); everything else moves relative to its own rest
+  const ABS = new RegExp(d.absolute || '^$');
+  const raw = atob(d.q), u8 = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i);
+  const Q = new Int16Array(u8.buffer), nb = d.bones.length, N = d.frames, times = new Float32Array(N);
+  for (let f = 0; f < N; f++) times[f] = f / d.fps;
+  const vals = new Map(bones.map(b => [b, new Float32Array(N * 4)]));
+  const W = new Map(), dq = new T.Quaternion(), tmp = new T.Quaternion();
+  for (let f = 0; f < N; f++) {
+    for (const b of order) {
+      const pw = set.has(b.parent) ? W.get(b.parent) : Ps.get(b), k = col.get(b.name);
+      let w;
+      if (k !== undefined && byName.get(b.name) === b) { const o = (f * nb + k) * 4; dq.set(Q[o] / 32767, Q[o+1] / 32767, Q[o+2] / 32767, Q[o+3] / 32767).normalize(); w = dq.clone().multiply((ABS.test(b.name) && RQ[k]) || Wr.get(b)); }
+      else w = pw.clone().multiply(Lr.get(b));
+      W.set(b, w);
+      tmp.copy(pw).invert().multiply(w).normalize();
+      const v = vals.get(b); v[f*4] = tmp.x; v[f*4+1] = tmp.y; v[f*4+2] = tmp.z; v[f*4+3] = tmp.w;
+    }
+  }
+  const tracks = bones.map(b => new T.QuaternionKeyframeTrack(b.uuid + '.quaternion', times, vals.get(b)));
+  const hip = byName.get(d.hipRef);
+  if (hip && d.hip) {
+    const P0 = hip.getWorldPosition(new T.Vector3()), hh = Math.max(0.1, P0.y - (S.B ? S.B.minY : 0)), inv = new T.Matrix4().copy(hip.parent.matrixWorld).invert();
+    const pv = new Float32Array(N * 3), v = new T.Vector3();
+    for (let f = 0; f < N; f++) { v.set(P0.x + d.hip[f*3] * hh, P0.y + d.hip[f*3+1] * hh, P0.z + d.hip[f*3+2] * hh).applyMatrix4(inv); pv[f*3] = v.x; pv[f*3+1] = v.y; pv[f*3+2] = v.z; }
+    tracks.push(new T.VectorKeyframeTrack(hip.uuid + '.position', times, pv));
+  }
+  return (S._slotClips[slot] = new T.AnimationClip(d.name || slot, d.duration, tracks));
+}
 
 /* ---------------- garment catalog ---------------- */
 const ICONS = {
@@ -1874,6 +1956,7 @@ function setupChar(root, meshes, skeleton, name) {
   S.B = analyzeBody(entries, skeleton);
   meshes.forEach(m => (m.visible = $('#bodyTog').checked));
   renderCharacterPanel(name);
+  if (typeof updateRigBtn === 'function') updateRigBtn();
 }
 async function buildMannequinChar() {
   const mesh = buildMannequin(S.params, bodyMat);
@@ -1997,6 +2080,9 @@ function setPose(p) {
   S.pose = p;
   if (String(p).startsWith('clip:') && S.mixer) {
     const clip = S.clips[+p.slice(5)]; if (clip) { restPose(); S.action = S.mixer.clipAction(clip); S.action.reset().play(); }
+  } else if (typeof slotClip === 'function' && SLOT[p] && slotClip(p)) {
+    restPose(); if (!S.mixer) S.mixer = new T.AnimationMixer(S.charRoot.children[0]);
+    S.action = S.mixer.clipAction(slotClip(p)); S.action.reset().play();
   } else restPose();
   renderPoses();
 }
@@ -2017,7 +2103,9 @@ async function equipCustom(id) {
 async function importFile(file) {
   const ext = (file.name.split('.').pop() || '').toLowerCase();
   if (!['glb', 'gltf', 'fbx', 'obj'].includes(ext)) { toast('Use a .glb, .gltf, .fbx or .obj character file.'); return; }
-  return loadCharacter(file.name, await file.arrayBuffer(), false);
+  const ok = await loadCharacter(file.name, await file.arrayBuffer(), false);
+  if (ok && SETTINGS.exp.autoRig && !S.skeleton && !S.isMannequin) askBuildRig(file.name);
+  return ok;
 }
 function parseBuffer(name, buf) {
   const ext = (name.split('.').pop() || '').toLowerCase();
@@ -2126,8 +2214,8 @@ async function loadCharacter(name, buf, isDefault, opts = {}) {
       meshes = plain.filter(m => !skip.test(m.name)); if (!meshes.length) meshes = plain;
     }
     if (!meshes.length) throw new Error('nomesh');
-    if (!isDefault && typeof DB !== 'undefined') DB.putMeta('avatarFile', { name, buf, scaleMode: mode });
-    S.avatarKey = isDefault ? 'default' : name;
+    if (!isDefault && typeof DB !== 'undefined') DB.putMeta('avatarFile', { name, buf, scaleMode: mode, key: opts.key || null });
+    S.avatarKey = isDefault ? 'default' : (opts.key || name);
     S.isMannequin = false; S.isDefault = !!isDefault; S.clips = clips.filter(c => c.duration > 0.05); S.fileName = name;
     setupChar(root, meshes, skeleton, isDefault ? 'Default avatar' : name);
     S.mixer = S.clips.length ? new T.AnimationMixer(root) : null; S.action = null;
@@ -2364,6 +2452,7 @@ const FIT_TIPS = {
   'fit.ease': 'Minimum gap between the cage and the skin, in millimetres. It is always enforced: anything closer is pushed out. Raise it to leave room for layers underneath or to stop skin poking through; 0 hugs the skin.',
   'fit.conform': 'How strongly the cage is pulled in toward the body where the garment is looser than the ease. 0% keeps the original drape, 100% shrink-wraps it. Pushing out of the skin always happens, whatever this is set to.',
   'fit.proxy': 'Cell size of the low-resolution cage that drives your mesh. Smaller cages follow the body closely; larger cages keep more of the garment\'s original silhouette. Your mesh rides on the cage either way, so its folds and trims keep their shape.',
+  'fit.parts': 'The separate pieces of the model. Shell: the fabric itself, it gets the cage. Overlay: pockets, patches, collars or an inner layer sitting on the shell; they follow the shell without a cage of their own. Rigid: buttons, rivets, zipper pulls and other small hard parts; they ride on the shell as solid objects and never bend. Roles are picked automatically, change any of them here.',
   'fit.cageSrc': 'Where the cage is built from. Garment/Object follows the object\'s own shape. Avatar builds a smooth cage from the patch of skin the object covers (grown a little to close gaps), which is much easier to deform for belts, straps, harnesses and other thin or holey pieces. Very tight gaps are then harder to push through, which sculpting can fix.',
   'fit.smoothW': 'How many times the skin weights are blurred across the cage. Higher values give softer bending at shoulders, elbows and hips; lower values follow each bone more tightly.',
   'autoPose': 'Samples the outer part of each sleeve and trouser leg and sets Arms raise, Arms forward and Legs apart so the limbs sit inside them. Fine-tune the result by hand.',
@@ -2533,7 +2622,7 @@ function setSeeThrough(on) {
 }
 function closeFitting() {
   if (!F) return;
-  clearCagePreview(); if (F.snap) { snapPlane(false); drawSnap({}); } fitGizmoDetach();
+  clearCagePreview(); highlightPart(-1); if (F.snap) { snapPlane(false); drawSnap({}); } fitGizmoDetach();
   scene.remove(F.ghost);
   F.ghost.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose()); });
   F = null; S.fitting = false; setFocus();
@@ -2718,7 +2807,8 @@ function renderFitPanel() {
   $('#autoPose').hidden = !rig;
   if (s.fit.proxy === undefined) s.fit.proxy = 3;
   const cs = s.fit.cageSrc === 'avatar' ? 'avatar' : 'garment';
-  $('#fitFit').innerHTML = `<div class="row-l"><span class="lbl">Cage from${tipIcon('fit.cageSrc', 'Cage from')}</span><div class="mb-seg" role="group" aria-label="Cage source"><button type="button" data-csrc="garment" aria-pressed="${cs === 'garment'}">${F.accessory ? 'Object' : 'Garment'}</button><button type="button" data-csrc="avatar" aria-pressed="${cs === 'avatar'}">Avatar</button></div></div>` + FIT_SLIDERS.map(d => F.accessory && d[0] === 'proxy' ? ['proxy', d[1], 0.2, 8, 'cm', 0.1] : d).map(d => sliderHTML('fit', d, s.fit[d[0]], F.accessory && (d[0] === 'conform' || d[0] === 'smoothW'))).join('');
+  $('#fitFit').innerHTML = `<div class="row-l"><span class="lbl">Cage from${tipIcon('fit.cageSrc', 'Cage from')}</span><div class="mb-seg" role="group" aria-label="Cage source"><button type="button" data-csrc="garment" aria-pressed="${cs === 'garment'}">${F.accessory ? 'Object' : 'Garment'}</button><button type="button" data-csrc="avatar" aria-pressed="${cs === 'avatar'}">Avatar</button></div></div>` + FIT_SLIDERS.map(d => F.accessory && d[0] === 'proxy' ? ['proxy', d[1], 0.2, 8, 'cm', 0.1] : d).map(d => sliderHTML('fit', d, s.fit[d[0]], F.accessory && (d[0] === 'conform' || d[0] === 'smoothW'))).join('')
+    + (cs === 'avatar' ? '' : `<div id="fitParts">${partsHTML()}</div>`);
   $('#fitAccBtn').setAttribute('aria-pressed', String(!!F.accessory)); $('#fitAccTxt').textContent = F.accessory ? 'Accessory · on' : 'Import as accessory';
   $('#seeThrough').checked = F.seeThrough !== false;
   $('#bindBtn').textContent = F.accessory && (!F.editId || !F.wasAcc) ? 'Next: paint mask' : 'Done';
@@ -2733,6 +2823,39 @@ $('#fitSec').addEventListener('input', ev => {
   if (g === 'fit' && k === 'proxy') scheduleCagePreview();
   else if (cagePrev && g !== 'place') clearCagePreview(); // keep the preview until another setting is touched
 });
+/* the garment's welded parts in placed (fitting) space */
+function placedWelds() {
+  if (!F.pw) F.pw = F.src.parts.map(p => weldGeo(p.geo)); // welded once in file space, reused for every preview
+  const M = placeMatrix(F.src), v = new T.Vector3();
+  return F.pw.map(w => { const pos = new Float32Array(w.pos.length);
+    for (let i = 0; i < w.m; i++) { v.fromArray(w.pos, i * 3).applyMatrix4(M); pos[i*3] = v.x; pos[i*3+1] = v.y; pos[i*3+2] = v.z; }
+    return { pos, m: w.m, tris: w.tris }; });
+}
+/* ---------- parts list: what the cage is built from ---------- */
+let partsOpen = false;
+const partsHiMat = new T.PointsMaterial({ color: 0xa193ff, size: 4, sizeAttenuation: false, depthTest: false, transparent: true, opacity: 0.95 });
+let partsHi = null;
+function fitParts() {
+  const key = JSON.stringify([F.src.place, F.src.fit.proxy, F.src.fit.roles || {}]);
+  if (!F.parts || F.partsKey !== key) { try { F.parts = cageParts(placedWelds(), (F.src.fit.proxy || 3) / 100, F.src.fit.roles); } catch (e) { console.error(e); F.parts = []; } F.partsKey = key; }
+  return F.parts;
+}
+function partsHTML() {
+  const list = fitParts(), cnt = { shell: 0, overlay: 0, rigid: 0 }; list.forEach(p => cnt[p.role]++);
+  const sum = Object.entries(cnt).filter(([, n]) => n).map(([r, n]) => `${n} ${ROLE_LABEL[r].toLowerCase()}`).join(' · ');
+  const head = `<button class="btn block lf-toggle" type="button" id="partsToggle" aria-expanded="${partsOpen}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="9" height="9" rx="1.5"/><circle cx="14.5" cy="14.5" r="2.5"/><path d="M12 7.5h3.5V11"/></svg>Parts${tipIcon('fit.parts', 'Parts')}<span class="tg-val">${sum || 'none'}</span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 4 4 4-4"/></svg></button>`;
+  if (!partsOpen) return head;
+  const roles = F.src.fit.roles || {};
+  return head + `<div class="lf-panel parts-list">${list.map((p, i) => `<div class="part-row" data-pi="${i}"><span class="pr-n">Part ${i + 1}<small>${p.verts.toLocaleString()} v</small></span>
+    <select data-prole="${esc(p.key)}" aria-label="Role of part ${i + 1}"><option value=""${roles[p.key] ? '' : ' selected'}>Auto · ${ROLE_LABEL[p.auto]}</option>${['shell', 'overlay', 'rigid'].map(r => `<option value="${r}"${roles[p.key] === r ? ' selected' : ''}${i === 0 && r !== 'shell' ? ' disabled' : ''}>${ROLE_LABEL[r]}</option>`).join('')}</select></div>`).join('')}
+    <p class="note">Hover a part to see it. The largest part is always a shell.</p></div>`;
+}
+function highlightPart(i) {
+  if (partsHi) { scene.remove(partsHi); partsHi.geometry.dispose(); partsHi = null; }
+  const p = i >= 0 && F && F.parts && F.parts[i]; if (!p) return;
+  const g = new T.BufferGeometry(); g.setAttribute('position', new T.BufferAttribute(p.pts, 3));
+  partsHi = new T.Points(g, partsHiMat); partsHi.renderOrder = 80; scene.add(partsHi);
+}
 /* live cage preview while the Cage size slider moves */
 const cagePrevMat = new T.MeshBasicMaterial({ color: 0x5cc9d5, wireframe: true, transparent: true, opacity: 0.75 });
 let cagePrev = null, cagePrevRaf = 0, cagePrevHide = 0;
@@ -2742,15 +2865,11 @@ function scheduleCagePreview() {
   cagePrevRaf = requestAnimationFrame(() => {
     if (!F) return;
     try {
-      if (!F.pw) F.pw = F.src.parts.map(p => weldGeo(p.geo)); // welded once in file space, reused for every preview
-      const M = placeMatrix(F.src), v = new T.Vector3();
-      const welds = F.pw.map(w => { const pos = new Float32Array(w.pos.length);
-        for (let i = 0; i < w.m; i++) { v.fromArray(w.pos, i * 3).applyMatrix4(M); pos[i*3] = v.x; pos[i*3+1] = v.y; pos[i*3+2] = v.z; }
-        return { pos, m: w.m, tris: w.tris }; });
+      const welds = placedWelds();
       const none = { nearest: () => -1 }, fromAv = F.src.fit.cageSrc === 'avatar';
       let body = { fine: none, coarse: none };
       if (fromAv) { const key = JSON.stringify(F.src.pose); if (!F.prevBody || F.prevBody.key !== key) { const pb = posedBody(); F.prevBody = { key, PB: pb.PB, NB: pb.NB, fine: buildHash(pb.PB, S.B.n, 0.025), coarse: buildHash(pb.PB, S.B.n, 0.15) }; } body = F.prevBody; }
-      const px = makeCage(welds, (F.src.fit.proxy || 3) / 100, body, fromAv);
+      const px = makeCage(welds, (F.src.fit.proxy || 3) / 100, body, fromAv, F.src.fit.roles);
       const geo = new T.BufferGeometry(); geo.setAttribute('position', new T.BufferAttribute(px.P, 3)); geo.setIndex(new T.BufferAttribute(px.topo.tris, 1));
       clearCagePreview(); cagePrev = new T.Mesh(geo, cagePrevMat); cagePrev.renderOrder = 7; scene.add(cagePrev);
       const out = $('#fo-fit-proxy'); if (out) out.textContent = `${F.src.fit.proxy} cm · ${px.topo.m.toLocaleString()} pts`;
@@ -2758,6 +2877,12 @@ function scheduleCagePreview() {
   });
 }
 $('#seeThrough').addEventListener('change', ev => F && setSeeThrough(ev.target.checked));
+$('#fitSec').addEventListener('click', ev => { if (!F || !ev.target.closest('#partsToggle') || ev.target.closest('.tip')) return; partsOpen = !partsOpen; $('#fitParts').innerHTML = partsHTML(); });
+$('#fitSec').addEventListener('change', ev => { const s = ev.target.closest('[data-prole]'); if (!s || !F) return;
+  const r = F.src.fit.roles = { ...(F.src.fit.roles || {}) }; if (s.value) r[s.dataset.prole] = s.value; else delete r[s.dataset.prole];
+  highlightPart(-1); $('#fitParts').innerHTML = partsHTML(); scheduleCagePreview(); });
+$('#fitSec').addEventListener('pointerover', ev => { const r = ev.target.closest('.part-row'); if (r && F) highlightPart(+r.dataset.pi); });
+$('#fitSec').addEventListener('pointerout', ev => { const r = ev.target.closest('.part-row'); if (r && !r.contains(ev.relatedTarget)) highlightPart(-1); });
 $('#fitAccBtn').addEventListener('click', ev => { if (ev.target.closest('.tip')) return; if (F) setFitAccessory(!F.accessory); });
 $('#seeCol').addEventListener('input', () => { if (F && F.seeThrough) setSeeThrough(true); });
 $('#tipAcc').dataset.tip = 'For solid or partly solid objects: bags, helmets, belts, jewellery. They keep their modelled shape instead of being wrapped, so Conform and Weight smoothing are not used. After Next you paint the parts that should bend with the body, like straps.';
@@ -3282,7 +3407,7 @@ function pickGarmentAt(ev) {
 let downAt = null;
 stage.addEventListener('pointerdown', ev => { if (ev.target === canvas) downAt = { x: ev.clientX, y: ev.clientY, t: performance.now() }; }, true);
 stage.addEventListener('pointerup', ev => {
-  if (!downAt || ev.target !== canvas || K || S.fitting || S.accMode) { downAt = null; return; }
+  if (!downAt || ev.target !== canvas || K || S.fitting || S.accMode || S.rigging) { downAt = null; return; }
   const moved = Math.hypot(ev.clientX - downAt.x, ev.clientY - downAt.y), dt = performance.now() - downAt.t; downAt = null;
   if (moved > 5 || dt > 400) return;
   const id = pickGarmentAt(ev); if (id) selectGarment(id);
@@ -3809,6 +3934,324 @@ $('#sculptBox').addEventListener('change', ev => {
 });
 renderSculptBox(); renderLayers();
 
+/* ================= Cage builder: sort the parts, remesh the fabric =================
+   1. All parts are welded into one surface and split into connected pieces.
+   2. Each piece gets a role: shell (the fabric, gets a cage), overlay (pockets, collars, inner walls that sit on
+      the shell: no cage of its own, follows the shell), rigid (buttons, rivets, pulls: rides the shell as a
+      solid object). Roles can be overridden per piece.
+   3. The shells are remeshed to an even edge length (split / collapse / flip / relax), with their open borders
+      (hems, cuffs, necklines) resampled and kept exactly on the garment's border. */
+const ROLE_LABEL = { shell: 'Shell', overlay: 'Overlay', rigid: 'Rigid' };
+
+function cageWeldAll(welds, h) {
+  const q = 1e-4, key = new Map(), gid = welds.map(w => new Int32Array(w.m)), P = [];
+  welds.forEach((w, k) => { for (let i = 0; i < w.m; i++) {
+    const x = w.pos[i*3], y = w.pos[i*3+1], z = w.pos[i*3+2], s = Math.round(x / q) + ',' + Math.round(y / q) + ',' + Math.round(z / q);
+    let id = key.get(s); if (id === undefined) { id = P.length / 3; key.set(s, id); P.push(x, y, z); } gid[k][i] = id; } });
+  const n = P.length / 3, seen = new Set(), T3 = [];
+  welds.forEach((w, k) => { const g = gid[k];
+    for (let t = 0; t < w.tris.length; t += 3) { const a = g[w.tris[t]], b = g[w.tris[t+1]], c = g[w.tris[t+2]]; if (a === b || b === c || a === c) continue;
+      const s = [a, b, c].sort((x, y) => x - y), kk = (s[0] * n + s[1]) * n + s[2]; if (seen.has(kk)) continue; seen.add(kk); T3.push(a, b, c); } });
+  const G = { n, P: new Float64Array(P), tris: new Int32Array(T3), gid };
+  return h ? cageStitch(G, Math.min(0.25 * h, 0.004)) : G;
+}
+/* pieces cut along a seam whose border points almost touch are joined, so the cage stays in one piece there */
+function cageStitch(G, tol) {
+  const { n, P, tris } = G, ec = new Map();
+  for (let t = 0; t < tris.length; t += 3) for (let e = 0; e < 3; e++) { const a = tris[t+e], b = tris[t+(e+1)%3], k = a < b ? a * n + b : b * n + a; ec.set(k, (ec.get(k) || 0) + 1); }
+  const bset = new Set(); for (const [k, c] of ec) if (c === 1) { bset.add(Math.floor(k / n)); bset.add(k % n); }
+  const B = [...bset]; if (!B.length) return G;
+  const par = new Int32Array(n); for (let i = 0; i < n; i++) par[i] = i;
+  const find = x => { while (par[x] !== x) x = par[x] = par[par[x]]; return x; };
+  for (let t = 0; t < tris.length; t += 3) { par[find(tris[t+1])] = find(tris[t]); par[find(tris[t+2])] = find(tris[t]); }
+  const comp = new Int32Array(n); for (let i = 0; i < n; i++) comp[i] = find(i);
+  const bp = new Float32Array(B.length * 3); B.forEach((v, k) => { bp[k*3] = P[v*3]; bp[k*3+1] = P[v*3+1]; bp[k*3+2] = P[v*3+2]; });
+  const hs = buildHash(bp, B.length, Math.max(tol, 1e-4)), to = new Int32Array(n); for (let i = 0; i < n; i++) to[i] = i;
+  let joined = 0;
+  B.forEach((v, k) => { const j = hs.nearest(P[v*3], P[v*3+1], P[v*3+2], q => comp[B[q]] !== comp[v]); if (j < 0) return; const u = B[j];
+    if (Math.hypot(P[u*3]-P[v*3], P[u*3+1]-P[v*3+1], P[u*3+2]-P[v*3+2]) <= tol) { const a = Math.min(to[u], to[v]); to[u] = to[v] = a; joined++; } });
+  if (!joined) return G;
+  const T3 = [], seen = new Set();
+  for (let t = 0; t < tris.length; t += 3) { const a = to[tris[t]], b = to[tris[t+1]], c = to[tris[t+2]]; if (a === b || b === c || a === c) continue;
+    const s = [a, b, c].sort((x, y) => x - y), kk = (s[0] * n + s[1]) * n + s[2]; if (seen.has(kk)) continue; seen.add(kk); T3.push(a, b, c); }
+  return { n, P, tris: new Int32Array(T3), gid: G.gid.map(g => g.map(i => to[i])) };
+}
+
+/* ---------- connected pieces and their roles ---------- */
+function cageIslands(G, h, roles) {
+  const n = G.n, par = new Int32Array(n); for (let i = 0; i < n; i++) par[i] = i;
+  const find = x => { while (par[x] !== x) x = par[x] = par[par[x]]; return x; };
+  const tr = G.tris; for (let t = 0; t < tr.length; t += 3) { const a = find(tr[t]), b = find(tr[t+1]), c = find(tr[t+2]); par[b] = a; par[find(c)] = a; }
+  const byRoot = new Map(), comp = new Int32Array(n).fill(-1), used = new Uint8Array(n); for (let t = 0; t < tr.length; t++) used[tr[t]] = 1;
+  for (let i = 0; i < n; i++) { if (!used[i]) continue; const r = find(i); let o = byRoot.get(r); if (!o) byRoot.set(r, o = { verts: [], area: 0, tris: 0, first: i }); o.verts.push(i); }
+  const list = [...byRoot.values()]; list.forEach((o, k) => o.verts.forEach(v => (comp[v] = k)));
+  const P = G.P;
+  for (let t = 0; t < tr.length; t += 3) { const a = tr[t], b = tr[t+1], c = tr[t+2], o = list[comp[a]];
+    const ux = P[b*3]-P[a*3], uy = P[b*3+1]-P[a*3+1], uz = P[b*3+2]-P[a*3+2], vx = P[c*3]-P[a*3], vy = P[c*3+1]-P[a*3+1], vz = P[c*3+2]-P[a*3+2];
+    o.area += Math.hypot(uy*vz-uz*vy, uz*vx-ux*vz, ux*vy-uy*vx) / 2; o.tris++; }
+  for (const o of list) { const mn = [Infinity, Infinity, Infinity], mx = [-Infinity, -Infinity, -Infinity], c = [0, 0, 0];
+    for (const v of o.verts) for (let a = 0; a < 3; a++) { const x = P[v*3+a]; mn[a] = Math.min(mn[a], x); mx[a] = Math.max(mx[a], x); c[a] += x; }
+    o.diag = Math.hypot(mx[0]-mn[0], mx[1]-mn[1], mx[2]-mn[2]); o.c = c.map(x => x / o.verts.length); o.mn = mn; o.mx = mx; }
+  // stable keys: rounded centre + vertex count, so overrides survive re-imports of the same file
+  list.forEach(o => { o.key = o.c.map(x => Math.round(x * 200)).join('_') + '_' + o.verts.length; });
+  list.sort((a, b) => b.area - a.area);
+  list.forEach((o, k) => { o.comp = k; o.verts.forEach(v => (comp[v] = k)); });
+  const main = list[0];
+  // the main shell's surface, for the overlay test
+  const mv = main.verts, mp = new Float32Array(mv.length * 3); mv.forEach((v, k) => { mp[k*3] = P[v*3]; mp[k*3+1] = P[v*3+1]; mp[k*3+2] = P[v*3+2]; });
+  let el = 0, ec = 0; for (let t = 0; t < tr.length && ec < 4000; t += 3) if (comp[tr[t]] === 0) { el += Math.hypot(P[tr[t]*3]-P[tr[t+1]*3], P[tr[t]*3+1]-P[tr[t+1]*3+1], P[tr[t]*3+2]-P[tr[t+1]*3+2]); ec++; }
+  const reach = 1.5 * h + (ec ? el / ec : 0), mh = buildHash(mp, mv.length, reach);
+  for (const o of list) {
+    let auto;
+    if (o === main) auto = 'shell';
+    else if (o.diag < 2.2 * h || o.area < (1.1 * h) ** 2) auto = 'rigid';
+    else {
+      const step = Math.max(1, Math.floor(o.verts.length / 400)); let near = 0, tot = 0;
+      for (let k = 0; k < o.verts.length; k += step) { const v = o.verts[k], j = mh.nearest(P[v*3], P[v*3+1], P[v*3+2]); tot++;
+        if (j >= 0 && Math.hypot(mp[j*3]-P[v*3], mp[j*3+1]-P[v*3+1], mp[j*3+2]-P[v*3+2]) <= reach) near++; }
+      auto = near / tot >= 0.7 ? 'overlay' : 'shell';
+    }
+    o.auto = auto; o.role = (roles && roles[o.key]) || auto;
+    if (o === main && o.role !== 'shell') o.role = 'shell';   // something has to carry the cage
+  }
+  return { list, comp };
+}
+
+/* ---------- isotropic remeshing (Botsch & Kobbelt) with a locked, resampled border ---------- */
+function remeshSurface(P0, T0, h, iters = 6) {
+  const n0 = P0.length / 3, lo = 0.8 * h, hi = 4 / 3 * h;
+  let X = Array.from(P0), dead = [];
+  const F = [], vf = Array.from({ length: n0 }, () => []);
+  for (let t = 0; t < T0.length; t += 3) { const f = F.length; F.push([T0[t], T0[t+1], T0[t+2]]); vf[T0[t]].push(f); vf[T0[t+1]].push(f); vf[T0[t+2]].push(f); }
+  for (let i = 0; i < n0; i++) dead.push(0);
+  // original surface for projection
+  const oVt = Array.from({ length: n0 }, () => []); for (let t = 0; t < T0.length; t += 3) { oVt[T0[t]].push(t / 3); oVt[T0[t+1]].push(t / 3); oVt[T0[t+2]].push(t / 3); }
+  const P0f = new Float32Array(P0), oh = buildHash(P0f, n0, Math.max(h, 0.01)), ohc = buildHash(P0f, n0, Math.max(h * 6, 0.12));
+  const ec0 = new Map(), ekey = (a, b) => a < b ? a * 67108864 + b : b * 67108864 + a;
+  for (let t = 0; t < T0.length; t += 3) for (let e = 0; e < 3; e++) { const k = ekey(T0[t+e], T0[t+(e+1)%3]); ec0.set(k, (ec0.get(k) || 0) + 1); }
+  const bNbr = new Map(); let nonMan = new Set();
+  for (const [k, c] of ec0) { const a = Math.floor(k / 67108864), b = k % 67108864;
+    if (c === 1) { if (!bNbr.has(a)) bNbr.set(a, []); if (!bNbr.has(b)) bNbr.set(b, []); bNbr.get(a).push(b); bNbr.get(b).push(a); }
+    else if (c > 2) { nonMan.add(a); nonMan.add(b); } }
+  const bVerts = [...bNbr.keys()], bPos = new Float32Array(bVerts.length * 3); bVerts.forEach((v, k) => { bPos[k*3] = P0[v*3]; bPos[k*3+1] = P0[v*3+1]; bPos[k*3+2] = P0[v*3+2]; });
+  const bh = bVerts.length ? buildHash(bPos, bVerts.length, Math.max(h, 0.01)) : null, bhc = bVerts.length ? buildHash(bPos, bVerts.length, Math.max(h * 6, 0.12)) : null;
+  // corners of the border (sharp turns) and non-manifold points never move
+  const locked = new Uint8Array(n0 * 4);
+  for (const [v, nb] of bNbr) {
+    if (nb.length !== 2) { locked[v] = 1; continue; }
+    const a = nb[0], b = nb[1];
+    const ux = P0[v*3]-P0[a*3], uy = P0[v*3+1]-P0[a*3+1], uz = P0[v*3+2]-P0[a*3+2], wx = P0[b*3]-P0[v*3], wy = P0[b*3+1]-P0[v*3+1], wz = P0[b*3+2]-P0[v*3+2];
+    const c = (ux*wx + uy*wy + uz*wz) / ((Math.hypot(ux, uy, uz) * Math.hypot(wx, wy, wz)) || 1); if (c < 0.5) locked[v] = 1;
+  }
+  for (const v of nonMan) locked[v] = 1;
+  const cp = [0, 0, 0];
+  const projSurf = (x, y, z) => {
+    let v = oh.nearest(x, y, z); if (v < 0) v = ohc.nearest(x, y, z); if (v < 0) { cp[0] = x; cp[1] = y; cp[2] = z; return cp; }
+    let bd = Infinity; const cand = new Set(oVt[v]);
+    for (const t of oVt[v]) for (let e = 0; e < 3; e++) for (const t2 of oVt[T0[t*3+e]]) cand.add(t2);
+    for (const t of cand) { const a = T0[t*3], b = T0[t*3+1], c = T0[t*3+2], br = closestBary(x, y, z, P0, a, b, c);
+      const qx = br[0]*P0[a*3]+br[1]*P0[b*3]+br[2]*P0[c*3], qy = br[0]*P0[a*3+1]+br[1]*P0[b*3+1]+br[2]*P0[c*3+1], qz = br[0]*P0[a*3+2]+br[1]*P0[b*3+2]+br[2]*P0[c*3+2];
+      const d = (qx-x)**2 + (qy-y)**2 + (qz-z)**2; if (d < bd) { bd = d; cp[0] = qx; cp[1] = qy; cp[2] = qz; } }
+    return cp;
+  };
+  const projBorder = (x, y, z) => {
+    let k = bh.nearest(x, y, z); if (k < 0) k = bhc.nearest(x, y, z); if (k < 0) { cp[0] = x; cp[1] = y; cp[2] = z; return cp; }
+    const v0 = bVerts[k], segs = new Set(); let bd = Infinity;
+    const ring = [v0]; for (const a of bNbr.get(v0)) { ring.push(a); for (const b of bNbr.get(a)) ring.push(b); }
+    for (const a of ring) for (const b of bNbr.get(a)) segs.add(a < b ? a + ':' + b : b + ':' + a);
+    for (const s of segs) { const [a, b] = s.split(':').map(Number);
+      const ax = P0[a*3], ay = P0[a*3+1], az = P0[a*3+2], dx = P0[b*3]-ax, dy = P0[b*3+1]-ay, dz = P0[b*3+2]-az, l2 = dx*dx + dy*dy + dz*dz || 1;
+      const t = Math.max(0, Math.min(1, ((x-ax)*dx + (y-ay)*dy + (z-az)*dz) / l2)), qx = ax + dx*t, qy = ay + dy*t, qz = az + dz*t, d = (qx-x)**2 + (qy-y)**2 + (qz-z)**2;
+      if (d < bd) { bd = d; cp[0] = qx; cp[1] = qy; cp[2] = qz; } }
+    return cp;
+  };
+  // ---- topology helpers
+  const len = (a, b) => Math.hypot(X[a*3]-X[b*3], X[a*3+1]-X[b*3+1], X[a*3+2]-X[b*3+2]);
+  const nbrs = v => { const s = new Set(); for (const f of vf[v]) for (const u of F[f]) if (u !== v) s.add(u); return s; };
+  const eFaces = (a, b) => vf[a].filter(f => F[f].includes(b));
+  const isB = v => { const cnt = new Map(); for (const f of vf[v]) for (const u of F[f]) if (u !== v) cnt.set(u, (cnt.get(u) || 0) + 1); for (const c of cnt.values()) if (c === 1) return true; return false; };
+  const bNbrsNow = v => { const cnt = new Map(); for (const f of vf[v]) for (const u of F[f]) if (u !== v) cnt.set(u, (cnt.get(u) || 0) + 1); const o = []; for (const [u, c] of cnt) if (c === 1) o.push(u); return o; };
+  const fNormal = (a, b, c, pa) => { const A = pa || [X[a*3], X[a*3+1], X[a*3+2]];
+    const ux = X[b*3]-A[0], uy = X[b*3+1]-A[1], uz = X[b*3+2]-A[2], vx = X[c*3]-A[0], vy = X[c*3+1]-A[1], vz = X[c*3+2]-A[2];
+    return [uy*vz-uz*vy, uz*vx-ux*vz, ux*vy-uy*vx]; };
+  const unlink = (f, v) => { const l = vf[v], i = l.indexOf(f); if (i >= 0) l.splice(i, 1); };
+  const edges = () => { const s = new Map(); F.forEach(f => { if (!f) return; for (let e = 0; e < 3; e++) { const a = f[e], b = f[(e+1)%3]; s.set(ekey(a, b), [Math.min(a, b), Math.max(a, b)]); } }); return [...s.values()]; };
+  const isLocked = v => v < n0 && locked[v];
+  const bflag = []; // border flag per vertex, kept through splits
+  for (let i = 0; i < n0; i++) bflag.push(bNbr.has(i) ? 1 : 0);
+  // ---- split
+  const split = () => {
+    const E = edges().filter(([a, b]) => len(a, b) > hi).sort((p, q) => len(q[0], q[1]) - len(p[0], p[1]));
+    for (const [a, b] of E) {
+      const ef = eFaces(a, b); if (!ef.length || len(a, b) <= hi) continue;
+      const m = X.length / 3; X.push((X[a*3]+X[b*3]) / 2, (X[a*3+1]+X[b*3+1]) / 2, (X[a*3+2]+X[b*3+2]) / 2); vf.push([]); dead.push(0); bflag.push(ef.length === 1 ? 1 : 0);
+      for (const f of ef) { const fa = F[f], ia = fa.indexOf(a), ib = fa.indexOf(b);
+        const g = fa.slice(); g[ia] = m; const nf = F.length; F.push(g); for (const u of g) vf[u].push(nf);
+        unlink(f, b); fa[ib] = m; vf[m].push(f); }
+    }
+  };
+  // ---- collapse
+  const collapse = () => {
+    let did = 0;
+    const E = edges().filter(([a, b]) => len(a, b) < lo).sort((p, q) => len(p[0], p[1]) - len(q[0], q[1]));
+    for (const [a0, b0] of E) {
+      if (dead[a0] || dead[b0]) continue; const ef = eFaces(a0, b0); if (!ef.length || len(a0, b0) >= lo) continue;
+      const ba = isB(a0), bb = isB(b0), la = isLocked(a0), lb = isLocked(b0); if (la && lb) continue;
+      if (ba && bb && ef.length !== 1) continue;
+      let k = a0, r = b0;
+      if (lb || (bb && !ba)) { k = b0; r = a0; }
+      const kb = k === a0 ? ba : bb, rb = k === a0 ? bb : ba, kl = isLocked(k);
+      const np = (kl || (kb && !rb)) ? [X[k*3], X[k*3+1], X[k*3+2]] : [(X[k*3]+X[r*3]) / 2, (X[k*3+1]+X[r*3+1]) / 2, (X[k*3+2]+X[r*3+2]) / 2];
+      const Nk = nbrs(k), Nr = nbrs(r); let common = 0; for (const u of Nr) if (Nk.has(u)) common++;
+      if (common !== ef.length) continue;
+      let ok = true;
+      for (const u of Nr) if (u !== k && Math.hypot(np[0]-X[u*3], np[1]-X[u*3+1], np[2]-X[u*3+2]) > hi) { ok = false; break; }
+      if (ok) for (const u of Nk) if (u !== r && Math.hypot(np[0]-X[u*3], np[1]-X[u*3+1], np[2]-X[u*3+2]) > hi) { ok = false; break; }
+      if (!ok) continue;
+      // no folded triangles
+      for (const v of [k, r]) { for (const f of vf[v]) { const fa = F[f]; if (fa.includes(k) && fa.includes(r)) continue;
+        const i = fa.indexOf(v), n1 = fNormal(fa[0], fa[1], fa[2]); const sv = [X[v*3], X[v*3+1], X[v*3+2]]; X[v*3] = np[0]; X[v*3+1] = np[1]; X[v*3+2] = np[2];
+        const n2 = fNormal(fa[0], fa[1], fa[2]); X[v*3] = sv[0]; X[v*3+1] = sv[1]; X[v*3+2] = sv[2]; void i;
+        const l1 = Math.hypot(...n1), l2 = Math.hypot(...n2); if (l2 < 1e-12 || (n1[0]*n2[0] + n1[1]*n2[1] + n1[2]*n2[2]) / ((l1 * l2) || 1) < 0.3) { ok = false; break; } }
+        if (!ok) break; }
+      if (!ok) continue;
+      for (const f of ef) { for (const u of F[f]) unlink(f, u); F[f] = null; }
+      for (const f of vf[r].slice()) { const fa = F[f]; fa[fa.indexOf(r)] = k; vf[k].push(f); }
+      vf[r] = []; dead[r] = 1; X[k*3] = np[0]; X[k*3+1] = np[1]; X[k*3+2] = np[2];
+      if (rb) bflag[k] = 1;
+      did++;
+    }
+    return did;
+  };
+  // ---- flip toward valence 6 (4 on the border)
+  const flip = () => {
+    for (const [a, b] of edges()) {
+      const ef = eFaces(a, b); if (ef.length !== 2) continue;
+      let f1 = ef[0], f2 = ef[1], A = F[f1];
+      let ia = A.indexOf(a);
+      if (A[(ia + 1) % 3] !== b) { const t = f1; f1 = f2; f2 = t; A = F[f1]; ia = A.indexOf(a); if (A[(ia + 1) % 3] !== b) continue; }
+      const c = A[(ia + 2) % 3], Bf = F[f2], d = Bf.find(u => u !== a && u !== b); if (c === d || d === undefined) continue;
+      const Nc = nbrs(c); if (Nc.has(d)) continue;
+      const tv = v => isB(v) ? 4 : 6, va = nbrs(a).size, vb = nbrs(b).size, vc = Nc.size, vd = nbrs(d).size;
+      const before = (va - tv(a)) ** 2 + (vb - tv(b)) ** 2 + (vc - tv(c)) ** 2 + (vd - tv(d)) ** 2;
+      const after = (va - 1 - tv(a)) ** 2 + (vb - 1 - tv(b)) ** 2 + (vc + 1 - tv(c)) ** 2 + (vd + 1 - tv(d)) ** 2;
+      if (after >= before) continue;
+      const n1 = fNormal(a, b, c), n2 = fNormal(b, a, d), l1 = Math.hypot(...n1), l2 = Math.hypot(...n2);
+      if (!l1 || !l2 || (n1[0]*n2[0] + n1[1]*n2[1] + n1[2]*n2[2]) / (l1 * l2) < 0.85) continue;   // only on flat-ish spots
+      const m1 = fNormal(a, d, c), m2 = fNormal(d, b, c), avg = [n1[0]/l1 + n2[0]/l2, n1[1]/l1 + n2[1]/l2, n1[2]/l1 + n2[2]/l2];
+      if (m1[0]*avg[0] + m1[1]*avg[1] + m1[2]*avg[2] <= 0 || m2[0]*avg[0] + m2[1]*avg[1] + m2[2]*avg[2] <= 0) continue;
+      F[f1] = [a, d, c]; F[f2] = [d, b, c]; unlink(f1, b); vf[d].push(f1); unlink(f2, a); vf[c].push(f2);
+    }
+  };
+  // ---- tangential relaxation + projection
+  const relax = () => {
+    const nv = X.length / 3, Y = X.slice();
+    for (let v = 0; v < nv; v++) {
+      if (dead[v] || !vf[v].length || isLocked(v)) continue;
+      let px, py, pz;
+      if (bflag[v] && isB(v)) {
+        const bn = bNbrsNow(v); if (bn.length !== 2) continue;
+        const qx = (X[bn[0]*3] + X[bn[1]*3]) / 2, qy = (X[bn[0]*3+1] + X[bn[1]*3+1]) / 2, qz = (X[bn[0]*3+2] + X[bn[1]*3+2]) / 2;
+        const r = bh ? projBorder(X[v*3] + (qx - X[v*3]) * 0.5, X[v*3+1] + (qy - X[v*3+1]) * 0.5, X[v*3+2] + (qz - X[v*3+2]) * 0.5) : [qx, qy, qz];
+        Y[v*3] = r[0]; Y[v*3+1] = r[1]; Y[v*3+2] = r[2]; continue;
+      }
+      let sx = 0, sy = 0, sz = 0, c = 0, nx = 0, ny = 0, nz = 0;
+      for (const u of nbrs(v)) { sx += X[u*3]; sy += X[u*3+1]; sz += X[u*3+2]; c++; }
+      for (const f of vf[v]) { const n = fNormal(...F[f]); nx += n[0]; ny += n[1]; nz += n[2]; }
+      if (!c) continue; const nl = Math.hypot(nx, ny, nz) || 1; nx /= nl; ny /= nl; nz /= nl;
+      let dx = sx / c - X[v*3], dy = sy / c - X[v*3+1], dz = sz / c - X[v*3+2]; const dn = dx*nx + dy*ny + dz*nz; dx -= nx*dn; dy -= ny*dn; dz -= nz*dn;
+      px = X[v*3] + dx; py = X[v*3+1] + dy; pz = X[v*3+2] + dz;
+      const r = projSurf(px, py, pz); Y[v*3] = r[0]; Y[v*3+1] = r[1]; Y[v*3+2] = r[2];
+    }
+    X = Y;
+  };
+  // dense input: collapse hard first
+  for (let k = 0; k < 8; k++) if (!collapse()) break;
+  for (let it = 0; it < iters; it++) { split(); collapse(); flip(); relax(); }
+  // compact
+  const nv = X.length / 3, remap = new Int32Array(nv).fill(-1); let m = 0; const T3 = [];
+  for (const f of F) if (f) for (const u of f) if (remap[u] < 0) remap[u] = m++;
+  for (const f of F) if (f) T3.push(remap[f[0]], remap[f[1]], remap[f[2]]);
+  const P = new Float32Array(m * 3), border = new Uint8Array(m);
+  for (let v = 0; v < nv; v++) if (remap[v] >= 0) { const o = remap[v]; P[o*3] = X[v*3]; P[o*3+1] = X[v*3+1]; P[o*3+2] = X[v*3+2]; border[o] = (isB(v) || isLocked(v)) ? 1 : 0; }
+  return { P, tris: new Uint32Array(T3), border, m };
+}
+
+/* face orientation: outward from the body, frozen so normals stay stable through sculpting and unposing */
+function cageFaceSigns(P, tris, body) {
+  const fs = new Int8Array(tris.length / 3);
+  for (let t = 0; t < tris.length; t += 3) {
+    const a = tris[t], b = tris[t+1], c = tris[t+2];
+    const ux = P[b*3]-P[a*3], uy = P[b*3+1]-P[a*3+1], uz = P[b*3+2]-P[a*3+2], vx = P[c*3]-P[a*3], vy = P[c*3+1]-P[a*3+1], vz = P[c*3+2]-P[a*3+2];
+    const nx = uy*vz-uz*vy, ny = uz*vx-ux*vz, nz = ux*vy-uy*vx;
+    const cx = (P[a*3]+P[b*3]+P[c*3]) / 3, cy = (P[a*3+1]+P[b*3+1]+P[c*3+1]) / 3, cz = (P[a*3+2]+P[b*3+2]+P[c*3+2]) / 3;
+    let bi = body.fine.nearest(cx, cy, cz); if (bi < 0) bi = body.coarse.nearest(cx, cy, cz);
+    let ox = 0, oy = 1, oz = 0;
+    if (bi >= 0) { ox = cx - body.PB[bi*3]; oy = cy - body.PB[bi*3+1]; oz = cz - body.PB[bi*3+2]; if (Math.hypot(ox, oy, oz) < 0.004) { ox = body.NB[bi*3]; oy = body.NB[bi*3+1]; oz = body.NB[bi*3+2]; } }
+    fs[t/3] = nx*ox + ny*oy + nz*oz >= 0 ? 1 : -1;
+  }
+  return fs;
+}
+/* smooth the cage interior (shrink-free Taubin); the border stays on the garment's border */
+function cageSmooth(P, topo, fixed, rounds = 8) {
+  const tmp = new Float32Array(P.length);
+  for (let it = 0; it < rounds; it++) {
+    const lam = it % 2 ? -0.53 : 0.5; tmp.set(P);
+    for (let i = 0; i < topo.m; i++) { if (fixed[i]) continue; const s0 = topo.start[i], s1 = topo.start[i+1]; if (s1 === s0) continue;
+      let ax = 0, ay = 0, az = 0; for (let q = s0; q < s1; q++) { const j = topo.nbr[q]; ax += tmp[j*3]; ay += tmp[j*3+1]; az += tmp[j*3+2]; }
+      const c = s1 - s0; P[i*3] += (ax / c - tmp[i*3]) * lam; P[i*3+1] += (ay / c - tmp[i*3+1]) * lam; P[i*3+2] += (az / c - tmp[i*3+2]) * lam; }
+  }
+}
+/* remesh a surface into a finished cage (no seeds) */
+function cageFromSurface(P0, T0, h, body) {
+  const r = remeshSurface(P0 instanceof Float64Array ? P0 : new Float64Array(P0), T0, h);
+  if (r.tris.length < 24) throw new Error('cage');
+  const topo = buildTopo(r.m, r.tris);
+  cageSmooth(r.P, topo, r.border);
+  return { P: r.P, topo, fs: cageFaceSigns(r.P, r.tris, body), h, border: r.border };
+}
+/* garments and objects: sorted pieces, remeshed shells, every vertex seeded to its nearest cage point */
+function buildCage(welds, h, body, roles) {
+  const G = cageWeldAll(welds, h), I = cageIslands(G, h, roles);
+  const shellOf = new Uint8Array(I.list.length); I.list.forEach((o, k) => { shellOf[k] = o.role === 'shell' ? 1 : 0; });
+  const keep = new Int32Array(G.n).fill(-1); let m = 0; const T3 = [];
+  for (let t = 0; t < G.tris.length; t += 3) { const a = G.tris[t]; if (!shellOf[I.comp[a]]) continue; for (let e = 0; e < 3; e++) { const v = G.tris[t+e]; if (keep[v] < 0) keep[v] = m++; T3.push(keep[v]); } }
+  const SP = new Float64Array(m * 3); for (let v = 0; v < G.n; v++) if (keep[v] >= 0) { const o = keep[v]; SP[o*3] = G.P[v*3]; SP[o*3+1] = G.P[v*3+1]; SP[o*3+2] = G.P[v*3+2]; }
+  const px = cageFromSurface(SP, new Int32Array(T3), h, body);
+  const hf = buildHash(px.P, px.topo.m, h), hc = buildHash(px.P, px.topo.m, Math.max(0.15, h * 6));
+  const near = (x, y, z) => { let c = hf.nearest(x, y, z); if (c < 0) c = hc.nearest(x, y, z);
+    if (c < 0) { let bd = Infinity; for (let q = 0; q < px.topo.m; q++) { const d = (px.P[q*3]-x)**2 + (px.P[q*3+1]-y)**2 + (px.P[q*3+2]-z)**2; if (d < bd) { bd = d; c = q; } } } return c; };
+  px.seeds = welds.map(w => { const sd = new Int32Array(w.m); for (let i = 0; i < w.m; i++) sd[i] = near(w.pos[i*3], w.pos[i*3+1], w.pos[i*3+2]); return sd; });
+  // rigid pieces: per part, the welded vertices of each rigid piece move together
+  px.rigid = welds.map((w, k) => { const g = new Map(); for (let i = 0; i < w.m; i++) { const c = I.comp[G.gid[k][i]]; if (c < 0 || I.list[c].role !== 'rigid') continue; if (!g.has(c)) g.set(c, []); g.get(c).push(i); } return [...g.values()]; });
+  px.islands = I.list.map(o => ({ key: o.key, role: o.role, auto: o.auto, verts: o.verts.length, diag: o.diag, c: o.c,
+    pts: (() => { const st = Math.max(1, Math.floor(o.verts.length / 3000)), a = []; for (let k = 0; k < o.verts.length; k += st) { const v = o.verts[k]; a.push(G.P[v*3], G.P[v*3+1], G.P[v*3+2]); } return new Float32Array(a); })() }));
+  return px;
+}
+/* rigid pieces bind to one point of the cage: every vertex shares its frame, so the piece moves as a solid */
+function rigidifyBinding(bd, Wp, groups, P, N, topo) {
+  if (!groups || !groups.length) return;
+  const f = new Float32Array(12);
+  for (const g of groups) {
+    let cx = 0, cy = 0, cz = 0; for (const i of g) { cx += Wp[i*3]; cy += Wp[i*3+1]; cz += Wp[i*3+2]; } cx /= g.length; cy /= g.length; cz /= g.length;
+    let v0 = g[0], bd0 = Infinity; for (const i of g) { const d = (Wp[i*3]-cx)**2 + (Wp[i*3+1]-cy)**2 + (Wp[i*3+2]-cz)**2; if (d < bd0) { bd0 = d; v0 = i; } }
+    const t = bd.tri[v0], u = bd.bary[v0*3], v = bd.bary[v0*3+1], w = bd.bary[v0*3+2];
+    frameAt(P, N, topo.tris, t, u, v, w, f);
+    for (const i of g) {
+      bd.tri[i] = t; bd.bary[i*3] = u; bd.bary[i*3+1] = v; bd.bary[i*3+2] = w;
+      const dx = Wp[i*3] - f[0], dy = Wp[i*3+1] - f[1], dz = Wp[i*3+2] - f[2];
+      bd.off[i*3] = dx*f[3] + dy*f[4] + dz*f[5]; bd.off[i*3+1] = dx*f[6] + dy*f[7] + dz*f[8]; bd.off[i*3+2] = dx*f[9] + dy*f[10] + dz*f[11];
+    }
+  }
+}
+
+/* the detected pieces only (no cage), for the parts list in Adjust fit and pose */
+function cageParts(welds, h, roles) {
+  const G = cageWeldAll(welds, h), I = cageIslands(G, h, roles);
+  return I.list.map(o => ({ key: o.key, role: o.role, auto: o.auto, verts: o.verts.length, diag: o.diag,
+    pts: (() => { const st = Math.max(1, Math.floor(o.verts.length / 3000)), a = []; for (let k = 0; k < o.verts.length; k += st) { const v = o.verts[k]; a.push(G.P[v*3], G.P[v*3+1], G.P[v*3+2]); } return new Float32Array(a); })() }));
+}
+
 /* ================= proxy cage: low-res driver for detailed garments ================= */
 const proxyGroup = new T.Group(); proxyGroup.name = 'ProxyCages'; scene.add(proxyGroup);
 const proxyMat = new T.MeshBasicMaterial({ color: 0x3fae83, wireframe: true, transparent: true, opacity: 0.5 });
@@ -3825,7 +4268,11 @@ function buildTopo(m, tris) {
 }
 /* vertex-clustering decimation of the garment, then Taubin smoothing: a clean cage without wrinkles */
 /* cage source: the garment's own shape (default) or the patch of avatar skin it covers */
-function makeCage(welds, h, body, fromAvatar) { return fromAvatar ? avatarCage(welds, h, body) : buildProxy(welds, h, body); }
+function makeCage(welds, h, body, fromAvatar, roles) {
+  if (fromAvatar) return avatarCage(welds, h, body);
+  if (S.debugOldCage) return buildProxy(welds, h, body);
+  try { return buildCage(welds, h, body, roles); } catch (e) { console.warn('remeshed cage failed, using the grid cage', e); return buildProxy(welds, h, body); }
+}
 function bodyAdj() {
   const B = S.B; if (B._adj) return B._adj;
   const n = B.n, tri = B.tri, deg = new Int32Array(n + 1);
@@ -3859,7 +4306,7 @@ function avatarCage(welds, h, body) {
   for (const v of T3) if (remap[v] < 0) remap[v] = m++;
   const pos = new Float32Array(m * 3), lift = 0.004;
   for (let i = 0; i < n; i++) if (remap[i] >= 0) { const o = remap[i]; for (let c = 0; c < 3; c++) pos[o*3+c] = PB[i*3+c] + body.NB[i*3+c] * lift; }
-  const px = buildProxy([{ pos, m, tris: new Uint32Array(T3.map(v => remap[v])) }], h, body);
+  let px; try { px = cageFromSurface(pos, new Int32Array(T3.map(v => remap[v])), h, body); } catch (e) { px = buildProxy([{ pos, m, tris: new Uint32Array(T3.map(v => remap[v])) }], h, body); }
   // 4. seeds: nearest cage point for every object point
   const hf = buildHash(px.P, px.topo.m, px.h), hc = buildHash(px.P, px.topo.m, Math.max(0.15, px.h * 6));
   px.seeds = welds.map(w => { const sd = new Int32Array(w.m);
@@ -3930,7 +4377,29 @@ function proxyNormals(P, topo, fs, out) {
     N[a*3] += nx; N[a*3+1] += ny; N[a*3+2] += nz; N[b*3] += nx; N[b*3+1] += ny; N[b*3+2] += nz; N[c*3] += nx; N[c*3+1] += ny; N[c*3+2] += nz;
   }
   for (let i = 0; i < topo.m; i++) { const l = Math.hypot(N[i*3], N[i*3+1], N[i*3+2]) || 1; N[i*3] /= l; N[i*3+1] /= l; N[i*3+2] /= l; }
+  proxyTangents(P, topo, N);
   return N;
+}
+/* a smooth tangent per cage point, carried by the point's first edge: frames no longer jump between triangles.
+   The angle to that edge is fixed the first time (a world-up based field), so the field turns with the surface. */
+function proxyTangents(P, topo, N) {
+  const m = topo.m, Tn = N.tan && N.tan.length === m * 3 ? N.tan : (N.tan = new Float32Array(m * 3));
+  const first = !topo.tanAng; if (first) topo.tanAng = new Float32Array(m);
+  for (let i = 0; i < m; i++) {
+    const nx = N[i*3], ny = N[i*3+1], nz = N[i*3+2];
+    let ex = 1, ey = 0, ez = 0;
+    if (topo.start[i+1] > topo.start[i]) { const j = topo.nbr[topo.start[i]]; ex = P[j*3]-P[i*3]; ey = P[j*3+1]-P[i*3+1]; ez = P[j*3+2]-P[i*3+2]; }
+    let d = ex*nx + ey*ny + ez*nz; ex -= nx*d; ey -= ny*d; ez -= nz*d; let l = Math.hypot(ex, ey, ez);
+    if (l < 1e-9) { ex = 1 - nx*nx; ey = -nx*ny; ez = -nx*nz; l = Math.hypot(ex, ey, ez) || 1; }
+    ex /= l; ey /= l; ez /= l;
+    const bx = ny*ez - nz*ey, by = nz*ex - nx*ez, bz = nx*ey - ny*ex;
+    if (first) {
+      let rx = 0, ry = 1, rz = 0.3; d = rx*nx + ry*ny + rz*nz; rx -= nx*d; ry -= ny*d; rz -= nz*d;
+      topo.tanAng[i] = Math.atan2(rx*bx + ry*by + rz*bz, rx*ex + ry*ey + rz*ez);
+    }
+    const c = Math.cos(topo.tanAng[i]), s = Math.sin(topo.tanAng[i]);
+    Tn[i*3] = ex*c + bx*s; Tn[i*3+1] = ey*c + by*s; Tn[i*3+2] = ez*c + bz*s;
+  }
 }
 function closestBary(px, py, pz, P, a, b, c) {
   const ax = P[a*3], ay = P[a*3+1], az = P[a*3+2];
@@ -3958,7 +4427,9 @@ function frameAt(P, N, tris, t, u, v, w, f) {
   f[0] = u*P[a*3]+v*P[b*3]+w*P[c*3]; f[1] = u*P[a*3+1]+v*P[b*3+1]+w*P[c*3+1]; f[2] = u*P[a*3+2]+v*P[b*3+2]+w*P[c*3+2];
   let nx = u*N[a*3]+v*N[b*3]+w*N[c*3], ny = u*N[a*3+1]+v*N[b*3+1]+w*N[c*3+1], nz = u*N[a*3+2]+v*N[b*3+2]+w*N[c*3+2];
   let l = Math.hypot(nx, ny, nz) || 1; nx /= l; ny /= l; nz /= l;
-  let ex = P[b*3]-P[a*3], ey = P[b*3+1]-P[a*3+1], ez = P[b*3+2]-P[a*3+2];
+  const Tg = N.tan;
+  let ex = Tg ? u*Tg[a*3]+v*Tg[b*3]+w*Tg[c*3] : P[b*3]-P[a*3], ey = Tg ? u*Tg[a*3+1]+v*Tg[b*3+1]+w*Tg[c*3+1] : P[b*3+1]-P[a*3+1], ez = Tg ? u*Tg[a*3+2]+v*Tg[b*3+2]+w*Tg[c*3+2] : P[b*3+2]-P[a*3+2];
+  if (Tg && Math.hypot(ex, ey, ez) < 1e-6) { ex = P[b*3]-P[a*3]; ey = P[b*3+1]-P[a*3+1]; ez = P[b*3+2]-P[a*3+2]; }
   const d = ex*nx + ey*ny + ez*nz; ex -= nx*d; ey -= ny*d; ez -= nz*d; l = Math.hypot(ex, ey, ez) || 1; ex /= l; ey /= l; ez /= l;
   f[3] = ex; f[4] = ey; f[5] = ez; f[6] = ny*ez - nz*ey; f[7] = nz*ex - nx*ez; f[8] = nx*ey - ny*ex; f[9] = nx; f[10] = ny; f[11] = nz;
 }
@@ -4080,14 +4551,15 @@ function fitAndBind(src) {
   const M = placeMatrix(src), NM = new T.Matrix3().getNormalMatrix(M);
   const parts = src.parts.map(part => { const geo = part.geo.clone(); geo.applyMatrix4(M); return { part, geo, W: weldGeo(geo) }; });
   // 1. cage
-  const px = makeCage(parts.map(p => p.W), h, body, src.fit.cageSrc === 'avatar');
+  const px = makeCage(parts.map(p => p.W), h, body, src.fit.cageSrc === 'avatar', src.fit.roles);
+  const rigid = px.rigid || parts.map(() => []);
   const P = px.P, topo = px.topo, pm = topo.m;
   let N = proxyNormals(P, topo, px.fs);
   const pHash = buildHash(P, pm, px.h);
   // 2. bind detail to the cage (posed space), keeping authored normals in cage frames
   const f = new Float32Array(12), nv = new T.Vector3();
   parts.forEach((p, k) => {
-    p.bd = bindToProxy(p.W.pos, p.W.m, px.seeds[k], P, N, topo, pHash);
+    p.bd = bindToProxy(p.W.pos, p.W.m, px.seeds[k], P, N, topo, pHash); rigidifyBinding(p.bd, p.W.pos, rigid[k], P, N, topo);
     const na = p.geo.attributes.normal;
     if (na) {
       p.nf = new Float32Array(na.count * 3);
@@ -4134,6 +4606,8 @@ function fitAndBind(src) {
       }
       if (round < 2) smoothField(D2, 3, p.W, 3);
     }
+    // rigid pieces take one clearance push for the whole piece
+    for (const g of rigid[parts.indexOf(p)]) { let x = 0, y = 0, z = 0; for (const i of g) { x += D2[i*3]; y += D2[i*3+1]; z += D2[i*3+2]; } x /= g.length; y /= g.length; z /= g.length; for (const i of g) { D2[i*3] = x; D2[i*3+1] = y; D2[i*3+2] = z; } }
     for (let i = 0; i < m * 3; i++) Wp[i] += D2[i];
   }
   // 5. weights: body -> cage (smoothed on the cage) -> detail (barycentric)
@@ -4163,7 +4637,7 @@ function fitAndBind(src) {
   const partSeeds = px.seeds;
   parts.forEach((p, k) => {
     // cage frames rotate between posed and bind space, so re-express authored normals too
-    const bdB = bindToProxy(p.WBind, p.W.m, partSeeds[k], PBind, NBind, topo, hashB);
+    const bdB = bindToProxy(p.WBind, p.W.m, partSeeds[k], PBind, NBind, topo, hashB); rigidifyBinding(bdB, p.WBind, rigid[k], PBind, NBind, topo);
     bdB.map = p.W.map; bdB.nf = p.nf || null;
     binds.push(bdB);
     const geo = p.part.geo.clone();
@@ -4221,13 +4695,14 @@ const newId = () => 'g' + Date.now().toString(36) + Math.random().toString(36).s
 /* ---------- per-browser storage (IndexedDB) ---------- */
 const DB = (() => {
   let dbp = null;
-  const open = () => dbp || (dbp = new Promise((res, rej) => {
+  const open = () => WIPED ? Promise.reject(new Error('wiped')) : dbp || (dbp = new Promise((res, rej) => {
     try { const r = indexedDB.open('drape-studio', 1);
       r.onupgradeneeded = () => { const d = r.result; if (!d.objectStoreNames.contains('items')) d.createObjectStore('items', { keyPath: 'id' }); if (!d.objectStoreNames.contains('meta')) d.createObjectStore('meta'); };
       r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); }
   }));
   const tx = async (store, mode, fn) => { const d = await open(); return new Promise((res, rej) => { const t = d.transaction(store, mode), req = fn(t.objectStore(store)); t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); };
   return {
+    close: async () => { if (!dbp) return; const p = dbp; dbp = null; try { (await p).close(); } catch (e) { /* ok */ } },
     putItem: it => tx('items', 'readwrite', s => s.put(it)).catch(e => console.warn('save failed', e)),
     delItem: id => tx('items', 'readwrite', s => s.delete(id)).catch(() => {}),
     allItems: () => tx('items', 'readonly', s => s.getAll()).catch(() => []),
@@ -4957,8 +5432,8 @@ function applyBind(slot, sd, v) {
 }
 /* ---------- joint picker: search + alphabetical / hierarchy list ---------- */
 let bindTree = false; try { bindTree = localStorage.getItem('fitt3d.bindTree') === '1'; } catch (e) { /* ok */ }
-function boneRows() {
-  const bones = S.skeleton.bones, set = new Set(bones), rows = [];
+function boneRows(bones = S.skeleton.bones) {
+  const set = new Set(bones), rows = [];
   if (!bindTree) return bones.map(b => ({ b, d: 0 })).sort((x, y) => shortName(x.b.name).localeCompare(shortName(y.b.name), undefined, { numeric: true, sensitivity: 'base' }));
   const kids = new Map(); const roots = [];
   for (const b of bones) { let p = b.parent; while (p && !set.has(p)) p = p.parent; if (p) { if (!kids.has(p)) kids.set(p, []); kids.get(p).push(b); } else roots.push(b); }
@@ -4973,7 +5448,8 @@ function openBindPick(btn) {
   openJointPicker(btn, { cur: sd ? (S.boneMap[slot] || {})[sd] : S.boneMap[slot], auto: bindBones.auto[key], onPick: v => applyBind(slot, sd, v) });
 }
 // searchable joint list with an A to Z / hierarchy toggle (Map binding, Parent to joint)
-function openJointPicker(btn, { cur, auto, onPick }) {
+function openJointPicker(btn, { cur, auto, onPick, bones, onHover, noAuto }) {
+  const BL = bones || S.skeleton.bones, hover = onHover || previewBone;
   closeBindPick();
   const m = document.createElement('div'); m.id = 'bindPick'; m.className = 'bind-pop';
   m.innerHTML = `<div class="bp-top"><label class="bp-search"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -4985,9 +5461,9 @@ function openJointPicker(btn, { cur, auto, onPick }) {
   const list = m.querySelector('.bp-list'), inp = m.querySelector('input');
   const draw = () => {
     const q = inp.value.trim().toLowerCase();
-    const rows = boneRows().filter(r => !q || r.b.name.toLowerCase().includes(q));
+    const rows = boneRows(BL).filter(r => !q || r.b.name.toLowerCase().includes(q));
     const hl = n => { const t = shortName(n); if (!q) return esc(t); const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
-    list.innerHTML = (q ? '' : `<button type="button" role="option" class="bp-opt auto${cur ? '' : ' on'}" data-v="">Auto<span>${auto ? esc(shortName(auto.name)) : 'not found'}</span></button>`) +
+    list.innerHTML = (q || noAuto ? '' : `<button type="button" role="option" class="bp-opt auto${cur ? '' : ' on'}" data-v="">Auto<span>${auto ? esc(shortName(auto.name)) : 'not found'}</span></button>`) +
       rows.map(r => `<button type="button" role="option" class="bp-opt${r.b.name === cur ? ' on' : ''}${auto && auto === r.b && !cur ? ' is-auto' : ''}" data-v="${esc(r.b.name)}" style="--d:${bindTree && !q ? Math.min(r.d, 14) : 0}" title="${esc(r.b.name)}">${hl(r.b.name)}</button>`).join('') +
       (rows.length ? '' : '<p class="bp-empty">No joint matches.</p>');
     const on = list.querySelector('.on'); if (on && !q) on.scrollIntoView({ block: 'center' });
@@ -5011,9 +5487,9 @@ function openJointPicker(btn, { cur, auto, onPick }) {
     else if (ev.key === 'ArrowUp') { ev.preventDefault(); (o.previousElementSibling || inp).focus(); }
     else if (ev.key === 'Escape') { closeBindPick(); btn.focus(); }
   });
-  list.addEventListener('pointerover', ev => { const o = ev.target.closest('.bp-opt'); if (o && o.dataset.v) { const b = S.skeleton.bones.find(x => x.name === o.dataset.v); previewBone(b); } });
-  list.addEventListener('pointerleave', () => previewBone(null));
-  list.addEventListener('click', ev => { const o = ev.target.closest('.bp-opt'); if (!o) return; closeBindPick(); previewBone(null); onPick(o.dataset.v); });
+  list.addEventListener('pointerover', ev => { const o = ev.target.closest('.bp-opt'); if (o && o.dataset.v) { const b = BL.find(x => x.name === o.dataset.v); hover(b); } });
+  list.addEventListener('pointerleave', () => hover(null));
+  list.addEventListener('click', ev => { const o = ev.target.closest('.bp-opt'); if (!o) return; closeBindPick(); hover(null); onPick(o.dataset.v); });
   m.querySelector('.bp-tree').addEventListener('click', ev => { bindTree = !bindTree; try { localStorage.setItem('fitt3d.bindTree', bindTree ? '1' : '0'); } catch (e) { /* ok */ }
     const t = ev.currentTarget; t.setAttribute('aria-pressed', String(bindTree)); t.title = bindTree ? 'Showing hierarchy. Click for A to Z' : 'Showing A to Z. Click for hierarchy'; draw(); inp.focus(); });
   setTimeout(() => document.addEventListener('pointerdown', bindPickOut, true), 0);
@@ -5157,7 +5633,7 @@ function bindAccessory(entry) {
   const parented = !!(A.parent && B.skinned);
   const mws = welds.map((w, k) => { const mw = new Float32Array(w.m), mk = A.mask[k]; if (!parented) for (let j = 0; j < w.map.length; j++) mw[w.map[j]] = Math.max(mw[w.map[j]], mk[j]); return mw; });
   // 1. cage
-  const px = makeCage(welds, (src.fit.proxy ?? 3) / 100, body, src.fit.cageSrc === 'avatar'), P = px.P, topo = px.topo, pm = topo.m;
+  const px = makeCage(welds, (src.fit.proxy ?? 3) / 100, body, src.fit.cageSrc === 'avatar', src.fit.roles), P = px.P, topo = px.topo, pm = topo.m;
   const cm = new Float32Array(pm), cn = new Float32Array(pm);
   welds.forEach((w, k) => { const sd = px.seeds[k]; for (let i = 0; i < w.m; i++) { const c = sd[i]; if (c >= 0) { cm[c] += mws[k][i]; cn[c]++; } } });
   for (let c = 0; c < pm; c++) cm[c] = cn[c] ? cm[c] / cn[c] : 0;
@@ -5870,6 +6346,8 @@ const MICONS = {
   notes: MIc('<path d="M5 3.5h7l3 3v10H5z"/><path d="M12 3.5v3h3M7.5 10h5M7.5 13h3.5"/>'),
   mail: MIc('<rect x="3" y="5" width="14" height="10.5" rx="2"/><path d="m3.5 6 6.5 5 6.5-5"/>'),
   heart: MIc('<path d="M10 16s-6-3.6-6-8a3.3 3.3 0 0 1 6-2 3.3 3.3 0 0 1 6 2c0 4.4-6 8-6 8z"/>'),
+  trash: MIc('<path d="M4 6h12M8 6V4.5h4V6M5.5 6l.8 10h7.4l.8-10M8.5 9v4.5M11.5 9v4.5"/>'),
+  tour: MIc('<circle cx="10" cy="10" r="7"/><path d="m8.2 7 4.6 3-4.6 3z"/>'),
   info: MIc('<circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.2v.1"/>')
 };
 
@@ -5931,9 +6409,12 @@ function menuHTML(which) {
       <div class="mb-row"><span>Antialiasing</span><button type="button" class="switch" role="switch" data-set="render.aa" aria-checked="${R.aa}" aria-label="Antialiasing"></button></div>
       ${R.aa !== renderer.getContextAttributes().antialias ? '<div class="mb-note">Applies after reload <button type="button" class="link-btn" data-act="reload">Reload now</button></div>' : ''}
       <div class="mb-row"><span>Frame cap</span>${seg('render.cap', [[0, 'Off'], [30, '30'], [60, '60']], R.cap)}</div>
-      <hr>${item('keys', MICONS.keys, 'Keyboard shortcuts…')}`;
+      <hr><div class="mb-head">Experimental</div>
+      <div class="mb-row"><span>Build rig for unrigged avatars</span><button type="button" class="switch" role="switch" data-set="exp.autoRig" aria-checked="${SETTINGS.exp.autoRig}" aria-label="Build rig for unrigged avatars"></button></div>
+      <hr>${item('keys', MICONS.keys, 'Keyboard shortcuts…')}
+      <hr>${item('wipe', MICONS.trash, 'Delete browser data…', 'data-danger')}`;
   }
-  return item('notes', MICONS.notes, 'Patch notes') +
+  return item('notes', MICONS.notes, 'Patch notes') + item('tour', MICONS.tour, 'Restart tutorial') +
     soon(MICONS.mail, 'Feedback…', 'Coming soon') + soon(MICONS.heart, 'Donate', 'Not in beta') + '<hr>' +
     item('info.about', MICONS.info, 'About FITT3D');
 }
@@ -5962,6 +6443,7 @@ document.addEventListener('click', ev => {
     if (set.classList.contains('switch')) SETTINGS[grp][key] = !SETTINGS[grp][key]; else SETTINGS[grp][key] = +set.dataset.v;
     saveSettings();
     if (grp === 'autosave' && SETTINGS.autosave.on) { S.lastAuto = Date.now(); saveSession(); }
+    if (grp === 'exp') updateRigBtn();
     refreshMenu(); return;
   }
   const it = ev.target.closest('[data-act]'); if (!it || it.disabled) return;
@@ -5969,6 +6451,8 @@ document.addEventListener('click', ev => {
   if (act === 'discord') window.open(DISCORD_URL, '_blank', 'noopener');
   else if (act === 'keys') showShortcuts();
   else if (act === 'notes') showPatchNotes();
+  else if (act === 'tour') startTour();
+  else if (act === 'wipe') wipeBrowserData();
   else if (act === 'reload') { saveSession(); location.reload(); }
   else runAction(act);
 });
@@ -6038,7 +6522,7 @@ async function saveBytes(name, data, type) {
 }
 
 /* ---------- patch notes: assets/patch-notes.json (newest first) ---------- */
-const PATCH_NOTES_FALLBACK = [{ version: '0.1.5', date: '2026-09-28', notes: ['Accessories: deform mask, lattice, sculpt, parent to joint.', 'Cage from Avatar.', 'Gizmo placement and Snap two points in Adjust fit and pose.', 'Layer forces and the Layer transition brush.', 'Smooth and clamp brushes for mask painting.'] }];
+const PATCH_NOTES_FALLBACK = [{ version: '0.1.6', date: '2026-10-08', notes: ['New cage builder that keeps hems, cuffs and necklines on the garment border.', 'Parts sorted into Shell, Overlay and Rigid, with a Parts list in Adjust fit and pose.', 'New Idle animation.', 'Experimental: build a rig for unrigged avatars.', 'Guided tour, Restart tutorial and Delete browser data.'] }];
 async function showPatchNotes() {
   let list = PATCH_NOTES_FALLBACK;
   try { const r = await fetch(assetURL('patch-notes.json'), { cache: 'no-cache' }); if (r.ok) { const j = await r.json(); if (Array.isArray(j) && j.length) list = j; } } catch (e) { /* fallback */ }
@@ -6266,6 +6750,521 @@ async function openProject(file, handle) {
   } catch (e) { console.error(e); toast('Something went wrong while opening the project.'); }
   S.busy = false; S.restoring = false;
   renderWearList(); applyView(); showProjName(); status('Ready');
+}
+
+/* ================= Experimental: quick rig for unrigged avatars =================
+   The default avatar is the reference. Its joints are carried over to the new body by matching
+   cross-sections (crotch, neck, torso, limb loops), you adjust them, then its skin weights are
+   copied: the reference is bent into the new joint layout and every vertex takes the weights of
+   the closest point on it. The result is baked into a .glb and loaded like any rigged avatar. */
+const RIG_HELPER = /twist|share|cc_base|breast|rib|eye|jaw|teeth|tongue|facial/i;
+let RIG_REF = null, RG = null;
+const rigV = (x = 0, y = 0, z = 0) => new T.Vector3(x, y, z);
+
+async function loadRigRef() {
+  if (RIG_REF) return RIG_REF;
+  const av = await defaultAvatarEntry(); if (!av) throw new Error('noref');
+  if (!S.defaultBuf) S.defaultBuf = await fetchAsset(av.file);
+  const { root } = await parseBuffer(av.file.split('/').pop(), S.defaultBuf.slice(0));
+  root.rotation.x += uprightRotation(root); root.updateMatrixWorld(true);
+  let box = new T.Box3().setFromObject(root); const h = box.getSize(rigV()).y;
+  root.scale.multiplyScalar(1.75 / h); root.updateMatrixWorld(true);
+  box = new T.Box3().setFromObject(root); const c = box.getCenter(rigV());
+  root.position.x -= c.x; root.position.z -= c.z; root.position.y -= box.min.y; root.updateMatrixWorld(true);
+  const skinned = []; root.traverse(o => { if (o.isSkinnedMesh) skinned.push(o); });
+  if (!skinned.length) throw new Error('noref');
+  rebindSkinned(skinned);
+  const skip = /eye|teeth|tooth|tongue|lash|brow|cornea|iris|pupil/i, cands = skinned.filter(m => !skip.test(m.name));
+  const main = (cands.length ? cands : skinned).reduce((a, b) => b.geometry.attributes.position.count > a.geometry.attributes.position.count ? b : a);
+  const sk = main.skeleton, meshes = (cands.length ? cands : skinned).filter(m => m.skeleton === sk);
+  const B = analyzeBody(meshes.map(m => ({ geo: m.geometry, matrix: m.bindMatrix, remap: null })), sk);
+  const set = new Set(sk.bones), nb = sk.bones.length;
+  const bones = sk.bones.map((b, i) => {
+    let p = b.parent; while (p && !set.has(p)) p = p.parent;
+    const pos = rigV(), q = new T.Quaternion(), s = rigV(); b.matrixWorld.decompose(pos, q, s);
+    return { i, name: b.name, parent: p ? sk.bones.indexOf(p) : -1, P: pos, Q: q, main: !RIG_HELPER.test(b.name) };
+  });
+  bones.forEach(b => { b.kids = bones.filter(k => k.parent === b.i).map(k => k.i); });
+  RIG_REF = { B, bones, nb, F: rigFeatures(B) };
+  return RIG_REF;
+}
+
+/* ---------- cross-section loops of a welded body cut by a plane ---------- */
+function rigSlice(B, p, nrm, maxR) {
+  const P = B.pos, tri = B.tri, n = B.n, d = new Float32Array(n);
+  for (let i = 0; i < n; i++) d[i] = (P[i*3] - p.x) * nrm.x + (P[i*3+1] - p.y) * nrm.y + (P[i*3+2] - p.z) * nrm.z;
+  const id = new Map(), pts = [], par = [], segs = [];
+  const find = x => { while (par[x] !== x) x = par[x] = par[par[x]]; return x; };
+  const ep = (a, b) => { const k = a < b ? a * n + b : b * n + a; let v = id.get(k);
+    if (v === undefined) { const t = d[a] / (d[a] - d[b]); v = pts.length / 3; pts.push(P[a*3] + (P[b*3] - P[a*3]) * t, P[a*3+1] + (P[b*3+1] - P[a*3+1]) * t, P[a*3+2] + (P[b*3+2] - P[a*3+2]) * t); par.push(v); id.set(k, v); }
+    return v; };
+  for (let t = 0; t < tri.length; t += 3) {
+    const a = tri[t], b = tri[t+1], c = tri[t+2], sa = d[a] >= 0, sb = d[b] >= 0, sc = d[c] >= 0;
+    if (sa === sb && sb === sc) continue;
+    const e = []; if (sa !== sb) e.push(ep(a, b)); if (sb !== sc) e.push(ep(b, c)); if (sc !== sa) e.push(ep(c, a));
+    if (e.length === 2) { par[find(e[0])] = find(e[1]); segs.push(e[0], e[1]); }
+  }
+  const L = new Map();
+  for (let s = 0; s < segs.length; s += 2) {
+    const a = segs[s], b = segs[s+1], r = find(a);
+    const ax = pts[a*3], ay = pts[a*3+1], az = pts[a*3+2], bx = pts[b*3], by = pts[b*3+1], bz = pts[b*3+2], len = Math.hypot(bx - ax, by - ay, bz - az);
+    let o = L.get(r); if (!o) L.set(r, o = { sx: 0, sy: 0, sz: 0, L: 0, minx: Infinity, maxx: -Infinity, minz: Infinity, maxz: -Infinity });
+    o.sx += (ax + bx) / 2 * len; o.sy += (ay + by) / 2 * len; o.sz += (az + bz) / 2 * len; o.L += len;
+    o.minx = Math.min(o.minx, ax, bx); o.maxx = Math.max(o.maxx, ax, bx); o.minz = Math.min(o.minz, az, bz); o.maxz = Math.max(o.maxz, az, bz);
+  }
+  const out = [];
+  for (const o of L.values()) { if (o.L <= 0) continue; o.c = rigV(o.sx / o.L, o.sy / o.L, o.sz / o.L); o.w = o.maxx - o.minx; o.dz = o.maxz - o.minz; if (maxR && o.c.distanceTo(p) > maxR) continue; out.push(o); }
+  return out;
+}
+const UP = rigV(0, 1, 0);
+function rigCentral(B, y) {
+  const ls = rigSlice(B, rigV(0, y, 0), UP), cx = B.cx;
+  const span = ls.filter(l => l.minx < cx && l.maxx > cx).sort((a, b) => b.L - a.L)[0];
+  return span || ls.sort((a, b) => Math.abs(a.c.x - cx) - Math.abs(b.c.x - cx))[0] || null;
+}
+function rigFeatures(B) {
+  const H = B.maxY - B.minY, cx = B.cx, P = B.pos;
+  let crotch = B.minY + 0.47 * H;
+  for (let y = B.minY + 0.3 * H; y < B.minY + 0.7 * H; y += 0.004 * H) {
+    if (rigSlice(B, rigV(0, y, 0), UP).some(l => l.minx < cx - 0.004 * H && l.maxx > cx + 0.004 * H)) { crotch = y; break; }
+  }
+  const span = B.maxY - crotch; let neck = crotch + 0.72 * span, best = Infinity;
+  for (let v = 0.6; v <= 0.9; v += 0.01) { const y = crotch + v * span, l = rigCentral(B, y); if (l && l.w < best) { best = l.w; neck = y; } }
+  const chest = rigCentral(B, crotch + 0.5 * (neck - crotch));
+  const tip = {};
+  for (const sd of [1, -1]) { let bi = -1, bv = -Infinity; for (let i = 0; i < B.n; i++) { if (P[i*3+1] < B.minY + 0.25 * H) continue; const v = sd * (P[i*3] - cx); if (v > bv) { bv = v; bi = i; } }
+    tip[sd] = bi >= 0 ? rigV(P[bi*3], P[bi*3+1], P[bi*3+2]) : rigV(cx + sd * 0.4 * H, B.minY + 0.5 * H, 0); }
+  return { H, cx, minY: B.minY, maxY: B.maxY, crotch, neck, chestW: chest ? chest.w : 0.3 * H, chestD: chest ? chest.dz : 0.2 * H, tip };
+}
+const rigSide = (R, b) => { const dx = b.P.x - R.F.cx; return Math.abs(dx) < 0.012 * R.F.H ? 0 : Math.sign(dx); };
+const ARMRX = /upperarm|lowerarm|hand|thumb|index|middle|ring|pinky/i, LEGRX = /thigh|calf|foot|ball|toe/i;
+
+/* ---------- initial joint layout on the target body ---------- */
+function rigInitialJoints(R, B) {
+  const Fr = R.F, Ft = rigFeatures(B), nb = R.nb, P = R.bones.map(b => b.P.clone());
+  const ar = [Fr.minY, Fr.crotch, Fr.neck, Fr.maxY], at = [Ft.minY, Ft.crotch, Ft.neck, Ft.maxY];
+  const mapY = y => { let k = y < ar[1] ? 0 : y < ar[2] ? 1 : 2; const t = (y - ar[k]) / ((ar[k+1] - ar[k]) || 1); return at[k] + t * (at[k+1] - at[k]); };
+  const cl = (v, a, b) => Math.max(a, Math.min(b, v));
+  const wR = cl(Ft.chestW / Fr.chestW, 0.4, 2.5), dR = cl(Ft.chestD / Fr.chestD, 0.4, 2.5);
+  const done = new Uint8Array(nb);
+  // spine, neck, head: centred in the torso section at the mapped height
+  for (const b of R.bones) {
+    if (!b.main || ARMRX.test(b.name) || LEGRX.test(b.name)) continue;
+    const yt = mapY(b.P.y), lr = rigCentral(R.B, b.P.y), lt = rigCentral(B, yt);
+    if (rigSide(R, b) === 0 && lr && lt) {
+      const w = cl(lt.w / (lr.w || 1), 0.4, 2.5), dz = cl(lt.dz / (lr.dz || 1), 0.4, 2.5);
+      P[b.i].set(lt.c.x + (b.P.x - lr.c.x) * w, yt, lt.c.z + (b.P.z - lr.c.z) * dz);
+    } else {   // clavicles
+      P[b.i].set(Ft.cx + (b.P.x - Fr.cx) * wR, yt, (lt ? lt.c.z : 0) + (b.P.z - (lr ? lr.c.z : 0)) * dR);
+    }
+    done[b.i] = 1;
+  }
+  // arms: rotate and scale the reference arm from the shoulder onto the line to the target hand tip
+  for (const sd of [1, -1]) {
+    const arm = R.bones.filter(b => b.main && ARMRX.test(b.name) && rigSide(R, b) === sd);
+    const up = arm.find(b => /upperarm/i.test(b.name)); if (!up) continue;
+    const lr = rigCentral(R.B, up.P.y), lt = rigCentral(B, mapY(up.P.y));
+    const St = rigV(Ft.cx + (up.P.x - Fr.cx) * wR, mapY(up.P.y), (lt ? lt.c.z : 0) + (up.P.z - (lr ? lr.c.z : 0)) * dR);
+    const dr = Fr.tip[sd].clone().sub(up.P), dt = Ft.tip[sd].clone().sub(St), k = dt.length() / (dr.length() || 1);
+    const Rq = new T.Quaternion().setFromUnitVectors(dr.clone().normalize(), dt.clone().normalize());
+    const map = v => St.clone().add(v.clone().sub(up.P).applyQuaternion(Rq).multiplyScalar(k));
+    const dn = dt.clone().normalize(), dnr = dr.clone().normalize(), rad = 0.09 * Ft.H;
+    P[up.i].copy(St); done[up.i] = 1;
+    let handShift = rigV(), hand = null;
+    for (const b of arm) {
+      if (b === up) continue;
+      const J = map(b.P);
+      if (/lowerarm|hand/i.test(b.name) && !/thumb|index|middle|ring|pinky/i.test(b.name)) {
+        const lt2 = rigSlice(B, J, dn, rad).sort((a, c) => a.c.distanceTo(J) - c.c.distanceTo(J))[0];
+        const lr2 = rigSlice(R.B, b.P, dnr, 0.09 * Fr.H).sort((a, c) => a.c.distanceTo(b.P) - c.c.distanceTo(b.P))[0];
+        if (lt2 && lr2) { const s = lt2.c.clone().add(b.P.clone().sub(lr2.c).applyQuaternion(Rq).multiplyScalar(k)); if (/hand/i.test(b.name)) { handShift = s.clone().sub(J); hand = b; } J.copy(s); }
+      }
+      P[b.i].copy(J); done[b.i] = 1;
+    }
+    if (hand) for (const b of arm) if (/thumb|index|middle|ring|pinky/i.test(b.name)) P[b.i].add(handShift);
+  }
+  // legs: sections just below the crotch down to the foot
+  for (const sd of [1, -1]) {
+    for (const b of R.bones) {
+      if (!b.main || !LEGRX.test(b.name) || rigSide(R, b) !== sd) continue;
+      const ys = Math.min(b.P.y, Fr.crotch - 0.03 * Fr.H), yt = mapY(b.P.y), yts = mapY(ys);
+      const px = Ft.cx + (b.P.x - Fr.cx) * wR;
+      const pick = (ls, cx, x) => ls.filter(l => sd * (l.c.x - cx) > 0).sort((a, c) => Math.abs(a.c.x - x) - Math.abs(c.c.x - x))[0];
+      const lr = pick(rigSlice(R.B, rigV(0, ys, 0), UP), Fr.cx, b.P.x), lt = pick(rigSlice(B, rigV(0, yts, 0), UP), Ft.cx, px);
+      if (lr && lt) { const w = cl(lt.w / (lr.w || 1), 0.4, 2.5); P[b.i].set(lt.c.x + (b.P.x - lr.c.x) * w, yt, lt.c.z + (b.P.z - lr.c.z) * w); }
+      else P[b.i].set(px, yt, b.P.z);
+      done[b.i] = 1;
+    }
+  }
+  return P;
+}
+
+/* ---------- joint orientations and helper joints follow the main joints ---------- */
+function rigDerive(R, Pm) {
+  const nb = R.nb, P = Pm.map(v => v.clone()), Qd = new Array(nb).fill(null), K = new Float32Array(nb).fill(1);
+  const mainAnc = i => { let p = R.bones[i].parent; while (p >= 0 && !R.bones[p].main) p = R.bones[p].parent; return p; };
+  for (const b of R.bones) {
+    if (!b.main) continue;
+    const mk = b.kids.filter(k => R.bones[k].main); let q = null;
+    if (mk.length && mainAnc(b.i) >= 0) {
+      const mr = rigV(), mt = rigV(); mk.forEach(k => { mr.add(R.bones[k].P); mt.add(Pm[k]); }); mr.divideScalar(mk.length); mt.divideScalar(mk.length);
+      const vr = mr.sub(b.P), vt = mt.sub(Pm[b.i]);
+      if (vr.length() > 1e-4 && vt.length() > 1e-4) { K[b.i] = vt.length() / vr.length(); q = new T.Quaternion().setFromUnitVectors(vr.normalize(), vt.normalize()); }
+    }
+    Qd[b.i] = q;
+  }
+  // bones without their own direction take their parent's turn
+  for (const b of R.bones) if (b.main && !Qd[b.i]) { let p = mainAnc(b.i); while (p >= 0 && !Qd[p]) p = mainAnc(p); Qd[b.i] = p >= 0 ? Qd[p].clone() : new T.Quaternion(); if (p >= 0) K[b.i] = K[p]; }
+  for (const b of R.bones) {
+    if (b.main) continue;
+    const a = mainAnc(b.i); if (a < 0) { Qd[b.i] = new T.Quaternion(); continue; }
+    Qd[b.i] = Qd[a].clone(); K[b.i] = K[a];
+    P[b.i] = Pm[a].clone().add(b.P.clone().sub(R.bones[a].P).applyQuaternion(Qd[a]).multiplyScalar(Math.min(2, K[a])));
+  }
+  const Q = R.bones.map(b => Qd[b.i].clone().multiply(b.Q));
+  return { P, Q };
+}
+
+/* ---------- skin weights from the reference ---------- */
+function rigClosestTri(p, a, b, c, out) {
+  const ab = b.clone().sub(a), ac = c.clone().sub(a), ap = p.clone().sub(a);
+  const d1 = ab.dot(ap), d2 = ac.dot(ap); if (d1 <= 0 && d2 <= 0) return out.set(1, 0, 0);
+  const bp = p.clone().sub(b), d3 = ab.dot(bp), d4 = ac.dot(bp); if (d3 >= 0 && d4 <= d3) return out.set(0, 1, 0);
+  const vc = d1 * d4 - d3 * d2; if (vc <= 0 && d1 >= 0 && d3 <= 0) { const v = d1 / (d1 - d3); return out.set(1 - v, v, 0); }
+  const cp = p.clone().sub(c), d5 = ab.dot(cp), d6 = ac.dot(cp); if (d6 >= 0 && d5 <= d6) return out.set(0, 0, 1);
+  const vb = d5 * d2 - d1 * d6; if (vb <= 0 && d2 >= 0 && d6 <= 0) { const w = d2 / (d2 - d6); return out.set(1 - w, 0, w); }
+  const va = d3 * d6 - d5 * d4; if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0) { const w = (d4 - d3) / ((d4 - d3) + (d5 - d6)); return out.set(0, 1 - w, w); }
+  const den = 1 / (va + vb + vc), v = vb * den, w = vc * den; return out.set(1 - v - w, v, w);
+}
+function rigWeights(R, B, der, smooth) {
+  const RB = R.B, nr = RB.n, nb = R.nb, Pr = RB.pos;
+  // bend the reference into the new joint layout
+  const D = R.bones.map(b => new T.Matrix4().compose(der.P[b.i], der.Q[b.i], rigV(1, 1, 1)).multiply(new T.Matrix4().compose(b.P, b.Q, rigV(1, 1, 1)).invert()).elements);
+  const Pd = new Float32Array(nr * 3);
+  for (let i = 0; i < nr; i++) {
+    const x = Pr[i*3], y = Pr[i*3+1], z = Pr[i*3+2]; let ox = 0, oy = 0, oz = 0, tw = 0;
+    for (let k = 0; k < 4; k++) { const w = RB.skinW[i*4+k]; if (!w) continue; const e = D[RB.skinIdx[i*4+k]]; tw += w;
+      ox += w * (e[0] * x + e[4] * y + e[8] * z + e[12]); oy += w * (e[1] * x + e[5] * y + e[9] * z + e[13]); oz += w * (e[2] * x + e[6] * y + e[10] * z + e[14]); }
+    if (tw) { Pd[i*3] = ox / tw; Pd[i*3+1] = oy / tw; Pd[i*3+2] = oz / tw; } else { Pd[i*3] = x; Pd[i*3+1] = y; Pd[i*3+2] = z; }
+  }
+  // vertex -> triangles
+  const tri = RB.tri, vc = new Int32Array(nr + 1);
+  for (let t = 0; t < tri.length; t++) vc[tri[t] + 1]++;
+  for (let i = 0; i < nr; i++) vc[i + 1] += vc[i];
+  const vt = new Int32Array(tri.length), fill = vc.slice(0, nr); for (let t = 0; t < tri.length; t++) vt[fill[tri[t]]++] = (t / 3) | 0;
+  const hf = buildHash(Pd, nr, 0.03), hc = buildHash(Pd, nr, 0.2);
+  const n = B.n, W = new Float32Array(n * nb), p = rigV(), a = rigV(), b = rigV(), c = rigV(), bc = rigV(), cand = new Set();
+  for (let i = 0; i < n; i++) {
+    p.set(B.pos[i*3], B.pos[i*3+1], B.pos[i*3+2]);
+    let v = hf.nearest(p.x, p.y, p.z); if (v < 0) v = hc.nearest(p.x, p.y, p.z);
+    if (v < 0) { let bd = Infinity; for (let j = 0; j < nr; j++) { const d = (Pd[j*3] - p.x) ** 2 + (Pd[j*3+1] - p.y) ** 2 + (Pd[j*3+2] - p.z) ** 2; if (d < bd) { bd = d; v = j; } } }
+    cand.clear(); for (let q = vc[v]; q < vc[v+1]; q++) { const t = vt[q]; cand.add(t); for (let s = 0; s < 3; s++) { const u = tri[t*3+s]; for (let r = vc[u]; r < vc[u+1]; r++) cand.add(vt[r]); } }
+    let bt = -1, bd = Infinity; const bb = rigV();
+    for (const t of cand) {
+      const i0 = tri[t*3], i1 = tri[t*3+1], i2 = tri[t*3+2];
+      a.set(Pd[i0*3], Pd[i0*3+1], Pd[i0*3+2]); b.set(Pd[i1*3], Pd[i1*3+1], Pd[i1*3+2]); c.set(Pd[i2*3], Pd[i2*3+1], Pd[i2*3+2]);
+      rigClosestTri(p, a, b, c, bc);
+      const qx = a.x * bc.x + b.x * bc.y + c.x * bc.z, qy = a.y * bc.x + b.y * bc.y + c.y * bc.z, qz = a.z * bc.x + b.z * bc.y + c.z * bc.z, d = (qx - p.x) ** 2 + (qy - p.y) ** 2 + (qz - p.z) ** 2;
+      if (d < bd) { bd = d; bt = t; bb.copy(bc); }
+    }
+    const vs = bt >= 0 ? [tri[bt*3], tri[bt*3+1], tri[bt*3+2]] : [v, v, v], ws = bt >= 0 ? [bb.x, bb.y, bb.z] : [1, 0, 0];
+    for (let s = 0; s < 3; s++) for (let k = 0; k < 4; k++) { const w = RB.skinW[vs[s]*4+k] * ws[s]; if (w) W[i*nb + RB.skinIdx[vs[s]*4+k]] += w; }
+  }
+  // smooth over the target surface: soft falloff on low-poly meshes
+  if (smooth > 0) {
+    const adj = bodyAdj(), tmp = new Float32Array(W.length);
+    for (let it = 0; it < smooth; it++) {
+      tmp.set(W);
+      for (let i = 0; i < n; i++) { const s0 = adj.start[i], s1 = adj.start[i+1]; if (s1 === s0) continue; const inv = 0.5 / (s1 - s0);
+        for (let j = 0; j < nb; j++) { let acc = 0; for (let q = s0; q < s1; q++) acc += tmp[adj.nbr[q]*nb + j]; W[i*nb + j] = tmp[i*nb + j] * 0.5 + acc * inv; } }
+    }
+  }
+  const idx = new Uint16Array(n * 4), wt = new Float32Array(n * 4);
+  for (let i = 0; i < n; i++) {
+    const top = [[0, -1], [0, -1], [0, -1], [0, -1]];
+    for (let j = 0; j < nb; j++) { const w = W[i*nb + j]; if (w > top[3][0]) { top[3] = [w, j]; top.sort((x, y) => y[0] - x[0]); } }
+    const s = top.reduce((x, y) => x + y[0], 0) || 1;
+    for (let k = 0; k < 4; k++) { idx[i*4+k] = Math.max(0, top[k][1]); wt[i*4+k] = top[k][0] / s; }
+  }
+  return { idx, wt };
+}
+
+/* ---------- build the skinned avatar (for preview and for the final .glb) ---------- */
+function rigBuildModel(R, der, sw) {
+  const g = new T.Group(); g.name = 'RiggedAvatar';
+  const bones = R.bones.map(b => { const o = new T.Bone(); o.name = b.name; return o; });
+  const Mw = R.bones.map(b => new T.Matrix4().compose(der.P[b.i], der.Q[b.i], rigV(1, 1, 1)));
+  R.bones.forEach(b => {
+    const L = b.parent >= 0 ? new T.Matrix4().copy(Mw[b.parent]).invert().multiply(Mw[b.i]) : Mw[b.i].clone();
+    L.decompose(bones[b.i].position, bones[b.i].quaternion, bones[b.i].scale);
+    (b.parent >= 0 ? bones[b.parent] : g).add(bones[b.i]);
+  });
+  g.updateMatrixWorld(true);
+  const skel = new T.Skeleton(bones), B = S.B, fine = B.hash, coarse = buildHash(B.pos, B.n, 0.15);
+  const src = []; S.charRoot.children[0].traverse(o => { if (o.isMesh) src.push(o); });
+  S.charRoot.updateMatrixWorld(true);
+  for (const m of src) {
+    const geo = m.geometry.clone(); geo.morphAttributes = {}; geo.applyMatrix4(m.matrixWorld);
+    const pa = geo.attributes.position, n = pa.count, si = new Uint16Array(n * 4), wv = new Float32Array(n * 4);
+    for (let i = 0; i < n; i++) {
+      let j = fine.nearest(pa.getX(i), pa.getY(i), pa.getZ(i)); if (j < 0) j = coarse.nearest(pa.getX(i), pa.getY(i), pa.getZ(i)); if (j < 0) j = 0;
+      for (let k = 0; k < 4; k++) { si[i*4+k] = sw.idx[j*4+k]; wv[i*4+k] = sw.wt[j*4+k]; }
+    }
+    geo.setAttribute('skinIndex', new T.Uint16BufferAttribute(si, 4)); geo.setAttribute('skinWeight', new T.Float32BufferAttribute(wv, 4));
+    const sm = new T.SkinnedMesh(geo, m.material); sm.name = m.name || 'Body'; sm.frustumCulled = false;
+    g.add(sm); sm.bind(skel, new T.Matrix4());
+  }
+  return { group: g, bones, skel };
+}
+
+/* ================= Rig mode UI ================= */
+const rigViz = new T.Group(); rigViz.name = 'RigJoints'; rigViz.renderOrder = 70; scene.add(rigViz);
+const rigDotGeo = new T.SphereGeometry(1, 14, 10);
+const rigMat = new T.MeshBasicMaterial({ color: 0x5cc9d5, depthTest: false, transparent: true, opacity: 0.95 });
+const rigMatSel = new T.MeshBasicMaterial({ color: 0xa193ff, depthTest: false, transparent: true, opacity: 1 });
+const rigLineMat = new T.LineBasicMaterial({ color: 0x5cc9d5, depthTest: false, transparent: true, opacity: 0.55 });
+const RIG_POSES = [['rest', 'Rest'], ['arms', 'Arms up'], ['step', 'Step'], ['squat', 'Squat']];
+const mirrorName = n => /_l$/i.test(n) ? n.replace(/_l$/i, m => m[1] === 'L' ? '_R' : '_r') : /_r$/i.test(n) ? n.replace(/_r$/i, m => m[1] === 'R' ? '_L' : '_l') : null;
+
+function updateRigBtn() {
+  const b = $('#buildRigBtn'); if (!b) return;
+  b.hidden = !(SETTINGS.exp && SETTINGS.exp.autoRig && S.B && !S.skeleton && !S.isMannequin);
+}
+async function askBuildRig(name) {
+  const root = $('#modalRoot');
+  const go = await new Promise(res => {
+    root.innerHTML = `<div class="overlay"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="rgT" aria-describedby="rgB">
+      <h3 id="rgT">No rig found <span class="exp-tag">Experimental</span></h3><p id="rgB"></p>
+      <div class="row"><button class="btn" type="button" id="rgNo">Keep static</button><button class="btn primary" type="button" id="rgYes">Build rig</button></div></div></div>`;
+    $('#rgB').textContent = `${name} has no skeleton, so it can't be posed and garments won't follow it. Build one from the default avatar? You can adjust the joints before it's applied.`;
+    const done = v => { root.innerHTML = ''; res(v); };
+    $('#rgNo').onclick = () => done(false); $('#rgYes').onclick = () => done(true); $('#rgYes').focus();
+  });
+  if (go) enterRigMode();
+}
+async function enterRigMode() {
+  if (RG || S.busy || S.fitting || S.accMode || K || !S.B || S.skeleton) return;
+  S.busy = true; status('Placing joints', true); await nextFrame();
+  let R;
+  try { R = await loadRigRef(); } catch (e) { console.error(e); S.busy = false; status('Rig reference unavailable'); toast('Could not load the default avatar to copy the rig from.'); return; }
+  const P = rigInitialJoints(R, S.B);
+  S.busy = false;
+  RG = { R, P, P0: P.map(v => v.clone()), sel: -1, mirror: true, kids: true, smooth: 3, pose: 'rest', sw: null, prev: null, name: S.fileName || 'Avatar' };
+  RG.main = R.bones.filter(b => b.main);
+  // lightweight joint list for the searchable picker
+  const obj = new Map(); RG.main.forEach(b => obj.set(b.i, { name: b.name, parent: null, i: b.i }));
+  RG.main.forEach(b => { let p = b.parent; while (p >= 0 && !R.bones[p].main) p = R.bones[p].parent; obj.get(b.i).parent = p >= 0 ? obj.get(p) : null; });
+  RG.list = [...obj.values()];
+  S.rigging = true; garmentGroup.visible = false;
+  document.body.classList.add('rig-focus'); closeMenuBar();
+  gizmo(); RG.pivot = new T.Object3D(); scene.add(RG.pivot);
+  GZ = { onChange: rigMoveJoint, onRelease: () => rigDraw(), onGrab: () => { RG.grab = RG.pivot.position.clone(); rigPose('rest'); } };
+  rigBuildViz(); rigSelect(RG.main.find(b => /pelvis/i.test(b.name))?.i ?? RG.main[0].i);
+  renderRigPanel();
+  status('Adjust the joints, then Build rig');
+}
+function exitRigMode() {
+  if (!RG) return;
+  rigPose('rest');
+  if (TC) { TC.detach(); TC.visible = false; TC.enabled = false; }
+  GZ = null; scene.remove(RG.pivot);
+  while (rigViz.children.length) { const o = rigViz.children.pop(); if (o.geometry && o.geometry !== rigDotGeo) o.geometry.dispose(); }
+  RG = null; S.rigging = false; garmentGroup.visible = true;
+  document.body.classList.remove('rig-focus'); $('#rigSec').hidden = true; closeBindPick();
+}
+function rigBuildViz() {
+  while (rigViz.children.length) { const o = rigViz.children.pop(); if (o.geometry && o.geometry !== rigDotGeo) o.geometry.dispose(); }
+  const H = RG.R.F.H;
+  RG.dots = new Map();
+  for (const b of RG.main) { const m = new T.Mesh(rigDotGeo, rigMat); m.renderOrder = 72; m.scale.setScalar((/thumb|index|middle|ring|pinky/i.test(b.name) ? 0.0045 : 0.009) * 1.75); m.userData.bi = b.i; rigViz.add(m); RG.dots.set(b.i, m); }
+  const lg = new T.BufferGeometry(); lg.setAttribute('position', new T.BufferAttribute(new Float32Array(RG.list.filter(o => o.parent).length * 6), 3));
+  RG.lines = new T.LineSegments(lg, rigLineMat); RG.lines.renderOrder = 71; rigViz.add(RG.lines);
+  rigDraw();
+}
+function rigDraw() {
+  if (!RG) return;
+  for (const [i, m] of RG.dots) { m.position.copy(RG.P[i]); m.material = i === RG.sel ? rigMatSel : rigMat; }
+  const a = RG.lines.geometry.attributes.position; let k = 0;
+  for (const o of RG.list) if (o.parent) { const p = RG.P[o.i], q = RG.P[o.parent.i]; a.setXYZ(k++, p.x, p.y, p.z); a.setXYZ(k++, q.x, q.y, q.z); }
+  a.needsUpdate = true; RG.lines.geometry.computeBoundingSphere();
+  if (RG.sel >= 0 && !(TC && TC.dragging)) RG.pivot.position.copy(RG.P[RG.sel]);
+}
+function rigSelect(i) {
+  RG.sel = i; RG.pivot.position.copy(RG.P[i]); RG.pivot.updateMatrixWorld(true);
+  TC.attach(RG.pivot); TC.setMode('translate'); TC.setSpace('world'); TC.visible = true; TC.enabled = true;
+  rigDraw(); const btn = $('#rigJoint span'); if (btn) btn.textContent = shortName(RG.R.bones[i].name);
+}
+function rigDescendants(i) { const out = []; const walk = j => RG.R.bones[j].kids.forEach(k => { if (RG.R.bones[k].main) out.push(k); walk(k); }); walk(i); return out; }
+function rigMoveJoint() {
+  if (!RG || RG.sel < 0) return;
+  const d = RG.pivot.position.clone().sub(RG.P[RG.sel]); if (d.lengthSq() < 1e-12) return;
+  const move = (i, v) => { RG.P[i].add(v); if (RG.kids) rigDescendants(i).forEach(k => RG.P[k].add(v)); };
+  move(RG.sel, d);
+  if (RG.mirror) { const mn = mirrorName(RG.R.bones[RG.sel].name), m = mn && RG.main.find(b => b.name === mn); if (m) move(m.i, rigV(-d.x, d.y, d.z)); }
+  RG.sw = null; rigDraw();
+}
+function rigPose(p) {
+  if (!RG) return;
+  RG.pose = p;
+  if (RG.prev) { scene.remove(RG.prev.group); RG.prev.group.traverse(o => { if (o.isSkinnedMesh) o.geometry.dispose(); }); RG.prev = null; }
+  S.bodyMeshes.forEach(m => { m.visible = p === 'rest' && $('#bodyTog').checked; });
+  if (p !== 'rest') {
+    const der = rigDerive(RG.R, RG.P); if (!RG.sw) RG.sw = rigWeights(RG.R, S.B, der, RG.smooth);
+    RG.prev = rigBuildModel(RG.R, der, RG.sw); scene.add(RG.prev.group);
+    const get = n => RG.prev.bones.find(b => b.name === n), fs = S.B.face || 1;
+    const X = (n, deg) => rotWorld(get(n), 1, 0, 0, -fs * deg), Z = (n, deg) => rotWorld(get(n), 0, 0, 1, deg);
+    if (p === 'arms') { Z('upperarm_l', 60); Z('upperarm_r', -60); Z('lowerarm_l', 25); Z('lowerarm_r', -25); }
+    else if (p === 'step') { X('thigh_l', 40); X('calf_l', -55); X('thigh_r', -18); X('upperarm_l', -25); X('upperarm_r', 25); X('lowerarm_l', 20); X('lowerarm_r', 20); }
+    else if (p === 'squat') { X('thigh_l', 85); X('thigh_r', 85); X('calf_l', -110); X('calf_r', -110); X('foot_l', 25); X('foot_r', 25); X('spine_01', 25); X('upperarm_l', 60); X('upperarm_r', 60); }
+    RG.prev.group.updateMatrixWorld(true);
+  }
+  rigViz.visible = p === 'rest'; if (TC) TC.visible = TC.enabled = p === 'rest' && RG.sel >= 0;
+  document.querySelectorAll('[data-rpose]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.rpose === p)));
+}
+function renderRigPanel() {
+  const sec = $('#rigSec'), box = $('#rigBox'); if (!sec || !RG) return; sec.hidden = false;
+  box.innerHTML = `<div class="mode-bar"><span>Rig</span><b>${esc(RG.name)}</b><span class="exp-tag">Experimental</span></div>
+    <p class="note">Joints are placed from the default avatar. Click a joint on the body or pick it from the list, then move it with the gizmo.</p>
+    <div class="row-l"><span>Joint</span><button type="button" class="bind-sel set" id="rigJoint" style="max-width:190px"><i aria-hidden="true"></i><span>${esc(shortName(RG.R.bones[RG.sel].name))}</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <label class="toggle"><input type="checkbox" id="rigMirror"${RG.mirror ? ' checked' : ''}> Mirror left and right</label>
+    <label class="toggle"><input type="checkbox" id="rigKids"${RG.kids ? ' checked' : ''}> Move child joints too</label>
+    <button class="link-btn" type="button" id="rigReset" style="justify-self:start">Reset joints</button>
+    <div class="row-l"><span>Test pose</span><div class="mb-seg" role="group" aria-label="Test pose">${RIG_POSES.map(([k, l]) => `<button type="button" data-rpose="${k}" aria-pressed="${RG.pose === k}">${l}</button>`).join('')}</div></div>
+    <div class="sl"><label for="rigSmooth"><span class="lbl">Smooth weights<span class="tip" tabindex="0" role="button" data-tip="How much the copied skin weights are blended across the surface. Higher gives softer bends at the joints, lower keeps them tighter." aria-label="About Smooth weights">?</span></span><output id="rigSmoothOut">${RG.smooth}</output></label>
+      <input type="range" id="rigSmooth" min="0" max="10" step="1" value="${RG.smooth}"></div>
+    <div class="done-row"><button class="btn" type="button" id="rigCancel">Cancel</button><button class="btn primary" type="button" id="rigBuild">Build rig</button></div>`;
+}
+$('#rigBox').addEventListener('click', ev => {
+  if (!RG) return;
+  const t = ev.target.closest('button'); if (!t) return;
+  if (t.id === 'rigJoint') openJointPicker(t, { cur: RG.R.bones[RG.sel].name, bones: RG.list, noAuto: true, onHover: o => rigHover(o), onPick: v => { const b = RG.main.find(x => x.name === v); if (b) { rigPose('rest'); rigSelect(b.i); } } });
+  else if (t.dataset.rpose) rigPose(t.dataset.rpose);
+  else if (t.id === 'rigReset') { RG.P = RG.P0.map(v => v.clone()); RG.sw = null; rigPose('rest'); rigSelect(RG.sel); }
+  else if (t.id === 'rigCancel') { exitRigMode(); status('Rig not built'); updateRigBtn(); }
+  else if (t.id === 'rigBuild') rigCommit();
+});
+$('#rigBox').addEventListener('change', ev => {
+  if (!RG) return;
+  if (ev.target.id === 'rigMirror') RG.mirror = ev.target.checked;
+  else if (ev.target.id === 'rigKids') RG.kids = ev.target.checked;
+  else if (ev.target.id === 'rigSmooth') { RG.smooth = +ev.target.value; RG.sw = null; if (RG.pose !== 'rest') rigPose(RG.pose); }
+});
+$('#rigBox').addEventListener('input', ev => { if (RG && ev.target.id === 'rigSmooth') $('#rigSmoothOut').textContent = ev.target.value; });
+function rigHover(o) { if (!RG) return; for (const [i, m] of RG.dots) m.scale.setScalar(m.userData.s0 || (m.userData.s0 = m.scale.x)); if (o) { const m = RG.dots.get(o.i); if (m) m.scale.setScalar(m.userData.s0 * 1.8); } }
+// click a joint in the viewport
+stage.addEventListener('pointerdown', ev => {
+  if (!RG || ev.target !== canvas || ev.button !== 0 || RG.pose !== 'rest') return;
+  if (TC && TC.axis) return;
+  const r = canvas.getBoundingClientRect(), v = rigV(); let best = -1, bd = 14 * 14;
+  for (const [i, m] of RG.dots) { v.copy(m.position).project(camera); if (v.z > 1) continue; const x = (v.x + 1) / 2 * r.width + r.left, y = (1 - v.y) / 2 * r.height + r.top, d = (x - ev.clientX) ** 2 + (y - ev.clientY) ** 2; if (d < bd) { bd = d; best = i; } }
+  if (best >= 0) { ev.preventDefault(); ev.stopPropagation(); rigSelect(best); }
+}, true);
+document.addEventListener('keydown', ev => { if (RG && ev.key === 'Escape' && !$('#modalRoot').children.length && !$('#bindPick')) { exitRigMode(); status('Rig not built'); updateRigBtn(); } });
+
+async function rigCommit() {
+  if (!RG || S.busy) return;
+  S.busy = true; status('Building the rig', true); await nextFrame(); await nextFrame();
+  let buf, name;
+  try {
+    const der = rigDerive(RG.R, RG.P), sw = rigWeights(RG.R, S.B, der, RG.smooth), model = rigBuildModel(RG.R, der, sw);
+    buf = await new Promise((res, rej) => new T.GLTFExporter().parse(model.group, res, rej, { binary: true }));
+    name = RG.name.replace(/\.[^.]+$/, '') + '.glb';
+  } catch (e) { console.error(e); S.busy = false; status('Rig build failed'); toast('Could not build the rig.'); return; }
+  const key = S.avatarKey;
+  exitRigMode(); S.busy = false;
+  const ok = await loadCharacter(name, buf, false, { scaleMode: 'keep', key });
+  if (ok) toast('Rig built. Try a pose to check it.');
+}
+$('#buildRigBtn').addEventListener('click', () => enterRigMode());
+
+/* ================= First-run tutorial ================= */
+const TOUR_KEY = 'fitt3d.tourDone';
+const TOUR = [
+  { t: 'Welcome to FITT3D', b: 'A quick tour of the main areas. It takes about a minute. You can restart it any time from Info.' },
+  { sel: '.panel.wardrobe', t: 'Wardrobe', b: 'Your garment and accessory library, grouped by type. Click an item to put it on or take it off. The three dots on an item let you rename, re-categorise or delete it.' },
+  { sel: '#importGarmentBtn', t: 'Import a garment', b: 'Bring in a .glb, .gltf, .fbx or .obj. It opens in Adjust fit and pose, where you place it on the body and build its cage. Choose Import as accessory there for belts, bags and other solid pieces.' },
+  { sel: '#stage', t: 'Viewport', b: 'Drag to orbit, right drag to pan, scroll to zoom. Click a garment on the avatar to select it.', place: 'inside' },
+  { sel: '#vtools', t: 'View tools', b: 'Hover an icon for its options: avatar and garment visibility, wireframe and X-ray, shading, and the pose or animation.' },
+  { sel: '#avatarSec', t: 'Avatar', b: 'Measurements with a tape tool, Map binding for custom skeletons, and textures for the avatar. Import your own avatar from the top bar.' },
+  { sel: '#layersSec', t: 'Layers', b: 'The stacking order from skin outward. Select a layer and use Move to push it out or in. The forces icon sets how it receives and casts push from other garments.' },
+  { sel: '#garmentSec', t: 'Garment options', b: 'Options for the selected garment: Adjust fit and pose, Sculpt, Layer transition and Layer forces. Accessories add the deform mask, lattice and Parent to joint.' },
+  { sel: '#exportBtn', t: 'Export', b: 'Export the dressed avatar as a .glb, with or without the avatar and its maps, in the pose you choose.' },
+  { sel: '#menubar', t: 'Menu', b: 'Save and open projects as .ft3d, undo and redo, autosave and viewport settings, keyboard shortcuts, and patch notes. That is it, have fun fitting.' }
+];
+let tourI = -1;
+function tourDone() { try { return localStorage.getItem(TOUR_KEY) === '1'; } catch (e) { return true; } }
+function maybeStartTour() { if (!tourDone()) startTour(); }
+function startTour() {
+  endTour(false); closeMenuBar();
+  const root = document.createElement('div'); root.id = 'tour'; root.className = 'tour';
+  root.innerHTML = `<div class="tour-hole" id="tourHole"></div>
+    <div class="tour-card" id="tourCard" role="dialog" aria-modal="true" aria-labelledby="tourT" aria-describedby="tourB">
+      <div class="tour-step" id="tourStep"></div><h3 id="tourT"></h3><p id="tourB"></p>
+      <div class="tour-row"><button class="link-btn" type="button" id="tourSkip">Skip tour</button>
+        <span class="tour-nav"><button class="btn small" type="button" id="tourBack">Back</button><button class="btn small primary" type="button" id="tourNext">Next</button></span></div>
+    </div>`;
+  document.body.appendChild(root);
+  $('#tourSkip').onclick = () => endTour(true);
+  $('#tourBack').onclick = () => tourGo(tourI - 1);
+  $('#tourNext').onclick = () => tourI >= TOUR.length - 1 ? endTour(true) : tourGo(tourI + 1);
+  document.addEventListener('keydown', tourKey, true); window.addEventListener('resize', tourPlace);
+  tourGo(0);
+  requestAnimationFrame(() => root.classList.add('on'));
+}
+function tourKey(ev) {
+  if (!$('#tour')) return;
+  if (ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); endTour(true); }
+  else if (ev.key === 'ArrowRight' || ev.key === 'Enter') { ev.preventDefault(); ev.stopPropagation(); $('#tourNext').click(); }
+  else if (ev.key === 'ArrowLeft') { ev.preventDefault(); ev.stopPropagation(); if (tourI > 0) tourGo(tourI - 1); }
+}
+function tourGo(i) {
+  tourI = Math.max(0, Math.min(TOUR.length - 1, i)); const s = TOUR[tourI];
+  if (s.sel === '#garmentSec' || s.sel === '#layersSec' || s.sel === '#avatarSec') { const el = $(s.sel); if (el) el.scrollIntoView({ block: 'nearest' }); }
+  $('#tourStep').textContent = `${tourI + 1} of ${TOUR.length}`;
+  $('#tourT').textContent = s.t; $('#tourB').textContent = s.b;
+  $('#tourBack').hidden = tourI === 0;
+  $('#tourNext').textContent = tourI === 0 ? 'Start' : tourI === TOUR.length - 1 ? 'Finish' : 'Next';
+  tourPlace(); $('#tourNext').focus();
+}
+function tourPlace() {
+  const root = $('#tour'); if (!root || tourI < 0) return;
+  const s = TOUR[tourI], hole = $('#tourHole'), card = $('#tourCard'), W = innerWidth, H = innerHeight, pad = 6, gap = 16;
+  const el = s.sel && $(s.sel), r = el && el.getBoundingClientRect(), ok = r && r.width > 4 && r.height > 4;
+  root.classList.toggle('center', !ok);
+  if (!ok) { hole.style.cssText = `left:${W / 2}px;top:${H / 2}px;width:0;height:0`; card.style.left = (W - card.offsetWidth) / 2 + 'px'; card.style.top = (H - card.offsetHeight) / 2 + 'px'; return; }
+  const x = Math.max(4, r.left - pad), y = Math.max(4, r.top - pad), w = Math.min(W - 8, r.right + pad) - x, h = Math.min(H - 8, r.bottom + pad) - y;
+  hole.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${h}px`;
+  const cw = card.offsetWidth, ch = card.offsetHeight, clampX = v => Math.max(12, Math.min(W - cw - 12, v)), clampY = v => Math.max(12, Math.min(H - ch - 12, v));
+  let cx, cy;
+  if (s.place === 'inside') { cx = x + (w - cw) / 2; cy = y + h - ch - 24; }
+  else if (x + w + gap + cw < W - 12) { cx = x + w + gap; cy = y + h / 2 - ch / 2; }
+  else if (x - gap - cw > 12) { cx = x - gap - cw; cy = y + h / 2 - ch / 2; }
+  else if (y + h + gap + ch < H - 12) { cx = x + w / 2 - cw / 2; cy = y + h + gap; }
+  else { cx = x + w / 2 - cw / 2; cy = y - gap - ch; }
+  card.style.left = clampX(cx) + 'px'; card.style.top = clampY(cy) + 'px';
+}
+function endTour(markDone) {
+  const root = $('#tour'); if (markDone) { try { localStorage.setItem(TOUR_KEY, '1'); } catch (e) { /* ok */ } }
+  document.removeEventListener('keydown', tourKey, true); window.removeEventListener('resize', tourPlace);
+  if (!root) return; tourI = -1; root.classList.remove('on'); setTimeout(() => root.remove(), 250);
+}
+
+/* ================= Settings > Delete browser data ================= */
+async function wipeBrowserData() {
+  const ok = await confirmDialog({ title: 'Delete browser data?', danger: true, confirm: 'Delete',
+    body: 'This removes everything FITT3D keeps in this browser: your wardrobe library, the autosaved session, measurements, settings and keyboard shortcuts. Projects you saved as .ft3d files are not affected. The page then needs a refresh.' });
+  if (!ok) return;
+  WIPED = true; clearTimeout(typeof saveT !== 'undefined' ? saveT : 0);
+  try { Object.keys(localStorage).filter(k => k.startsWith('fitt3d.')).forEach(k => localStorage.removeItem(k)); } catch (e) { /* ok */ }
+  try { Object.keys(sessionStorage).filter(k => k.startsWith('fitt3d.')).forEach(k => sessionStorage.removeItem(k)); } catch (e) { /* ok */ }
+  try { await DB.close(); } catch (e) { /* ok */ }
+  await new Promise(res => { try { const r = indexedDB.deleteDatabase('drape-studio'); r.onsuccess = r.onerror = r.onblocked = () => res(); } catch (e) { res(); } setTimeout(res, 2500); });
+  try { if (window.caches) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (e) { /* ok */ }
+  const root = $('#modalRoot');
+  root.innerHTML = `<div class="overlay"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="wpT" aria-describedby="wpB">
+    <h3 id="wpT">Browser data deleted</h3><p id="wpB">Refresh the page to start FITT3D clean.</p>
+    <div class="row"><button class="btn primary" type="button" id="wpGo">Refresh now</button></div></div></div>`;
+  $('#wpGo').onclick = () => location.reload(); $('#wpGo').focus();
 }
 
 /* ================= viewport tools, dialogs, garment window, session ================= */
@@ -6753,7 +7752,7 @@ function sessionState() {
     cam: { p: camera.position.toArray(), t: controls.target.toArray() }, view: { ...VIEW },
     ui: { left: $('#work').classList.contains('left-collapsed'), closed: [...document.querySelectorAll('.card-sec.closed')].map(x => x.id) } };
 }
-function saveSession() { if (S.restoring || typeof DB === 'undefined') return; DB.putMeta('session', sessionState()); }
+function saveSession() { if (WIPED || S.restoring || typeof DB === 'undefined') return; DB.putMeta('session', sessionState()); }
 try { const hot = window.claude && window.claude.hot; if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => sessionState()); } catch (e) { /* optional */ }
 addEventListener('pagehide', () => { if (SETTINGS.autosave.on) saveSession(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && SETTINGS.autosave.on) saveSession(); });
@@ -6765,7 +7764,7 @@ function applySavedUi(s) {
   VIEW.wireColor = VIEW.wireColor || '#404040'; VIEW.wireShadedColor = VIEW.wireShadedColor || '#404040'; syncWireCols();
   setOrbit(VIEW.orbit || 'default'); setCam({ fov: VIEW.fov, min: VIEW.min, max: VIEW.max }); setBg(VIEW.bg || '#2a2e35');
   if (s.ui) { $('#work').classList.toggle('left-collapsed', !!s.ui.left);
-    document.querySelectorAll('.card-sec').forEach(sec => { const c = (s.ui.closed || []).includes(sec.id); sec.classList.toggle('closed', c); sec.querySelector('.sec-toggle').setAttribute('aria-expanded', String(!c)); }); }
+    document.querySelectorAll('.card-sec').forEach(sec => { const c = (s.ui.closed || []).includes(sec.id); sec.classList.toggle('closed', c); const tg = sec.querySelector('.sec-toggle'); if (tg) tg.setAttribute('aria-expanded', String(!c)); }); }
   renderVTools();
 }
 function hotData() {
@@ -6791,7 +7790,7 @@ window.addEventListener('unhandledrejection', () => { if (S.restoring && window.
   if (saved) applySavedUi(saved);
   await nextFrame();
   let ok = false;
-  if (saved && saved.avatar === 'imported') { const f = await DB.getMeta('avatarFile'); if (f && f.buf) ok = await loadCharacter(f.name, f.buf, false, { scaleMode: f.scaleMode || 'scale' }); }
+  if (saved && saved.avatar === 'imported') { const f = await DB.getMeta('avatarFile'); if (f && f.buf) ok = await loadCharacter(f.name, f.buf, false, { scaleMode: f.scaleMode || 'scale', key: f.key || undefined }); }
   SP(48);
   if (!ok) ok = await loadDefaultAvatar();
   if (!ok) { S.busy = true; buildMannequinChar(); S.busy = false; S.pose = 'rest'; renderPoses(); frameCamera(S.params.height / 100); toast('The default avatar could not load. Using the built-in mannequin.'); }
@@ -6821,6 +7820,7 @@ window.addEventListener('unhandledrejection', () => { if (S.restoring && window.
   status('Ready');
   await nextFrame(); await nextFrame();
   if (window.fittSplash) window.fittSplash.done();
+  setTimeout(maybeStartTour, 1100);
   if (restored) toast(`Picked up where you left off: ${restored} garment${restored > 1 ? 's' : ''} back on.`);
 })();
 
@@ -6868,5 +7868,3 @@ fitSecEl.addEventListener('click', ev => { const t = ev.target.closest('.tip[dat
 document.querySelector('.inspector .scroll').addEventListener('scroll', hideTip);
 })();
 </script>
-
-</body></html>
