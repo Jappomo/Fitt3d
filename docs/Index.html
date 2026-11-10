@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Garment Fitting Engine</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Anton&family=Bungee&family=Cinzel+Decorative:wght@700&family=Creepster&family=Courier+Prime&family=DotGothic16&family=Jacquard+24&family=Megrim&family=Orbitron:wght@900&family=Rubik+Glitch&family=Special+Elite&family=Space+Grotesk:wght@700&family=Syncopate:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+    --bg-color: #1a202c;
+    --accent-cyan: #4fd1c5;
+    --text-primary: #ffffff;
+    --text-purple: #805ad5;
+
+    --active-glow-color: #553c9a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-primary);
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Mouse glow */
+.glow-overlay {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--active-glow-color, rgba(49,46,129,0.22)),
+        transparent 70%
+    );
+
+    z-index: 1;
+
+    transition: background 0.6s ease;
+}
+
+/* Main workspace */
+.container {
+    z-index: 2;
+
+    width: 100%;
+    padding: 2rem;
+
+    display: flex;
+    justify-content: center;
+}
+
+/* Main phrase */
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.8rem;
+
+    font-size: clamp(1.5rem, 5.5vw, 5rem);
+    font-weight: 900;
+
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Static words */
+.word-static {
+    display: inline-block;
+    flex-shrink: 0;
+
+    font-family: Inter, Arial, sans-serif;
+}
+
+/* Dynamic words */
+.dynamic-word {
+    display: inline-flex;
+    flex-shrink: 0;
+
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+   INDIVIDUAL LETTER CELLS
+
+   Each letter has a fixed-width space.
+   Font changes cannot move neighboring letters.
+*/
+.letter {
+    display: inline-flex;
+
+    /* Increased fixed width for extra breathing room */
+    width: 0.95em;
+    flex: 0 0 0.95em;
+
+    height: 1.3em;
+
+    justify-content: center;
+    align-items: center;
+
+    white-space: nowrap;
+    text-align: center;
+
+    letter-spacing: 0 !important;
+    line-height: 1;
+
+    /* Extra visual spacing */
+    padding: 0 0.08em;
+
+    /* No layout animation */
+    transition: none;
+}
+
+/* Word colors */
+.teal-accent {
+    color: var(--accent-cyan);
+}
+
+.purple-accent {
+    color: var(--text-purple);
+}
+
+/* Coming soon toast */
+.coming-soon-toast {
+    z-index: 10;
+
+    background: #1a202c;
+    border: 2px solid var(--accent-cyan);
+
+    color: #ffffff;
+
+    padding: 14px 36px;
+    border-radius: 4px;
+
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    box-shadow: 0 0 25px rgba(79,209,197,0.25);
+
+    pointer-events: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Mouse glow -->
+<div class="glow-overlay" id="glow"></div>
+
+<!-- Main typography -->
+<div class="container">
+
+    <h1>
+
+        <span class="word-static">One</span>
+
+        <span class="dynamic-word teal-accent" data-word="Mesh"></span>
+
+        <span class="word-static">to</span>
+
+        <span class="word-static">fit</span>
+
+        <span class="word-static">them</span>
+
+        <span class="dynamic-word purple-accent" data-word="all"></span>
+
+    </h1>
+
+</div>
+
+<!-- Coming soon -->
+<div class="coming-soon-toast">
+    Coming Soon
+</div>
+
+<script>
+
+/* =====================================
+   FONT VARIATIONS
+===================================== */
+
+const distinctFonts = [
+
+    "'Space Grotesk', sans-serif",
+    "'Orbitron', sans-serif",
+    "'Cinzel Decorative', serif",
+    "'DotGothic16', sans-serif",
+    "'Bungee', sans-serif",
+    "'Jacquard 24', system-ui",
+    "'Rubik Glitch', system-ui",
+    "'Syncopate', sans-serif",
+    "'UnifrakturMaguntia', serif",
+    "'Courier Prime', monospace",
+    "'Alex Brush', cursive",
+    "'Creepster', system-ui",
+    "'Anton', sans-serif",
+    "'Megrim', system-ui",
+    "'Special Elite', monospace"
+
+];
+
+
+/* =====================================
+   BUILD INDIVIDUAL LETTERS
+===================================== */
+
+document.querySelectorAll('.dynamic-word').forEach(word => {
+
+    const text = word.dataset.word;
+
+    [...text].forEach(character => {
+
+        const letter = document.createElement('span');
+
+        letter.className = 'letter';
+        letter.textContent = character;
+
+        word.appendChild(letter);
+
+    });
+
+});
+
+
+/* =====================================
+   INDEPENDENT FONT ANIMATION
+===================================== */
+
+const letters = document.querySelectorAll('.letter');
+
+letters.forEach(letter => {
+
+    let currentFont = '';
+
+    function changeFont() {
+
+        let nextFont;
+
+        do {
+
+            nextFont = distinctFonts[
+                Math.floor(Math.random() * distinctFonts.length)
+            ];
+
+        } while (nextFont === currentFont);
+
+        currentFont = nextFont;
+
+        letter.style.fontFamily = nextFont;
+
+    }
+
+    // Initial random font
+    changeFont();
+
+    // Independent animation speed for every letter
+    const interval = Math.floor(Math.random() * 500) + 300;
+
+    setInterval(changeFont, interval);
+
+});
+
+
+/* =====================================
+   MOUSE GLOW EFFECT
+===================================== */
+
+const glow = document.getElementById('glow');
+
+let timeoutId;
+
+const colorViolet = "rgba(49, 46, 129, 0.22)";
+const colorTeal = "rgba(79, 209, 197, 0.18)";
+
+glow.style.setProperty('--active-glow-color', colorViolet);
+
+window.addEventListener('mousemove', e => {
+
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+
+    glow.style.setProperty('--mouse-x', `${x}%`);
+    glow.style.setProperty('--mouse-y', `${y}%`);
+
+    glow.style.setProperty('--active-glow-color', colorTeal);
+
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+
+        glow.style.setProperty('--active-glow-color', colorViolet);
+
+    }, 250);
+
+});
+
+</script>
+
+</body>
+</html>
