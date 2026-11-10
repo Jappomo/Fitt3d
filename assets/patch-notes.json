@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.1.8",
+    "date": "2026-10-15",
+    "sections": [
+      {
+        "title": "Lattice deform for garments",
+        "notes": [
+          "Lattice deform in Garment options, under Sculpt garment.",
+          "Stack of up to 2 lattices.",
+          "Pre fitting or Post fitting per lattice.",
+          "Resolution: 2×2, 3×3 or Custom up to 8×8×8.",
+          "Mirror selection, Shift + click multi-select, Ctrl A select all.",
+          "Fluid move with Falloff.",
+          "Move, rotate and scale the selected points with the gizmo."
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.1.7",
     "date": "2026-10-14",
     "sections": [
