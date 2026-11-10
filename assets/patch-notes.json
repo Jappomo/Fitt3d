@@ -1,5 +1,53 @@
 [
   {
+    "version": "0.1.9",
+    "date": "2026-11-10",
+    "sections": [
+      {
+        "title": "Body zones",
+        "notes": [
+          "Body zones in the Avatar panel: Head, Upper torso, Arms, Lower torso, Hips and Legs.",
+          "Slice a zone to cut it on the nearest edge loop, with an Offset slider and draggable arrows.",
+          "Hide or show each zone, with separate left and right for Arms and Legs.",
+          "Restore a zone, or Show all and Restore all at once.",
+          "Zones only hide the avatar in the viewport: fitting and measuring still use the whole body.",
+          "Saved per avatar and in .ft3d projects.",
+          "Export option: Remove hidden zones (off by default)."
+        ]
+      },
+      {
+        "title": "Custom cages",
+        "notes": [
+          "Cage from: Garment, Avatar or Custom.",
+          "Load your own cage mesh (FBX, GLB, OBJ) by drop or browse; it is rebuilt at the Cage size density.",
+          "Shows how much of the garment the cage covers.",
+          "The cage is saved with the garment and in .ft3d projects; remove it from Garment information."
+        ]
+      },
+      {
+        "title": "Gizmo",
+        "notes": [
+          "Gizmo bar at the bottom of the viewport while fitting: Move, Rotate, Scale, Local or World space, Reset.",
+          "Hold Shift to snap; set the rotate, scale and move steps from the bar's snap settings."
+        ]
+      },
+      {
+        "title": "Interface",
+        "notes": [
+          "Layer transition: Paint transition button restyled as a tool."
+        ]
+      },
+      {
+        "title": "Experimental",
+        "notes": [
+          "Liquid cage (turn it on in Settings > Experimental): a new button under Lattice deform.",
+          "Pinch the fabric and drag it along the body or lift it off; when you let go it settles back onto the skin where you left it, like pulling up a pair of tights.",
+          "Pinch size, Reach, Stretch and Grip sliders, mirror, undo. The result is kept as sculpting on the garment."
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.1.8",
     "date": "2026-10-15",
     "sections": [

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FITT3D Garment Fitting</title>
+<meta name="description" content="FITT3D fits any 3D garment to any avatar. Import a mesh, wrap it in a cage, sculpt, layer and export rigged GLB or FBX.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* FITT3D landing. One visual world, taken from the app: dark viewport greys, violet accent, teal for live data.
+   Layout idea: a centred hero over a live wireframe cage, then left-aligned rows that read like the app's panels. */
+:root{
+  color-scheme:dark;
+  --bg:#1b1e23; --bg-2:#16181c; --panel:#262a31; --panel-2:#2d323a; --stage:#2a2e35;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.12);
+  --ink:#eceef3; --ink-2:#c3c7d0; --muted:#868c98; --faint:#5d636e;
+  --accent:#8f7cf8; --accent-2:#6c5ce7; --accent-soft:rgba(143,124,248,.16);
+  --grad:linear-gradient(135deg,#a193ff 0%,#7a66f2 55%,#6553e0 100%);
+  --teal:#5cc9d5; --pink:#ff5c93;
+  --accent-cyan:#4fd1c5; --text-purple:#805ad5;   /* headline colours from the original page */
+  --f:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r-lg:22px; --r-md:14px; --r-sm:10px;
+  --wrap:1120px; --gut:clamp(16px,4vw,40px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%}
+a{color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+p{margin:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{width:min(var(--wrap),100% - 2*var(--gut));margin-inline:auto}
+.mono{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.chip{display:inline-flex;align-items:center;gap:8px;height:26px;padding:0 10px;border-radius:8px;background:rgba(0,0,0,.28);color:var(--teal);font:500 12px/1 var(--f-mono)}
+
+/* buttons, as in the app */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;padding:0 20px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);font:500 16px/1 var(--f);text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.btn:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2)}
+.btn.primary{border:0;background:var(--grad);color:#fff;font-weight:600;box-shadow:0 14px 30px -12px rgba(110,90,240,.8),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn.primary:hover{transform:translateY(-1px)}
+.btn.big{height:58px;padding:0 30px;border-radius:16px;font-size:19px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.link{color:var(--accent);text-decoration:none;font-weight:500}
+.link:hover{text-decoration:underline}
+
+/* top bar */
+.top{position:absolute;inset:0 0 auto 0;z-index:5}
+.top .wrap{display:flex;align-items:center;gap:20px;height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 19px/1 var(--f);letter-spacing:.05em}
+.brand img{width:34px;height:auto;filter:drop-shadow(0 6px 12px rgba(90,70,230,.45))}
+.top nav{display:flex;gap:4px;margin-left:auto}
+.top nav a{padding:8px 12px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:15px}
+.top nav a:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+.top .btn{height:36px;padding:0 14px;font-size:14.5px;border-radius:10px}
+@media (max-width:720px){.top nav{display:none}.top .btn{margin-left:auto}}
+
+/* hero */
+.hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(1100px 620px at 50% 38%,#262a33 0,var(--bg) 62%);}
+#cage{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
+.hero-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:34px;min-height:100vh;min-height:100svh;padding:96px 0 72px}
+.hero .lede{max-width:34em;color:var(--ink-2);font-size:clamp(17px,1.5vw,20px);text-shadow:0 0 18px var(--bg),0 0 6px var(--bg)}
+.cta{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cta .meta{color:var(--muted);font:400 12.5px/1.5 var(--f-mono)}
+.cta .meta b{color:var(--teal);font-weight:500}
+.hud{position:absolute;bottom:18px;left:var(--gut);right:var(--gut);display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
+.hud .hint{color:var(--faint);font:400 12px/1 var(--f-mono)}
+@media (max-width:620px){.hud .hint{display:none}}
+
+/* sections */
+section{padding:clamp(56px,8vw,96px) 0}
+.sec-head{display:grid;gap:14px;max-width:760px;margin-bottom:clamp(24px,4vw,40px)}
+.sec-head .mono{color:var(--accent)}
+.sec-head h2{font-size:clamp(32px,4.6vw,58px)}
+.sec-head p{color:var(--ink-2);max-width:60ch}
+
+/* media placeholders: drawn like the app viewport, so the real captures drop straight in */
+.ph{position:relative;display:grid;place-items:center;aspect-ratio:16/10;border-radius:var(--r-lg);background:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 32px,
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/32px 100%,
+    var(--stage);
+  border:1px dashed rgba(143,124,248,.5);overflow:hidden;padding:52px 22px 26px;text-align:center}
+.ph.wide{aspect-ratio:16/9}
+.ph .chip{position:absolute;top:12px;left:12px}
+.ph .len{position:absolute;top:12px;right:12px;height:26px;display:inline-flex;align-items:center;color:var(--muted);font:400 12px/1 var(--f-mono)}
+.ph .what{display:grid;gap:10px;justify-items:center;max-width:42ch;color:var(--ink-2);font-size:15.5px;line-height:1.45}
+.ph .what svg{width:44px;height:44px;color:var(--accent)}
+.ph .what b{color:var(--ink);font-weight:600}
+
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px);list-style:none;margin:0;padding:0}
+.steps li{display:grid;gap:18px;align-content:start}
+.steps .txt{display:grid;gap:6px}
+.steps .n{font:500 13px/1 var(--f-mono);color:var(--teal);grid-row:span 2;padding-top:6px}
+.steps h3{font-size:24px}
+.steps p{color:var(--ink-2);font-size:16px;max-width:46ch}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+.film{background:var(--bg-2);border-block:1px solid var(--line)}
+
+/* feature rows */
+.rows{display:grid;gap:clamp(48px,7vw,96px)}
+.row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,5vw,64px);align-items:center}
+.row:nth-child(even) .copy{order:2}
+.row .copy{display:grid;gap:16px}
+.row h3{font-size:clamp(30px,3.6vw,46px)}
+.row .copy p{font-size:19px;max-width:28ch}
+.row p{color:var(--ink-2)}
+.row ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:9px}
+.row li{display:grid;grid-template-columns:auto 1fr;gap:12px;color:var(--ink-2);font-size:16px}
+.row li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal);margin-top:.55em}
+.row li b{color:var(--ink);font-weight:600}
+@media (max-width:860px){.row{grid-template-columns:1fr}.row:nth-child(even) .copy{order:0}}
+
+/* spec sheet */
+.specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--panel);margin-top:clamp(48px,7vw,96px)}
+.specs div{padding:22px 22px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.specs dt{color:var(--muted);font:500 11.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.specs dd{margin:0;font-size:17px;font-weight:500;line-height:1.3}
+.specs dd small{display:block;margin-top:4px;color:var(--muted);font-size:14px;font-weight:400}
+@media (max-width:900px){.specs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.specs{grid-template-columns:1fr}}
+
+/* license */
+.lic{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.lic article{display:grid;gap:16px;align-content:start;padding:28px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line)}
+.lic article.pick{border-color:rgba(143,124,248,.55);background:linear-gradient(180deg,rgba(143,124,248,.1),transparent 60%),var(--panel)}
+.lic h3{font-size:24px}
+.lic .price{font:700 clamp(40px,5vw,56px)/1 var(--f);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.lic .price small{font:400 15px/1 var(--f);color:var(--muted);letter-spacing:0;margin-left:8px}
+.lic p{color:var(--ink-2);font-size:16px}
+.lic .btn{justify-self:start;margin-top:6px}
+@media (max-width:760px){.lic{grid-template-columns:1fr}}
+
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 48px;margin-top:clamp(48px,7vw,80px)}
+.faq h3{font-size:19px;letter-spacing:-.01em;line-height:1.25;margin-bottom:8px}
+.faq p{color:var(--ink-2);font-size:16px;max-width:52ch}
+@media (max-width:760px){.faq{grid-template-columns:1fr}}
+
+.last{text-align:center;background:radial-gradient(700px 300px at 50% 100%,rgba(143,124,248,.16),transparent 70%),var(--bg-2);border-top:1px solid var(--line)}
+.last .wrap{display:grid;gap:22px;justify-items:center}
+.last h2{font-size:clamp(34px,5.4vw,68px)}
+footer{border-top:1px solid var(--line);background:var(--bg-2);padding:26px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+
+/* download dialog */
+dialog{width:min(560px,100% - 24px);max-height:calc(100% - 24px);padding:0;border:1px solid var(--line-2);border-radius:var(--r-lg);background:linear-gradient(180deg,#2d323a,#262a31);color:var(--ink);box-shadow:0 40px 80px -20px rgba(0,0,0,.7);overflow:auto}
+dialog::backdrop{background:rgba(10,12,15,.66);backdrop-filter:blur(6px)}
+.dl{display:grid;gap:20px;padding:24px}
+.dl-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dl-head h2{font-size:24px}
+.x{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer}
+.x:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+.field{display:grid;gap:10px}
+.field>.mono{color:var(--muted);font-size:11.5px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{display:grid;gap:5px;text-align:left;padding:13px 14px;border-radius:12px;border:1px solid var(--line-2);background:rgba(255,255,255,.03);color:var(--ink-2);font:inherit;cursor:pointer}
+.seg button b{color:var(--ink);font-weight:600;font-size:16.5px}
+.seg button span{font-size:13.5px;color:var(--muted);line-height:1.35}
+.seg button[aria-pressed="true"],.amts button[aria-pressed="true"]{border-color:rgba(143,124,248,.7);background:var(--accent-soft);color:var(--ink)}
+.amts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+
+.amts button{height:46px;border-radius:12px;border:1px solid var(--line-2);background:rgba(255,255,255,.03);color:var(--ink);font:600 17px/1 var(--f);font-variant-numeric:tabular-nums;cursor:pointer}
+
+.custom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.custom button{height:46px;border-radius:12px;border:1px solid var(--line-2);background:rgba(255,255,255,.03);color:var(--ink);font:500 15px/1 var(--f);cursor:pointer}
+.custom button[aria-pressed="true"]{border-color:rgba(143,124,248,.7);background:var(--accent-soft)}
+.custom label{display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;border-radius:12px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);color:var(--faint);font:600 18px/1 var(--f);cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+.custom input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:inherit;font:600 18px/1 var(--f);font-variant-numeric:tabular-nums;cursor:inherit}
+.custom label.on{border-color:rgba(143,124,248,.7);background:var(--bg-2);color:var(--ink);cursor:text}
+.hint0{color:var(--muted);font-size:13.5px}
+.react{min-height:1.5em;color:var(--ink-2);font-size:15.5px}
+.sum{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--line)}
+.sum .tot{display:grid;gap:4px}
+.sum .tot b{font:700 34px/1 var(--f);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sum .tot span{color:var(--muted);font-size:13.5px}
+.also{color:var(--muted);font-size:14.5px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:50;display:flex;gap:10px;align-items:center;
+  background:#1a202c;border:1.5px solid #4fd1c5;color:#fff;padding:14px 22px;border-radius:10px;box-shadow:0 0 25px rgba(79,209,197,.25);
+  font-size:15px;transition:opacity .3s,transform .3s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast svg{flex:0 0 20px;color:#4fd1c5}
+[hidden]{display:none!important}
+@media (max-width:460px){.seg{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* ===== Headline and mouse glow: copied unchanged from the original FITT3D page ===== */
+/* Mouse glow */
+.glow-overlay {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--active-glow-color, rgba(49,46,129,0.22)),
+        transparent 70%
+    );
+
+    z-index: 1;
+
+    transition: background 0.6s ease;
+}
+
+/* Main phrase */
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.8rem;
+
+    font-size: clamp(1.5rem, 5.5vw, 5rem);
+    font-weight: 900;
+
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Static words */
+.word-static {
+    display: inline-block;
+    flex-shrink: 0;
+
+    font-family: Inter, Arial, sans-serif;
+}
+
+/* Dynamic words */
+.dynamic-word {
+    display: inline-flex;
+    flex-shrink: 0;
+
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+   INDIVIDUAL LETTER CELLS
+
+   Each letter has a fixed-width space.
+   Font changes cannot move neighboring letters.
+*/
+.letter {
+    display: inline-flex;
+
+    /* Increased fixed width for extra breathing room */
+    width: 0.95em;
+    flex: 0 0 0.95em;
+
+    height: 1.3em;
+
+    justify-content: center;
+    align-items: center;
+
+    white-space: nowrap;
+    text-align: center;
+
+    letter-spacing: 0 !important;
+    line-height: 1;
+
+    /* Extra visual spacing */
+    padding: 0 0.08em;
+
+    /* No layout animation */
+    transition: none;
+}
+
+/* Word colors */
+.teal-accent {
+    color: var(--accent-cyan);
+}
+
+.purple-accent {
+    color: var(--text-purple);
+}
+
+/* scroll cue: a soft glow on the bottom edge of the hero and a small arrow */
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;background:radial-gradient(60% 100% at 50% 100%,rgba(79,209,197,.2),transparent 70%)}
+.scroll-cue{position:absolute;left:50%;bottom:22px;z-index:2;width:44px;height:44px;margin-left:-22px;display:grid;place-items:center;border-radius:50%;color:var(--accent-cyan);text-decoration:none;animation:cue 1.8s ease-in-out infinite}
+.scroll-cue:hover{background:rgba(79,209,197,.12)}
+.scroll-cue svg{width:22px;height:22px}
+@keyframes cue{0%,100%{transform:translateY(-4px);opacity:.65}50%{transform:translateY(5px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.scroll-cue{animation:none}}
+.hero h1{user-select:none;-webkit-user-select:none;cursor:default}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Anton&family=Bungee&family=Cinzel+Decorative:wght@700&family=Creepster&family=Courier+Prime&family=DotGothic16&family=Jacquard+24&family=Megrim&family=Orbitron:wght@900&family=Rubik+Glitch&family=Special+Elite&family=Space+Grotesk:wght@700&family=Syncopate:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<!-- Lemon Squeezy checkout overlay: the whole checkout runs on top of this page -->
+<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="FITT3D home"><img src="data:image/png;base64,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" alt="">FITT3D</a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#video">Video</a>
+      <a href="#license">License</a>
+    </nav>
+    <button class="btn" type="button" data-get="personal">Download</button>
+  </div>
+</div>
+
+<!-- Mouse glow -->
+<div class="glow-overlay" id="glow"></div>
+
+<header class="hero" id="top">
+  <canvas id="cage" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <h1>
+
+        <span class="word-static">One</span>
+
+        <span class="dynamic-word teal-accent" data-word="Mesh"></span>
+
+        <span class="word-static">to</span>
+
+        <span class="word-static">fit</span>
+
+        <span class="word-static">them</span>
+
+        <span class="dynamic-word purple-accent" data-word="all"></span>
+
+    </h1>
+    <div class="cta">
+      <button class="btn primary big" type="button" data-get="personal">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16.5h12"/></svg>
+        Download FITT3D
+      </button>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#features" aria-label="Scroll down to the features"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg></a>
+</header>
+
+<main>
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head"><h2>Built around the cage</h2></div>
+    <div class="rows">
+      <div class="row">
+        <div class="copy"><h3>Fit</h3><p>Drop in an FBX, GLB or OBJ. A cage wraps it onto the body.</p></div>
+        <div class="ph"><span class="chip">GIF</span><span class="len">16:10 · 8 s loop</span>
+          <div class="what"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="m20 18 10 6-10 6z"/></svg>
+          <span><b>Placeholder: Fit.</b> A jacket is dragged onto the avatar, placed with the gizmo, then wrapped to the body.</span></div></div>
+      </div>
+      <div class="row">
+        <div class="copy"><h3>Sculpt and lattice</h3><p>Brushes and stacked lattices reshape it while it stays on the body.</p></div>
+        <div class="ph"><span class="chip">GIF</span><span class="len">16:10 · 8 s loop</span>
+          <div class="what"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="m20 18 10 6-10 6z"/></svg>
+          <span><b>Placeholder: Sculpt.</b> A mirrored Grab stroke widens both sleeves, then a lattice flares the hem.</span></div></div>
+      </div>
+      <div class="row">
+        <div class="copy"><h3>Layers</h3><p>Shirt, jacket, coat. Each layer pushes the next, so nothing clips.</p></div>
+        <div class="ph"><span class="chip">GIF</span><span class="len">16:10 · 8 s loop</span>
+          <div class="what"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="m20 18 10 6-10 6z"/></svg>
+          <span><b>Placeholder: Layers.</b> A jacket is dragged above a hoodie in the Layers list and both update.</span></div></div>
+      </div>
+      <div class="row">
+        <div class="copy"><h3>Any avatar, any export</h3><p>Bring your own rig. Export GLB or FBX, rigged or static.</p></div>
+        <div class="ph"><span class="chip">GIF</span><span class="len">16:10 · 8 s loop</span>
+          <div class="what"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="m20 18 10 6-10 6z"/></svg>
+          <span><b>Placeholder: Export.</b> A custom avatar is mapped, then the dressed result walks in a game engine.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="film" id="video">
+  <div class="wrap">
+    <div class="sec-head"><h2>See it in action</h2></div>
+    <div class="ph wide"><span class="chip">VIDEO</span><span class="len">16:9 · 60 to 90 s</span>
+          <div class="what"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="m20 18 10 6-10 6z"/></svg>
+          <span><b>Placeholder: walkthrough video.</b> One jacket imported, fitted, layered, sculpted and exported as a rigged FBX.</span></div></div>
+  </div>
+</section>
+
+<section id="license">
+  <div class="wrap">
+    <div class="sec-head"><h2>Free to use. Pay if it helps you.</h2></div>
+    <div class="lic">
+      <article class="pick">
+        <h3>Personal</h3>
+        <div class="price">$5<small>suggested, from $0</small></div>
+        <p>Pay what you want. Enter 0 to get it free.</p>
+        <button class="btn primary" type="button" data-get="personal">Choose an amount</button>
+      </article>
+      <article>
+        <h3>Business</h3>
+        <div class="price">$30<small>one-time</small></div>
+        <p>For studios and commercial work.</p>
+        <button class="btn" type="button" data-get="business">Get a Business license</button>
+      </article>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap"><span>FITT3D · Beta <span data-version>0.1.8</span></span><span>Made by Giacomo Liberio</span></div>
+</footer>
+
+<dialog id="getDlg" aria-labelledby="dlT">
+  <form class="dl" id="dlForm">
+    <div class="dl-head"><h2 id="dlT">Download FITT3D</h2>
+      <button class="x" type="button" id="dlClose" aria-label="Close"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l10 10M15 5 5 15"/></svg></button></div>
+
+    <div class="field"><span class="mono">License</span>
+      <div class="seg" role="group" aria-label="License">
+        <button type="button" id="licPersonal" data-lic="personal" aria-pressed="true"><b>Personal</b><span>Pay what you want, including nothing</span></button>
+        <button type="button" id="licBusiness" data-lic="business" aria-pressed="false"><b>Business · $30</b><span>Commercial use, one-time payment</span></button>
+      </div>
+    </div>
+
+    <div class="field" id="amtField"><span class="mono">Your amount</span>
+      <div class="amts" role="group" aria-label="Amount">
+        <button type="button" id="amt5" data-amt="5" aria-pressed="true">$5</button>
+        <button type="button" id="amt10" data-amt="10" aria-pressed="false">$10</button>
+        <button type="button" id="amt20" data-amt="20" aria-pressed="false">$20</button>
+      </div>
+      <div class="custom" id="customRow">
+        <button type="button" id="amtCustom" class="c" data-amt="custom" aria-pressed="false">Custom amount</button>
+        <label for="customAmt" id="customBox">$<input id="customAmt" type="number" inputmode="decimal" min="0" max="9999" step="1" value="0" readonly aria-label="Custom amount in dollars"></label>
+      </div>
+      <span class="hint0">Enter 0 in Custom amount to get it free. The download link is sent by email.</span>
+    </div>
+
+    <p class="react" id="react" aria-live="polite"></p>
+
+    <div class="sum">
+      <div class="tot"><b id="total">$5</b><span id="totNote">plus local taxes at checkout</span></div>
+      <a class="btn primary" id="go" href="#" rel="noopener">Checkout</a>
+    </div>
+    <p class="also">Windows 10 and 11, 64-bit installer, version <span data-version>0.1.8</span>.</p>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="m3 5.5 7 5.5 7-5.5"/></svg><span>Thank you! Check your inbox for the download link.</span></div>
+
+<script>
+/* ============ Set these values before publishing ============ */
+const CONFIG = {
+  version: '0.1.8',
+  // 'lemonsqueezy': every Download button opens the full checkout on top of this page
+  //                 (amount, email, card), then the download link arrives by email.
+  // 'gumroad':      the page's own amount picker opens, then Continue goes to Gumroad's checkout page.
+  provider: 'lemonsqueezy',
+  personalUrl: '',   // Personal product, pay what you want, $5 suggested, $0 minimum.
+                     //   Lemon Squeezy: the "Checkout overlay" share link, e.g. https://yourstore.lemonsqueezy.com/buy/xxxx
+                     //   Gumroad:       e.g. https://yourname.gumroad.com/l/fitt3d
+  businessUrl: ''    // Business license product, $30, same kind of link
+};
+const BUSINESS_PRICE = 30;
+
+/* ---------- download dialog ---------- */
+const $ = s => document.querySelector(s);
+const pay = { lic: 'personal', amt: 5, custom: false };
+function quote(s) {   // pure: state in, what the dialog shows out
+  const total = s.lic === 'business' ? BUSINESS_PRICE : Math.max(0, Math.round((+s.amt || 0) * 100) / 100);
+  const money = '$' + (Number.isInteger(total) ? total : total.toFixed(2));
+  const gr = (u, extra) => u ? u + (u.includes('?') ? '&' : '?') + 'wanted=true' + extra : '';   // Gumroad: straight to its payment form
+  if (s.lic === 'business') return { total, money, label: 'Checkout · ' + money, url: gr(CONFIG.businessUrl, ''), note: 'plus local taxes at checkout', react: 'Thank you. A Business license covers commercial use.' };
+  const url = gr(CONFIG.personalUrl, '&price=' + total);
+  if (total === 0) return { total, money, label: 'Get it free', url, note: 'just your email, no card', react: 'Free is fine. Try it, and come back if it earns a place in your pipeline.' };
+  const react = total < 5 ? 'Thank you. Every contribution helps.' : total < 15 ? 'Thank you! This keeps FITT3D moving.' : 'That is generous. Thank you!';
+  return { total, money, label: 'Checkout · ' + money, url, note: 'plus local taxes at checkout', react };
+}
+function drawPay() {
+  const q = quote(pay);
+  document.querySelectorAll('[data-lic]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lic === pay.lic)));
+  $('#amtField').hidden = pay.lic === 'business';
+  document.querySelectorAll('[data-amt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.amt === 'custom' ? pay.custom : !pay.custom && +b.dataset.amt === pay.amt)));
+  $('#customBox').classList.toggle('on', pay.custom); $('#customAmt').readOnly = !pay.custom;
+  $('#total').textContent = q.money; $('#totNote').textContent = q.note; $('#react').textContent = q.react;
+  const go = $('#go'); go.textContent = q.label;
+  if (q.url) go.href = q.url; else go.removeAttribute('href');   // no link set in CONFIG yet: the button does nothing
+}
+
+/* ---------- Lemon Squeezy overlay ---------- */
+let lemonReady = false;
+function setupLemon() {
+  if (lemonReady || typeof window.createLemonSqueezy !== 'function') return lemonReady;
+  window.createLemonSqueezy();
+  window.LemonSqueezy.Setup({ eventHandler: e => { if (e && e.event === 'Checkout.Success') showToast(); } });
+  return (lemonReady = true);
+}
+window.addEventListener('load', setupLemon);
+function openLemon(url) {
+  if (!url) return;   // no link set in CONFIG yet
+  const u = url + (url.includes('?') ? '&' : '?') + 'embed=1';
+  if (setupLemon()) window.LemonSqueezy.Url.Open(u);
+  else window.location.href = url;   // lemon.js blocked or not loaded: use the hosted checkout instead
+}
+function showToast() {
+  const t = $('#toast'); t.classList.add('on');
+  clearTimeout(showToast.t); showToast.t = setTimeout(() => t.classList.remove('on'), 7000);
+}
+const dlg = $('#getDlg');
+document.querySelectorAll('[data-get]').forEach(b => b.addEventListener('click', () => {
+  if (CONFIG.provider === 'lemonsqueezy') { openLemon(b.dataset.get === 'business' ? CONFIG.businessUrl : CONFIG.personalUrl); return; }
+  pay.lic = b.dataset.get; drawPay(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+}));
+$('#dlClose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', ev => { if (ev.target === dlg) dlg.close(); });
+$('#dlForm').addEventListener('submit', ev => ev.preventDefault());
+$('#dlForm').addEventListener('click', ev => {
+  const l = ev.target.closest('[data-lic]'); if (l) { pay.lic = l.dataset.lic; drawPay(); return; }
+  const a = ev.target.closest('[data-amt]'); if (!a) return;
+  if (a.dataset.amt === 'custom') { useCustom(); }
+  else { pay.custom = false; pay.amt = +a.dataset.amt; drawPay(); }
+});
+function useCustom() { if (pay.custom) return; pay.custom = true; pay.amt = +$('#customAmt').value || 0; drawPay(); $('#customAmt').focus(); $('#customAmt').select(); }
+$('#customBox').addEventListener('click', useCustom);
+$('#customAmt').addEventListener('focus', useCustom);
+$('#customAmt').addEventListener('input', ev => { pay.amt = Math.min(9999, Math.max(0, +ev.target.value || 0)); drawPay(); });
+document.querySelectorAll('[data-version]').forEach(e => (e.textContent = CONFIG.version));
+drawPay();
+
+/* ===== Headline font animation and mouse glow: copied unchanged from the original FITT3D page ===== */
+(function () {
+
+const distinctFonts = [
+
+    "'Space Grotesk', sans-serif",
+    "'Orbitron', sans-serif",
+    "'Cinzel Decorative', serif",
+    "'DotGothic16', sans-serif",
+    "'Bungee', sans-serif",
+    "'Jacquard 24', system-ui",
+    "'Rubik Glitch', system-ui",
+    "'Syncopate', sans-serif",
+    "'UnifrakturMaguntia', serif",
+    "'Courier Prime', monospace",
+    "'Alex Brush', cursive",
+    "'Creepster', system-ui",
+    "'Anton', sans-serif",
+    "'Megrim', system-ui",
+    "'Special Elite', monospace"
+
+];
+
+document.querySelectorAll('.dynamic-word').forEach(word => {
+
+    const text = word.dataset.word;
+
+    [...text].forEach(character => {
+
+        const letter = document.createElement('span');
+
+        letter.className = 'letter';
+        letter.textContent = character;
+
+        word.appendChild(letter);
+
+    });
+
+});
+
+const letters = document.querySelectorAll('.letter');
+
+letters.forEach(letter => {
+
+    let currentFont = '';
+
+    function changeFont() {
+
+        let nextFont;
+
+        do {
+
+            nextFont = distinctFonts[
+                Math.floor(Math.random() * distinctFonts.length)
+            ];
+
+        } while (nextFont === currentFont);
+
+        currentFont = nextFont;
+
+        letter.style.fontFamily = nextFont;
+
+    }
+
+    // Initial random font
+    changeFont();
+
+    // Independent animation speed for every letter
+    const interval = Math.floor(Math.random() * 500) + 300;
+
+    setInterval(changeFont, interval);
+
+});
+
+const glow = document.getElementById('glow');
+
+let timeoutId;
+
+const colorViolet = "rgba(49, 46, 129, 0.22)";
+const colorTeal = "rgba(79, 209, 197, 0.18)";
+
+glow.style.setProperty('--active-glow-color', colorViolet);
+
+window.addEventListener('mousemove', e => {
+
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+
+    glow.style.setProperty('--mouse-x', `${x}%`);
+    glow.style.setProperty('--mouse-y', `${y}%`);
+
+    glow.style.setProperty('--active-glow-color', colorTeal);
+
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+
+        glow.style.setProperty('--active-glow-color', colorViolet);
+
+    }, 250);
+
+});
+
+})();
+
+/* ---------- hero: one cage, morphing between garments; the pointer is an inflate brush ---------- */
+(function () {
+  const cv = $('#cage'), hero = $('.hero'), tag = $('#morphTag'), ctx = cv.getContext('2d');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // each garment is the same topology with different numbers: that is the whole trick
+  //            top   hem   torso widths: collar, shoulder, chest, waist, hem   sleeve: len r0 r1    leg: len r0 r1
+  const G = [
+    ['t-shirt',  1.50, .88, [.075, .200, .200, .185, .195], .20, .085, .080, 0,   .10, .08],
+    ['hoodie',   1.52, .80, [.115, .228, .236, .230, .214], .60, .096, .066, 0,   .10, .08],
+    ['dress',    1.50, .38, [.070, .186, .186, .148, .345], .06, .076, .076, 0,   .10, .08],
+    ['coat',     1.52, .44, [.100, .222, .226, .204, .256], .62, .092, .070, 0,   .10, .08],
+    ['jumpsuit', 1.50, .86, [.080, .200, .200, .172, .200], .60, .086, .062, .80, .106, .074]
+  ];
+  const KN = [0, .09, .3, .62, 1];           // where the five torso widths sit, collar to hem
+  const TR = 20, TS = 26, SR = 9, SS = 12, LR = 11, LS = 12, ARM = 0.61; // rings x segments per part; arm angle (A pose)
+  const parts = [[TR, TS, 0], [SR, SS, 1], [SR, SS, 1], [LR, LS, 2], [LR, LS, 2]];
+  let nv = 0; const off = parts.map(p => { const o = nv; nv += p[0] * p[1]; return o; });
+  const edges = [];                          // [a, b, group]
+  parts.forEach(([R, Sg, g], pi) => { const o = off[pi];
+    for (let i = 0; i < R; i++) for (let j = 0; j < Sg; j++) { const a = o + i * Sg + j;
+      edges.push([a, o + i * Sg + (j + 1) % Sg, g]); if (i + 1 < R) edges.push([a, a + Sg, g]); } });
+  const P = new Float32Array(nv * 3), N = new Float32Array(nv * 3), D = new Float32Array(nv), SX = new Float32Array(nv), SY = new Float32Array(nv), SZ = new Float32Array(nv);
+  const lerp = (a, b, t) => a + (b - a) * t, ease = t => t * t * (3 - 2 * t);
+  const mix = (A, B, t) => [null, lerp(A[1], B[1], t), lerp(A[2], B[2], t), A[3].map((v, i) => lerp(v, B[3][i], t)), lerp(A[4], B[4], t), lerp(A[5], B[5], t), lerp(A[6], B[6], t), lerp(A[7], B[7], t), lerp(A[8], B[8], t), lerp(A[9], B[9], t)];
+  function width(w, t) { let k = 0; while (k < 3 && t > KN[k + 1]) k++; return lerp(w[k], w[k + 1], ease((t - KN[k]) / (KN[k + 1] - KN[k]))); }
+  function build(g) {
+    const [, top, hem, w, sl, s0, s1, ll, l0, l1] = g; let q = 0;
+    const put = (x, y, z, nx, ny, nz) => { P[q] = x; P[q + 1] = y; P[q + 2] = z; N[q] = nx; N[q + 1] = ny; N[q + 2] = nz; q += 3; };
+    for (let i = 0; i < TR; i++) { const t = i / (TR - 1), y = lerp(top, hem, t), r = width(w, t);
+      for (let j = 0; j < TS; j++) { const a = j / TS * 6.2832, c = Math.cos(a), s = Math.sin(a); put(r * c, y, r * .62 * s, c, 0, s); } }
+    for (const sd of [1, -1]) { const ox = sd * (w[1] - .03), oy = top - .1, dx = sd * Math.cos(ARM), dy = -Math.sin(ARM), ux = sd * Math.sin(ARM), uy = Math.cos(ARM);
+      for (let i = 0; i < SR; i++) { const t = i / (SR - 1), r = lerp(s0, s1, t), cx = ox + dx * sl * t, cy = oy + dy * sl * t;
+        for (let j = 0; j < SS; j++) { const a = j / SS * 6.2832, c = Math.cos(a), s = Math.sin(a); put(cx + r * ux * c, cy + r * uy * c, r * s, ux * c, uy * c, s); } } }
+    for (const sd of [1, -1]) for (let i = 0; i < LR; i++) { const t = i / (LR - 1), r = lerp(l0, l1, t), cx = sd * (.1 + .03 * t), cy = hem + .03 - ll * t;
+      for (let j = 0; j < LS; j++) { const a = j / LS * 6.2832, c = Math.cos(a), s = Math.sin(a); put(cx + r * c, cy, r * .9 * s, c, 0, s); } }
+    return [1, Math.min(1, sl / .05), Math.min(1, ll / .05)];   // how visible torso, sleeves, legs are
+  }
+  let W = 0, H = 0, dpr = 1, mx = -1e4, my = -1e4, lastMove = -1e9, yawT = 0, yaw = 0, t0 = performance.now(), cur = -1, run = false;
+  function size() { const r = hero.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const HOLD = 2600, MOVE = 1500, CAM = 3.4, YC = .92, BR = 120;
+  function frame(now) {
+    const T = now - t0, step = Math.floor(T / (HOLD + MOVE)), ph = T - step * (HOLD + MOVE), a = step % G.length, b = (a + 1) % G.length;
+    const k = still ? 0 : ph < HOLD ? 0 : ease((ph - HOLD) / MOVE), shown = k > .5 ? b : a;
+    if (shown !== cur) { cur = shown; if (tag) tag.textContent = 'cage 0' + (shown + 1) + ' · ' + G[shown][0]; }
+    const vis = build(mix(G[a], G[b], k));
+    // brush: the pointer, or a slow wander when nothing has moved for a while
+    let bx = mx, by = my, bs = 1;
+    if (now - lastMove > 3200 && !still) { bx = W / 2 + Math.sin(now / 1700) * W * .12; by = H * .5 + Math.sin(now / 1100 + 1) * H * .2; bs = .6; }
+    yaw += ((still ? .5 : now / 9000 + yawT) - yaw) * .06;
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), f = Math.min(H, W * .9) * .58 * CAM, cx0 = W / 2, cy0 = H * .5;
+    for (let i = 0; i < nv; i++) { const q = i * 3;
+      // project the undeformed point to find how close it is to the brush, then push it out along its normal
+      let x = P[q] * cy + P[q + 2] * sy, z = -P[q] * sy + P[q + 2] * cy, s = f / (CAM - z);
+      const dx = cx0 + x * s - bx, dy = cy0 - (P[q + 1] - YC) * s - by, d2 = dx * dx + dy * dy;
+      const tgt = d2 < BR * BR ? bs * Math.pow(1 - d2 / (BR * BR), 2) : 0;
+      D[i] += (tgt - D[i]) * (tgt > D[i] ? .22 : .05);
+      const e = D[i] * .085, X = P[q] + N[q] * e, Y = P[q + 1] + N[q + 1] * e, Z = P[q + 2] + N[q + 2] * e;
+      x = X * cy + Z * sy; z = -X * sy + Z * cy; s = f / (CAM - z);
+      SX[i] = cx0 + x * s; SY[i] = cy0 - (Y - YC) * s; SZ[i] = z; }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.lineWidth = 1;
+    // floor grid, as in the app viewport
+    ctx.strokeStyle = 'rgba(150,160,190,.10)'; ctx.beginPath();
+    const fl = (X, Z) => { const x = X * cy + Z * sy, z = -X * sy + Z * cy, s = f / (CAM - z); return [cx0 + x * s, cy0 + YC * s]; };
+    for (let r = 1; r <= 4; r++) for (let j = 0; j <= 48; j++) { const an = j / 48 * 6.2832, p = fl(Math.cos(an) * r * .32, Math.sin(an) * r * .32); j ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }
+    for (let j = 0; j < 12; j++) { const an = j / 12 * 6.2832, p = fl(Math.cos(an) * .08, Math.sin(an) * .08), o = fl(Math.cos(an) * 1.28, Math.sin(an) * 1.28); ctx.moveTo(p[0], p[1]); ctx.lineTo(o[0], o[1]); }
+    ctx.stroke();
+    // cage edges, batched by part and depth so far lines fade
+    const bins = Array.from({ length: 12 }, () => []);
+    for (const [u, v, g] of edges) { if (vis[g] < .02) continue; const z = (SZ[u] + SZ[v]) / 2, d = z < -.12 ? 0 : z < 0 ? 1 : z < .12 ? 2 : 3; bins[g * 4 + d].push(u, v); }
+    bins.forEach((bn, bi) => { if (!bn.length) return; const g = bi >> 2, d = bi & 3;
+      ctx.strokeStyle = `rgba(143,124,248,${([.13, .2, .34, .5][d] * vis[g]).toFixed(3)})`; ctx.beginPath();
+      for (let i = 0; i < bn.length; i += 2) { ctx.moveTo(SX[bn[i]], SY[bn[i]]); ctx.lineTo(SX[bn[i + 1]], SY[bn[i + 1]]); } ctx.stroke(); });
+    // points the brush is moving
+    ctx.fillStyle = '#5cc9d5';
+    for (let i = 0; i < nv; i++) if (D[i] > .12 && SZ[i] > -.05) { ctx.globalAlpha = Math.min(1, D[i] * 1.4); ctx.beginPath(); ctx.arc(SX[i], SY[i], 1.2 + D[i] * 1.6, 0, 6.2832); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    if (bs === 1 && bx > -1e3) { ctx.strokeStyle = 'rgba(92,201,213,.55)'; ctx.lineWidth = 1.25; ctx.beginPath(); ctx.arc(bx, by, BR * .62, 0, 6.2832); ctx.stroke(); }
+    if (run && !still) requestAnimationFrame(frame);
+  }
+  hero.addEventListener('pointermove', ev => { const r = hero.getBoundingClientRect(); mx = ev.clientX - r.left; my = ev.clientY - r.top; lastMove = performance.now(); yawT = (mx / r.width - .5) * 1.1; });
+  hero.addEventListener('pointerleave', () => { mx = my = -1e4; });
+  addEventListener('resize', () => { size(); if (still) frame(performance.now()); });
+  size();
+  const go = on => { if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; };
+  if (still) frame(performance.now());
+  else if ('IntersectionObserver' in window) new IntersectionObserver(es => go(es[0].isIntersecting && !document.hidden)).observe(hero); else go(true);
+  document.addEventListener('visibilitychange', () => { if (!still) go(!document.hidden); });
+})();
+</script>
+</body>
+</html>
