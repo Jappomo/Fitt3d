@@ -4,6 +4,18 @@
     "date": "2026-11-10",
     "sections": [
       {
+        "title": "Cloth dynamics (experimental)",
+        "notes": [
+          "Turn it on in Settings > Experimental; it appears in Garment options.",
+          "Paint a mask on the garment: white moves freely, black follows the body. Fill, Clear, Smooth and Top to hem fills.",
+          "Fabric presets (Cotton, Denim, Silk, Leather, Wool knit, Rubber) and sliders for stretch and bend stiffness, weight, damping, air drag, max distance, thickness and friction.",
+          "Gravity and wind with direction arrows you drag in the viewport, wind heading and turbulence.",
+          "Play previews the cloth live on the cage; Stop puts the garment back to its fitted shape.",
+          "Export option Cloth mask: the mask goes into the garment's vertex colours (grey or one channel) and the cloth settings onto the mesh (GLB extras, FBX user properties).",
+          "Saved with the garment and in .ft3d projects."
+        ]
+      },
+      {
         "title": "Body zones",
         "notes": [
           "Body zones in the Avatar panel: Head, Upper torso, Arms, Lower torso, Hips and Legs.",
@@ -42,7 +54,11 @@
         "notes": [
           "Liquid cage (turn it on in Settings > Experimental): a new button under Lattice deform.",
           "Pinch the fabric and drag it along the body or lift it off; when you let go it settles back onto the skin where you left it, like pulling up a pair of tights.",
-          "Pinch size, Reach, Stretch and Grip sliders, mirror, undo. The result is kept as sculpting on the garment."
+          "Pinch size, Reach, Stretch and Grip sliders, mirror, undo.",
+          "Intensity blends the whole effect from 0 to 100%.",
+          "Skin smoothing stops the settled fabric from following every muscle: it bridges the hollows so the fit feels less tight.",
+          "Relax brush and Relax all bring stretched cage cells back toward their original size.",
+          "Reset removes the effect. It is its own layer on the garment, separate from sculpting, saved with the garment and in .ft3d projects."
         ]
       }
     ]
