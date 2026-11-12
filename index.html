@@ -191,6 +191,16 @@ button,select,input{font:inherit;color:inherit}
 .vt.open .vt-btn.on{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 .vt-btn.on{background:var(--grad);color:#fff;border-color:transparent}
 .vt-btn svg{width:19px;height:19px}
+.vt[hidden],.fc-bar[hidden]{display:none}
+.fc-bar{width:40px;display:flex;flex-direction:column;border-radius:12px;border:1px solid var(--line-2);background:rgba(22,24,28,.7);backdrop-filter:blur(8px);padding:4px 0 4px;position:relative}
+.fc-bar-head{font-size:9.5px;letter-spacing:.02em;color:var(--ink-2);text-align:center;padding:1px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fc-seg{position:relative;height:30px;margin:0 6px;background:var(--c);display:grid;place-items:center;cursor:default;outline:none}
+.fc-seg:first-of-type{border-radius:6px 6px 0 0}.fc-seg:last-child{border-radius:0 0 6px 6px}
+.fc-seg>span{font-size:9.5px;font-weight:600;color:rgba(0,0,0,.72)}
+.fc-seg:hover,.fc-seg:focus-visible{box-shadow:0 0 0 2px #fff inset}
+.fc-tt{display:none;position:absolute;left:calc(100% + 14px);top:50%;transform:translateY(-50%);width:240px;padding:8px 10px;border-radius:10px;background:rgba(34,38,44,.96);border:1px solid var(--line-2);box-shadow:var(--shadow);font-size:12px;line-height:1.4;color:var(--ink-2);z-index:12;white-space:normal}
+.fc-tt b{color:#fff}.fc-tt i{color:var(--ink-3);font-style:normal;display:block;margin-top:4px}
+.fc-seg:hover .fc-tt,.fc-seg:focus-visible .fc-tt{display:block}
 .vt-fly{position:absolute;left:48px;bottom:0;display:none;align-items:center;gap:6px;padding:5px;border-radius:14px;background:rgba(34,38,44,.95);border:1px solid var(--line-2);box-shadow:var(--shadow);backdrop-filter:blur(10px);white-space:nowrap;z-index:4}
 .vt.open .vt-fly{display:flex}
 .vt-fly::before{content:"";position:absolute;left:-10px;top:0;bottom:0;width:10px}
@@ -979,6 +989,10 @@ svg[stroke="currentColor"]:not([viewBox="0 0 48 48"]),svg[stroke="currentColor"]
             <div class="fly-group"><button class="chip" type="button" data-vis="aWire">Wireframe</button><button class="chip" type="button" data-vis="aWireShaded">On Shaded</button></div>
             <div class="fly-group"><button class="chip" type="button" data-vis="aTex" data-texkind="avatar">Texture</button>
             <input type="checkbox" id="bodyTog" checked hidden></div></div></div>
+        <div class="vt" id="vtFit" hidden><button class="vt-btn" type="button" aria-label="Fit check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3 3.5 5.2l1.4 2.7 1.6-.9V17h7V7l1.6.9 1.4-2.7L13 3c-.5 1.2-1.7 2-3 2s-2.5-.8-3-2z"/><path d="M8.6 12.2l1.2 1.2 2.4-2.6"/></svg></button>
+          <div class="vt-fly"><div class="fly-group"><span class="fly-label">Fit check</span>
+            <button class="chip" type="button" data-fcmode="clip" title="Distance from the skin in the current pose">Clipping</button><button class="chip" type="button" data-fcmode="stretch" title="How much fitting and sculpting stretched or squashed the fabric">Stretch</button><button class="chip" type="button" data-fcmode="weights" title="How reliable the skin weights are">Weights</button></div></div></div>
+        <div class="fc-bar" id="fcBar" hidden></div>
       </div>
       <div class="drop" id="drop" hidden><div id="dropText">Drop to dress</div></div>
       <div class="chooser" id="chooser" hidden role="dialog" aria-label="Choose file type">
@@ -1632,7 +1646,7 @@ function matte(m) {
 
 /* ---------- app version + user settings (per browser, localStorage) ---------- */
 const APP_VERSION = '0.1.9';
-const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, exp: { autoRig: false, liquidCage: false, clothSim: false }, keys: {} };
+const SETTINGS_DEFAULT = { autosave: { on: true, every: 0 }, render: { aa: true, cap: 0 }, exp: { autoRig: false, liquidCage: false, clothSim: false, retarget: false }, keys: {} };
 const SETTINGS = (() => {
   let s = null; try { s = JSON.parse(localStorage.getItem('fitt3d.settings') || 'null'); } catch (e) { /* private mode */ }
   const d = JSON.parse(JSON.stringify(SETTINGS_DEFAULT));
@@ -2330,6 +2344,7 @@ function setPose(p) {
     S.action = S.mixer.clipAction(slotClip(p)); S.action.reset().play();
   } else restPose();
   renderPoses();
+  if (FC.mode === 'clip') requestAnimationFrame(() => fitCheckSync(true));
 }
 
 /* ---------------- import / export ---------------- */
@@ -2799,7 +2814,7 @@ function openFitting(src, editId) {
   F = { src, ghost, editId: editId || null, bones: findPoseBones(), seeThrough: true, accessory: false };
   const ed = editId ? S.customLib.get(editId) : null; F.accessory = !!(ed && ed.kind === 'accessory'); F.wasAcc = F.accessory;
   if (editId) { const e = S.equipped.get(editId); if (e && e.mesh) e.mesh.visible = false; }
-  S.fitting = true;
+  S.fitting = true; fitCheckSync();
   updateGhost(); applyFitPose(src.pose);
   S.bodyMeshes.forEach(m => (m.visible = true)); $('#bodyTog').checked = true;
   renderFitPanel(); fitGizmoAttach(); setSeeThrough(true); setFocus();
@@ -2812,7 +2827,7 @@ function setFitAccessory(on) {
   if (!F) return; F.accessory = on; renderFitPanel();
 }
 function setFocus() { document.body.classList.toggle('fit-focus', !!(S.fitting || S.accMode)); }
-function updateGhost() { if (cagePrev) scheduleCagePreview(); if (!F) return; F.ghost.matrix.copy(placeMatrix(F.src)); F.ghost.matrixWorldNeedsUpdate = true; }
+function updateGhost() { if (cagePrev) scheduleCagePreview(); if (!F) return; if (F.ghostWarped) F.ghost.matrix.identity(); else F.ghost.matrix.copy(placeMatrix(F.src)); F.ghost.matrixWorldNeedsUpdate = true; if (SETTINGS.exp.retarget) ghostRetargetSchedule(); }
 function setSeeThrough(on) {
   F.seeThrough = on; const tint = new T.Color($('#seeCol') ? $('#seeCol').value : '#9fd8ff');
   F.ghost.traverse(o => { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => {
@@ -2823,7 +2838,8 @@ function setSeeThrough(on) {
 function closeFitting() {
   if (!F) return;
   clearCagePreview(); highlightPart(-1); if (F.snap) { snapPlane(false); drawSnap({}); } fitGizmoDetach();
-  scene.remove(F.ghost);
+  scene.remove(F.ghost); clearTimeout(ghostT);
+  F.ghost.children.forEach((o, k) => { const pt = F.src.parts[k]; if (o.isMesh && pt && o.geometry !== pt.geo) o.geometry.dispose(); });
   F.ghost.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose()); });
   F = null; S.fitting = false; setFocus(); renderGzBar();
   $('#fitSec').hidden = true; $('#sculptBox').hidden = false;
@@ -2938,7 +2954,8 @@ function bindCustomEntry(entry) {
   garmentGroup.add(r.group); entry.mesh = r.group;
   proxyGroup.add(r.proxy.mesh); entry.proxy = r.proxy;
   captureFit(entry);
-  entry.stats = `${r.verts.toLocaleString()} verts · cage ${r.proxy.topo.m.toLocaleString()} · ${r.ms} ms · ${S.B.skinned ? 'bound to ' + S.B.skeleton.bones.length + ' bones' : 'static'}`;
+  entry.stats = `${r.verts.toLocaleString()} verts · cage ${r.proxy.topo.m.toLocaleString()} · ${r.ms} ms · ${S.B.skinned ? 'bound to ' + S.B.skeleton.bones.length + ' bones' : 'static'}${r.retargeted ? ' · retargeted' : ''}`;
+  if (src.marksNew) { src.marksNew = false; if (S.customLib.has(entry.def.id)) saveItem(entry); }
   return r;
 }
 async function commitFitting() {
@@ -3021,7 +3038,7 @@ $('#fitSec').addEventListener('input', ev => {
   F.src[g][k] = v;
   $(`#fo-${g}-${k}`).textContent = un === '%' || un === '°' || un === '' ? `${v}${un}` : `${v} ${un}`;
   if (g === 'place') updateGhost();
-  if (g === 'pose') applyFitPose(F.src.pose);
+  if (g === 'pose') { applyFitPose(F.src.pose); if (SETTINGS.exp.retarget) ghostRetargetSchedule(); }
   if (g === 'fit' && k === 'proxy') scheduleCagePreview();
   else if (cagePrev && g !== 'place') clearCagePreview(); // keep the preview until another setting is touched
 });
@@ -3599,6 +3616,7 @@ function openForce(btn) {
 /* ---------- layers UI ---------- */
 function layerLabel(e) { return e.def.custom ? 'custom' : e.def.slot === 'feet' ? 'shoes' : e.def.slot; }
 function renderLayers() {
+  queueMicrotask(() => fitCheckSync());
   syncLayerOrder();
   const ids = [...S.layerOrder].reverse(), n = ids.length;
   $('#layerCount').textContent = n ? n : '';
@@ -5074,9 +5092,182 @@ $('#sculptBox').addEventListener('click', ev => {
   if (f) { blendWeights(K.e).forEach(w => w.fill(+f.dataset.tb)); saveItem(K.e); showBlendPaint(true); reapplyTransition(); }
 });
 
+/* ================= fit check: read-only colour views of a fitted garment (viewport toolbar) =================
+   Computed from the finished fit, never changes it. Clipping: distance to the skin in the current pose.
+   Stretch: cage spacing now against the cage as it was generated. Weights: whether the cage sits close to
+   the skin and faces the same way there (weights copied from the body are reliable) or not (they are guessed). */
+function bodyVT() {
+  const B = S.B; if (B._vt) return B._vt;
+  const tri = B.tri, n = B.n, st = new Int32Array(n + 1);
+  for (let t = 0; t < tri.length; t++) st[tri[t] + 1]++;
+  for (let i = 0; i < n; i++) st[i + 1] += st[i];
+  const vt = new Int32Array(tri.length), fill = st.slice(0, n);
+  for (let t = 0; t < tri.length; t++) vt[fill[tri[t]]++] = (t / 3) | 0;
+  return (B._vt = { st, vt });
+}
+function closestTri(px, py, pz, P, a, b, c, o) {
+  const ax = P[a*3], ay = P[a*3+1], az = P[a*3+2];
+  const abx = P[b*3]-ax, aby = P[b*3+1]-ay, abz = P[b*3+2]-az, acx = P[c*3]-ax, acy = P[c*3+1]-ay, acz = P[c*3+2]-az;
+  const apx = px-ax, apy = py-ay, apz = pz-az, d1 = abx*apx+aby*apy+abz*apz, d2 = acx*apx+acy*apy+acz*apz;
+  if (d1 <= 0 && d2 <= 0) { o[0] = 1; o[1] = 0; o[2] = 0; return; }
+  const bpx = px-P[b*3], bpy = py-P[b*3+1], bpz = pz-P[b*3+2], d3 = abx*bpx+aby*bpy+abz*bpz, d4 = acx*bpx+acy*bpy+acz*bpz;
+  if (d3 >= 0 && d4 <= d3) { o[0] = 0; o[1] = 1; o[2] = 0; return; }
+  const vc = d1*d4 - d3*d2;
+  if (vc <= 0 && d1 >= 0 && d3 <= 0) { const v = d1 / (d1 - d3); o[0] = 1 - v; o[1] = v; o[2] = 0; return; }
+  const cpx = px-P[c*3], cpy = py-P[c*3+1], cpz = pz-P[c*3+2], d5 = abx*cpx+aby*cpy+abz*cpz, d6 = acx*cpx+acy*cpy+acz*cpz;
+  if (d6 >= 0 && d5 <= d6) { o[0] = 0; o[1] = 0; o[2] = 1; return; }
+  const vb = d5*d2 - d1*d6;
+  if (vb <= 0 && d2 >= 0 && d6 <= 0) { const w = d2 / (d2 - d6); o[0] = 1 - w; o[1] = 0; o[2] = w; return; }
+  const va = d3*d6 - d5*d4;
+  if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0) { const w = (d4 - d3) / ((d4 - d3) + (d5 - d6)); o[0] = 0; o[1] = 1 - w; o[2] = w; return; }
+  const dn = 1 / (va + vb + vc), v = vb * dn, w = vc * dn; o[0] = 1 - v - w; o[1] = v; o[2] = w;
+}
+// closest point on the body surface with an interpolated normal and a signed distance
+function bodySurface(PB, NB) {
+  const B = S.B, V = bodyVT(), tri = B.tri, nt = tri.length / 3;
+  const fine = buildHash(PB, B.n, 0.025), coarse = buildHash(PB, B.n, 0.15);
+  const stamp = new Int32Array(nt); let tick = 0;
+  const o = new Float64Array(3), res = { t: -1, x: 0, y: 0, z: 0, nx: 0, ny: 1, nz: 0, d: 0, dist: 0 };
+  function query(x, y, z) {
+    let s = fine.nearest(x, y, z); if (s < 0) s = coarse.nearest(x, y, z); if (s < 0) return null;
+    tick++; let best = Infinity, b0 = 0, b1 = 0, b2 = 0;
+    for (let q = V.st[s]; q < V.st[s+1]; q++) { const t = V.vt[q]; if (stamp[t] === tick) continue; stamp[t] = tick;
+      const a = tri[t*3], b = tri[t*3+1], c = tri[t*3+2]; closestTri(x, y, z, PB, a, b, c, o);
+      const qx = o[0]*PB[a*3]+o[1]*PB[b*3]+o[2]*PB[c*3], qy = o[0]*PB[a*3+1]+o[1]*PB[b*3+1]+o[2]*PB[c*3+1], qz = o[0]*PB[a*3+2]+o[1]*PB[b*3+2]+o[2]*PB[c*3+2];
+      const d = (qx-x)**2 + (qy-y)**2 + (qz-z)**2; if (d < best) { best = d; res.t = t; b0 = o[0]; b1 = o[1]; b2 = o[2]; res.x = qx; res.y = qy; res.z = qz; } }
+    const a = tri[res.t*3], b = tri[res.t*3+1], c = tri[res.t*3+2];
+    let nx = b0*NB[a*3]+b1*NB[b*3]+b2*NB[c*3], ny = b0*NB[a*3+1]+b1*NB[b*3+1]+b2*NB[c*3+1], nz = b0*NB[a*3+2]+b1*NB[b*3+2]+b2*NB[c*3+2];
+    const l = Math.hypot(nx, ny, nz) || 1; res.nx = nx / l; res.ny = ny / l; res.nz = nz / l;
+    res.dist = Math.sqrt(best);
+    const sg = (x - res.x) * res.nx + (y - res.y) * res.ny + (z - res.z) * res.nz;
+    res.d = res.dist < 1e-6 ? 0 : (sg >= 0 ? res.dist : -res.dist);
+    return res;
+  }
+  return { query, PB, fine };
+}
+// segments of each view, top of the bar first. test(value) picks the segment; colours are flat per segment.
+const FC_VIEWS = {
+  clip: { name: 'Clipping', short: 'Clip', unit: 'mm', segs: [
+    { c: '#ef4444', l: 'Inside', tip: 'Inside the body: more than 1 mm under the skin', test: v => v < -0.001 },
+    { c: '#f97316', l: 'Touching', tip: 'Touching: within 1 mm of the skin', test: v => v < 0.001 },
+    { c: '#facc15', l: 'Close', tip: 'Close: 1 to 6 mm from the skin', test: v => v < 0.006 },
+    { c: '#22c55e', l: 'Clear', tip: 'Clear: 6 mm to 5 cm from the skin', test: v => v < 0.05 },
+    { c: '#38bdf8', l: 'Loose', tip: 'Loose: more than 5 cm from the skin', test: () => true }],
+    note: 'In the current pose. Change the pose to check others.' },
+  stretch: { name: 'Stretch', short: 'Stretch', segs: [
+    { c: '#ef4444', l: 'Over', tip: 'Over-stretched: more than 50% longer than the cage was generated', test: v => v > 1.5 },
+    { c: '#f97316', l: 'Stretched', tip: 'Stretched: 20 to 50% longer than the cage was generated', test: v => v > 1.2 },
+    { c: '#22c55e', l: 'As made', tip: 'As modelled: within 15% shorter to 20% longer', test: v => v >= 0.85 },
+    { c: '#38bdf8', l: 'Squashed', tip: 'Squashed: more than 15% shorter than the cage was generated', test: () => true }],
+    note: 'Fabric spacing after fitting and sculpting, against the cage as it was generated.' },
+  weights: { name: 'Weights', short: 'Weights', segs: [
+    { c: '#ef4444', l: 'Guessed', tip: 'Guessed: more than 4.5 cm from the skin or facing away from it. Skin weights here are spread from nearby fabric, not copied from the body.', test: v => v < 0.34 },
+    { c: '#facc15', l: 'Blended', tip: 'Blended: 2.5 to 4.5 cm from the skin. Skin weights come from the body but may drift as it moves.', test: v => v < 0.67 },
+    { c: '#22c55e', l: 'From body', tip: 'From the body: within 2.5 cm of the skin and facing the same way. Skin weights match the body.', test: () => true }],
+    note: 'How reliable the skin weights are, from how close each part of the cage sits to the skin.' }
+};
+const FC = { mode: 'off' };
+const fcMat = new T.MeshBasicMaterial({ vertexColors: true, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2, side: T.DoubleSide, toneMapped: false });
+const fcRGB = hex => { const c = new T.Color(hex); return [c.r, c.g, c.b]; };
+function fitCheckClear(e) { if (e && e.fcOverlay) { e.fcOverlay.forEach(o => { o.removeFromParent(); o.geometry.dispose(); }); e.fcOverlay = null; e.fcFor = null; } }
+function fitCheckTarget() {
+  const sel = S.selected && S.equipped.get(S.selected);
+  if (sel && sel.def.custom && sel.proxy && !isAcc(sel)) return sel;
+  const all = [...S.equipped.values()].filter(e => e.def.custom && e.proxy && !isAcc(e));
+  return all.length === 1 ? all[0] : null;
+}
+// per cage point values for stretch and weights (bind space, includes sculpting)
+function fcCageValues(e, mode) {
+  const px = e.proxy, topo = px.topo, pm = topo.m, P = px.mesh.geometry.attributes.position.array, out = new Float32Array(pm);
+  if (mode === 'stretch') {
+    const P0 = px.P0;
+    for (let i = 0; i < pm; i++) { let a = 0, b = 0; for (let q = topo.start[i]; q < topo.start[i+1]; q++) { const j = topo.nbr[q];
+      a += Math.hypot(P[i*3]-P[j*3], P[i*3+1]-P[j*3+1], P[i*3+2]-P[j*3+2]); b += Math.hypot(P0[i*3]-P0[j*3], P0[i*3+1]-P0[j*3+1], P0[i*3+2]-P0[j*3+2]); }
+      out[i] = b > 1e-6 ? a / b : 1; }
+  } else {
+    const B = S.B, surf = bodySurface(B.pos, B.nrm), N = proxyNormals(P, topo, px.fs);
+    for (let i = 0; i < pm; i++) { const q = surf.query(P[i*3], P[i*3+1], P[i*3+2]); if (!q) { out[i] = 0; continue; }
+      const facing = N[i*3]*q.nx + N[i*3+1]*q.ny + N[i*3+2]*q.nz, d = Math.abs(q.d);
+      out[i] = facing < 0.2 || d > 0.045 ? 0 : d > 0.025 ? 0.5 : 1; }
+  }
+  return out;
+}
+function fitCheckApply(e) {
+  fitCheckClear(e);
+  const V = FC_VIEWS[FC.mode]; if (!V || !e || !e.mesh || !e.proxy || !e.proxy.binds) return;
+  const px = e.proxy, tr = px.topo.tris, ts = targetsOf(e), cols = V.segs.map(s => fcRGB(s.c)), counts = V.segs.map(() => 0);
+  let surf = null, mats = null, cv = null;
+  if (FC.mode === 'clip') { mats = currentMats(); const pb = posedBody(); surf = bodySurface(pb.PB, pb.NB); }
+  else cv = fcCageValues(e, FC.mode);
+  const segOf = v => { for (let k = 0; k < V.segs.length; k++) if (V.segs[k].test(v)) return k; return V.segs.length - 1; };
+  e.fcOverlay = [];
+  ts.forEach((t, k) => {
+    const g = t.geometry, n = g.attributes.position.count, col = new Float32Array(n * 3);
+    let segW = null;
+    if (FC.mode === 'clip') {
+      const wd = worldData(t, mats), W = wd.W; segW = new Uint8Array(wd.m);
+      for (let i = 0; i < wd.m; i++) { const x = W[i*3], y = W[i*3+1], z = W[i*3+2];
+        const v = surf.fine.nearest(x, y, z); let d = 0.06;
+        if (v >= 0 && Math.hypot(x - surf.PB[v*3], y - surf.PB[v*3+1], z - surf.PB[v*3+2]) < 0.06) { const q = surf.query(x, y, z); if (q) d = q.d; }
+        segW[i] = segOf(d); counts[segW[i]]++; }
+      for (let j = 0; j < n; j++) { const c = cols[segW[wd.w.map[j]]]; col[j*3] = c[0]; col[j*3+1] = c[1]; col[j*3+2] = c[2]; }
+    } else {
+      const bd = px.binds[k]; if (!bd) return;
+      const m = bd.tri.length; segW = new Uint8Array(m);
+      for (let i = 0; i < m; i++) { const t3 = bd.tri[i];
+        const v = bd.bary[i*3] * cv[tr[t3*3]] + bd.bary[i*3+1] * cv[tr[t3*3+1]] + bd.bary[i*3+2] * cv[tr[t3*3+2]];
+        segW[i] = segOf(v); counts[segW[i]]++; }
+      for (let j = 0; j < n; j++) { const c = cols[segW[bd.map[j]]]; col[j*3] = c[0]; col[j*3+1] = c[1]; col[j*3+2] = c[2]; }
+    }
+    const og = new T.BufferGeometry();
+    for (const a of ['position', 'skinIndex', 'skinWeight']) if (g.attributes[a]) og.setAttribute(a, g.attributes[a]);
+    if (g.index) og.setIndex(g.index); og.setAttribute('color', new T.BufferAttribute(col, 3));
+    og.boundingSphere = g.boundingSphere; og.boundingBox = g.boundingBox;
+    const o = t.isSkinnedMesh ? new T.SkinnedMesh(og, fcMat) : new T.Mesh(og, fcMat);
+    if (t.isSkinnedMesh) o.bind(t.skeleton, t.bindMatrix);
+    o.position.copy(t.position); o.quaternion.copy(t.quaternion); o.scale.copy(t.scale);
+    o.frustumCulled = false; o.renderOrder = 4; o.userData.overlay = true; o.name = 'Fit check';
+    t.parent.add(o); e.fcOverlay.push(o);
+  });
+  e.fcFor = FC.mode; e.fcMesh = e.mesh; e.fcCounts = counts;
+}
+function fitCheckSync(force) {
+  const tg = FC.mode !== 'off' ? fitCheckTarget() : null;
+  for (const e of S.equipped.values()) {
+    const want = !!tg && tg === e && !K && !S.fitting;
+    if (!want) { if (e.fcOverlay) fitCheckClear(e); continue; }
+    if (force || e.fcFor !== FC.mode || e.fcMesh !== e.mesh) { try { fitCheckApply(e); } catch (err) { console.warn('fit check failed', err); } }
+  }
+  renderFitCheckUI();
+}
+function setFitCheck(mode) {
+  if (mode !== 'off' && !fitCheckTarget()) { toast('Select a fitted garment in Layers to check it.'); return; }
+  FC.mode = FC.mode === mode ? 'off' : mode;
+  for (const e of S.equipped.values()) e.fcFor = null;
+  fitCheckSync();
+}
+// icon state, flyout chips and the heat bar above the icon
+function renderFitCheckUI() {
+  const vt = $('#vtFit'), bar = $('#fcBar'); if (!vt || !bar) return;
+  const any = [...S.equipped.values()].some(e => e.def.custom && e.proxy && !isAcc(e));
+  vt.hidden = !any;
+  if (!any && FC.mode !== 'off') { FC.mode = 'off'; for (const e of S.equipped.values()) fitCheckClear(e); }
+  vt.querySelectorAll('[data-fcmode]').forEach(b => b.classList.toggle('on', b.dataset.fcmode === FC.mode));
+  vt.querySelector('.vt-btn').classList.toggle('on', FC.mode !== 'off');
+  const e = FC.mode !== 'off' ? fitCheckTarget() : null, V = FC_VIEWS[FC.mode];
+  if (!any || !e || !V || K || S.fitting) { bar.hidden = true; return; }
+  const total = (e.fcCounts || []).reduce((a, b) => a + b, 0) || 1, nm = e.def.name.replace(/[<&]/g, '');
+  bar.innerHTML = `<div class="fc-bar-head" title="${V.name}: ${nm}">${V.short}</div>` + V.segs.map((s, k) => {
+    const pc = e.fcCounts ? Math.round(100 * e.fcCounts[k] / total) : 0;
+    return `<div class="fc-seg" style="--c:${s.c}" tabindex="0" aria-label="${s.tip.replace(/\.$/, '')}. ${pc}% of ${nm}."><span>${pc ? pc + '%' : ''}</span>
+      <div class="fc-tt"><b>${s.l}</b> · ${pc}% of the garment<br>${s.tip.replace(/\.$/, '')}.${k === 0 ? `<br><i>${V.note}</i>` : ''}</div></div>`; }).join('');
+  bar.hidden = false;
+}
+
 /* ---------- sculpt panel ---------- */
 function renderSculptBox() {
   const box = $('#sculptBox'); if (!box) return;
+  fitCheckSync();
   const e = S.selected && S.equipped.get(S.selected);
   $('#sculptDesel').hidden = !e || !!K || !!S.accMode;
   const fr = $('#fitReturn'); if (fr) fr.hidden = true;
@@ -5864,6 +6055,187 @@ function accSculptApply(e, px, Pc, C0, SD, live) {
     t.geometry.attributes.position.needsUpdate = true; t.geometry.computeVertexNormals(); t.geometry.computeBoundingSphere();
   });
 }
+/* ================= landmark retarget (experimental, Settings > Experimental) =================
+   A garment remembers the landmarks of the avatar it was first fitted on: 14 segments from the mapped joints
+   (torso, head, upper arm, forearm, hand, thigh, shin, foot per side), each with body cross-sections (rings).
+   On another avatar, with the setting on, the placed garment is reshaped segment by segment before fitting:
+   direction and length from the joints, width and depth from the rings. The fitting core itself is unchanged. */
+function bodyRegions() {
+  // 0 torso, 1 head and neck, 2 arm +X, 3 arm -X, 4 leg +X, 5 leg -X
+  const B = S.B; if (B._reg) return B._reg;
+  const n = B.n, R = new Uint8Array(n);
+  for (let i = 0; i < n; i++) { const L = B.label[i], sd = B.side[i] > 0 ? 0 : 1;
+    R[i] = (L === ARM || L === HAND) ? 2 + sd : (L === LEG || L === FOOT) ? 4 + sd : (L === HEAD || L === NECK) ? 1 : 0; }
+  return (B._reg = R);
+}
+const SEG_REG = { torso: 1 << 0, head: 1 << 1, 'uarm+': 1 << 2, 'farm+': 1 << 2, 'hand+': 1 << 2, 'uarm-': 1 << 3, 'farm-': 1 << 3, 'hand-': 1 << 3,
+  'thigh+': 1 << 4, 'shin+': 1 << 4, 'foot+': 1 << 4, 'thigh-': 1 << 5, 'shin-': 1 << 5, 'foot-': 1 << 5 };
+const SEG_RINGS = { torso: [0, 0.2, 0.4, 0.6, 0.8, 1], head: [0.25, 0.7], uarm: [0.15, 0.5, 0.85], farm: [0.2, 0.8], hand: [0.5], thigh: [0.1, 0.5, 0.9], shin: [0.2, 0.8], foot: [0.5] };
+const SEG_IDS = Object.keys(SEG_REG);
+function segFrame(u, fwd) {
+  let wx = fwd[0], wy = fwd[1], wz = fwd[2]; let d = wx*u[0] + wy*u[1] + wz*u[2];
+  wx -= u[0]*d; wy -= u[1]*d; wz -= u[2]*d; let l = Math.hypot(wx, wy, wz);
+  if (l < 0.35) { wx = 0; wy = 1; wz = 0; d = u[1]; wx -= u[0]*d; wy -= u[1]*d; wz -= u[2]*d; l = Math.hypot(wx, wy, wz) || 1; }
+  wx /= l; wy /= l; wz /= l;
+  return { v: [wy*u[2] - wz*u[1], wz*u[0] - wx*u[2], wx*u[1] - wy*u[0]], w: [wx, wy, wz] };
+}
+// the avatar's landmark segments in its CURRENT pose (mapped joints; body landmarks for unrigged avatars)
+function poseMarks() {
+  const B = S.B; if (!B) return null;
+  const H = B.H || 1.75, fwd = [0, 0, B.face || 1], J = {};
+  const wp = o => { const v = o.getWorldPosition(new T.Vector3()); return [v.x, v.y, v.z]; };
+  let b = null;
+  if (S.skeleton) { try { b = detectPoseBones(S.poseBones || S.skeleton.bones, B.cx, S.boneMap); } catch (e) { b = null; } }
+  const sideOf = p => (p[0] - B.cx) >= 0 ? '+' : '-';
+  if (b && b.neck && b.arm[1] && b.arm[-1] && b.thigh[1] && b.thigh[-1]) {
+    for (const sd of [1, -1]) for (const k of ['arm', 'fore', 'hand', 'thigh', 'shin', 'foot']) if (b[k][sd]) J[k + sd] = wp(b[k][sd]);
+    J.neck = wp(b.neck); J.head = b.head ? wp(b.head) : [J.neck[0], J.neck[1] + 0.05 * H, J.neck[2]];
+  } else {
+    const lm = B.lm; if (!lm) return null;
+    const P = v => [v.x, v.y, v.z];
+    for (const sd of [1, -1]) {
+      J['arm' + sd] = P(lm.shoulder[sd]); J['hand' + sd] = P(lm.hand[sd]); J['fore' + sd] = J['arm' + sd].map((c, i) => (c + J['hand' + sd][i]) / 2);
+      J['thigh' + sd] = P(lm.hip[sd]); J['foot' + sd] = P(lm.ankle[sd]); J['shin' + sd] = J['thigh' + sd].map((c, i) => (c + J['foot' + sd][i]) / 2);
+    }
+    J.neck = [B.cx, B.neckY, B.cz || 0]; J.head = [B.cx, B.headBaseY, B.headCZ || B.cz || 0];
+  }
+  const segs = {};
+  const add = (id, a, bb) => { if (!a || !bb) return; const d = [bb[0]-a[0], bb[1]-a[1], bb[2]-a[2]], len = Math.hypot(...d); if (len < 1e-4) return;
+    const u = d.map(c => c / len), fr = segFrame(u, fwd); segs[id] = { id, a, b: bb, len, u, v: fr.v, w: fr.w, rings: [] }; };
+  const hipC = J['thigh1'] && J['thigh-1'] ? J['thigh1'].map((c, i) => (c + J['thigh-1'][i]) / 2) : null;
+  add('torso', hipC, J.neck);
+  if (J.head) { const d = [J.head[0]-J.neck[0], J.head[1]-J.neck[1], J.head[2]-J.neck[2]], l = Math.hypot(...d) || 1; add('head', J.neck, [J.head[0] + d[0]/l*0.11*H, J.head[1] + d[1]/l*0.11*H, J.head[2] + d[2]/l*0.11*H]); }
+  for (const sd of [1, -1]) {
+    const a = J['arm' + sd], f = J['fore' + sd], hd = J['hand' + sd];
+    if (a) { const s = sideOf(a); add('uarm' + s, a, f); add('farm' + s, f, hd);
+      if (f && hd) { const d = [hd[0]-f[0], hd[1]-f[1], hd[2]-f[2]], l = Math.hypot(...d) || 1; add('hand' + s, hd, [hd[0]+d[0]/l*0.1*H, hd[1]+d[1]/l*0.1*H, hd[2]+d[2]/l*0.1*H]); } }
+    const t = J['thigh' + sd], sh = J['shin' + sd], ft = J['foot' + sd];
+    if (t) { const s = sideOf(t); add('thigh' + s, t, sh); add('shin' + s, sh, ft);
+      if (ft) add('foot' + s, ft, [ft[0] + fwd[0]*0.13*H, ft[1] - 0.035*H, ft[2] + fwd[2]*0.13*H]); }
+  }
+  // rings: robust cross-section of the body regions belonging to each segment
+  const { PB } = posedBody(), R = bodyRegions(), n = B.n, slab = 0.012 * H / 1.75;
+  for (const id in segs) {
+    const sg = segs[id], key = id.replace(/[+-]$/, ''), ts = SEG_RINGS[key], mask = SEG_REG[id];
+    const vs = ts.map(() => []), ws = ts.map(() => []);
+    for (let i = 0; i < n; i++) {
+      if (!((mask >> R[i]) & 1)) continue;
+      const rx = PB[i*3]-sg.a[0], ry = PB[i*3+1]-sg.a[1], rz = PB[i*3+2]-sg.a[2], ax = rx*sg.u[0] + ry*sg.u[1] + rz*sg.u[2];
+      for (let k = 0; k < ts.length; k++) if (Math.abs(ax - ts[k] * sg.len) < slab) { vs[k].push(rx*sg.v[0] + ry*sg.v[1] + rz*sg.v[2]); ws[k].push(rx*sg.w[0] + ry*sg.w[1] + rz*sg.w[2]); }
+    }
+    const pct = (a, f) => a[Math.min(a.length - 1, Math.max(0, Math.floor(f * (a.length - 1))))];
+    for (let k = 0; k < ts.length; k++) {
+      const a = vs[k].sort((x, y) => x - y), c = ws[k].sort((x, y) => x - y);
+      if (a.length < 8) { sg.rings.push({ t: ts[k], ok: false }); continue; }
+      const v0 = pct(a, 0.03), v1 = pct(a, 0.97), w0 = pct(c, 0.03), w1 = pct(c, 0.97);
+      sg.rings.push({ t: ts[k], ok: true, cv: (v0 + v1) / 2, cw: (w0 + w1) / 2, ev: Math.max(0.008, (v1 - v0) / 2), ew: Math.max(0.008, (w1 - w0) / 2) });
+    }
+    const good = sg.rings.filter(r => r.ok);
+    if (!good.length) { const e = key === 'torso' ? 0.12 : key === 'head' ? 0.08 : 0.045; sg.rings = ts.map(t => ({ t, ok: true, cv: 0, cw: 0, ev: e, ew: e })); }
+    else sg.rings = sg.rings.map(r => r.ok ? r : { ...good.reduce((p, q) => Math.abs(q.t - r.t) < Math.abs(p.t - r.t) ? q : p), t: r.t });
+  }
+  return { v: 1, H, cx: B.cx, fwd, segs };
+}
+const marksJSON = m => m && JSON.parse(JSON.stringify(m, (k, v) => typeof v === 'number' ? Math.round(v * 1e5) / 1e5 : v));
+function ringAt(sg, t) {
+  const R = sg.rings; if (t <= R[0].t) return R[0]; if (t >= R[R.length - 1].t) return R[R.length - 1];
+  for (let k = 1; k < R.length; k++) if (t <= R[k].t) { const a = R[k-1], b = R[k], f = (t - a.t) / ((b.t - a.t) || 1);
+    return { cv: a.cv + (b.cv - a.cv) * f, cw: a.cw + (b.cw - a.cw) * f, ev: a.ev + (b.ev - a.ev) * f, ew: a.ew + (b.ew - a.ew) * f }; }
+  return R[R.length - 1];
+}
+function marksDiff(A, Bm) {
+  if (!A || !Bm) return Infinity; let d = 0;
+  for (const id in A.segs) { const a = A.segs[id], b = Bm.segs[id]; if (!b) return Infinity;
+    d = Math.max(d, Math.hypot(a.a[0]-b.a[0], a.a[1]-b.a[1], a.a[2]-b.a[2]), Math.hypot(a.b[0]-b.b[0], a.b[1]-b.b[1], a.b[2]-b.b[2]));
+    for (let k = 0; k < a.rings.length && k < b.rings.length; k++) d = Math.max(d, Math.abs(a.rings[k].ev - b.rings[k].ev), Math.abs(a.rings[k].ew - b.rings[k].ew)); }
+  return d;
+}
+// per-point segment weights: distance to each segment axis in units of the local body radius, smoothed over the mesh
+function segWeights(P, m, A, adj, iters) {
+  const ids = SEG_IDS.filter(id => A.segs[id]), ns = ids.length, Wt = new Float32Array(m * ns), sc = new Float32Array(ns);
+  for (let i = 0; i < m; i++) {
+    const x = P[i*3], y = P[i*3+1], z = P[i*3+2]; let mn = Infinity;
+    for (let s = 0; s < ns; s++) { const g = A.segs[ids[s]];
+      const rx = x - g.a[0], ry = y - g.a[1], rz = z - g.a[2];
+      const t = (rx*g.u[0] + ry*g.u[1] + rz*g.u[2]) / g.len, tc = Math.max(0, Math.min(1, t));
+      const qx = rx - g.u[0]*tc*g.len, qy = ry - g.u[1]*tc*g.len, qz = rz - g.u[2]*tc*g.len;
+      const rg = ringAt(g, tc), rad = Math.max(0.025, (rg.ev + rg.ew) / 2);
+      const ov = qx*g.v[0] + qy*g.v[1] + qz*g.v[2] - rg.cv, ow = qx*g.w[0] + qy*g.w[1] + qz*g.w[2] - rg.cw;
+      const ext = (t < 0 ? -t : t > 1 ? t - 1 : 0) * g.len;
+      const d = Math.hypot(ov / Math.max(0.02, rg.ev), ow / Math.max(0.02, rg.ew)) + ext / rad;
+      sc[s] = d; if (d < mn) mn = d;
+    }
+    let sum = 0;
+    for (let s = 0; s < ns; s++) { const w = Math.exp(-2.2 * (sc[s] - mn)); Wt[i*ns+s] = w < 0.02 ? 0 : w; sum += Wt[i*ns+s]; }
+    for (let s = 0; s < ns; s++) Wt[i*ns+s] /= sum || 1;
+  }
+  if (adj && iters) smoothField(Wt, ns, adj, iters);
+  return { ids, ns, Wt };
+}
+function warpPoints(P, m, A, Bm, sw, out, rowOf) {
+  const hr = (Bm.H || 1.75) / (A.H || 1.75), segs = sw.ids.map(id => [A.segs[id], Bm.segs[id]]);
+  for (let i = 0; i < m; i++) {
+    const x = P[i*3], y = P[i*3+1], z = P[i*3+2], row = rowOf ? rowOf[i] : i; let ox = 0, oy = 0, oz = 0, tw = 0;
+    for (let s = 0; s < sw.ns; s++) {
+      const w = sw.Wt[row*sw.ns+s]; if (!w) continue;
+      const [a, b] = segs[s]; if (!b) continue;
+      const rx = x - a.a[0], ry = y - a.a[1], rz = z - a.a[2];
+      const ax = rx*a.u[0] + ry*a.u[1] + rz*a.u[2], t = ax / a.len;
+      const v = rx*a.v[0] + ry*a.v[1] + rz*a.v[2], ww = rx*a.w[0] + ry*a.w[1] + rz*a.w[2];
+      const tc = Math.max(0, Math.min(1, t)), ra = ringAt(a, tc), rb = ringAt(b, tc);
+      const fv = Math.max(0.6, Math.min(1.7, rb.ev / ra.ev)), fw = Math.max(0.6, Math.min(1.7, rb.ew / ra.ew));
+      const v2 = rb.cv + (v - ra.cv) * fv, w2 = rb.cw + (ww - ra.cw) * fw;
+      const ax2 = t < 0 ? ax * hr : t > 1 ? b.len + (ax - a.len) * hr : t * b.len;
+      ox += w * (b.a[0] + b.u[0]*ax2 + b.v[0]*v2 + b.w[0]*w2);
+      oy += w * (b.a[1] + b.u[1]*ax2 + b.v[1]*v2 + b.w[1]*w2);
+      oz += w * (b.a[2] + b.u[2]*ax2 + b.v[2]*v2 + b.w[2]*w2); tw += w;
+    }
+    if (tw > 1e-6) { out[i*3] = ox / tw; out[i*3+1] = oy / tw; out[i*3+2] = oz / tw; } else { out[i*3] = x; out[i*3+1] = y; out[i*3+2] = z; }
+  }
+  return out;
+}
+/* the retarget a garment needs right now: from the landmarks of the avatar it was first fitted on to the current
+   ones, in the current (fitting) pose. Records the landmarks the first time. null = nothing to do. */
+function retargetPlan(src) {
+  let cur = null; try { cur = poseMarks(); } catch (e) { console.warn('landmarks unavailable', e); return null; }
+  if (!cur) return null;
+  if (!src.marks) { src.marks = marksJSON(cur); src.marksNew = true; return null; }
+  if (!SETTINGS.exp.retarget || src.marks.v !== 1) return null;
+  if (marksDiff(src.marks, cur) < 0.002) return null;
+  return { A: src.marks, B: cur };
+}
+// reshape a placed garment geometry (positions and authored normals) with a plan
+function retargetGeo(plan, geo) {
+  if (!plan) return geo;
+  const Wl = weldGeo(geo), sw = segWeights(Wl.pos, Wl.m, plan.A, Wl, 12);
+  const out = new Float32Array(Wl.m * 3); warpPoints(Wl.pos, Wl.m, plan.A, plan.B, sw, out);
+  const na = geo.attributes.normal, pa = geo.attributes.position, n = Wl.map.length;
+  if (na) { const Q = new Float32Array(n * 3), Q2 = new Float32Array(n * 3), e = 0.004;
+    for (let j = 0; j < n; j++) { const i = Wl.map[j]; for (let d = 0; d < 3; d++) Q[j*3+d] = Wl.pos[i*3+d] + e * na.array[j*3+d]; }
+    warpPoints(Q, n, plan.A, plan.B, sw, Q2, Wl.map);
+    for (let j = 0; j < n; j++) { const i = Wl.map[j]; const x = Q2[j*3] - out[i*3], y = Q2[j*3+1] - out[i*3+1], z = Q2[j*3+2] - out[i*3+2], l = Math.hypot(x, y, z) || 1; na.array[j*3] = x / l; na.array[j*3+1] = y / l; na.array[j*3+2] = z / l; }
+    na.needsUpdate = true; }
+  for (let j = 0; j < n; j++) { const i = Wl.map[j]; pa.array[j*3] = out[i*3]; pa.array[j*3+1] = out[i*3+1]; pa.array[j*3+2] = out[i*3+2]; }
+  pa.needsUpdate = true;
+  return geo;
+}
+// the fitting ghost shows the reshaped garment while the plan is active
+let ghostT = 0;
+function ghostRetargetSchedule() { clearTimeout(ghostT); ghostT = setTimeout(ghostRetargetNow, 160); }
+function ghostRetargetNow() {
+  if (!F || !F.ghost) return;
+  const plan = SETTINGS.exp.retarget && F.src.marks ? retargetPlan(F.src) : null;
+  if (!plan && !F.ghostWarped) return;
+  const M = placeMatrix(F.src);
+  F.ghost.children.forEach((mesh, k) => { const part = F.src.parts[k]; if (!part) return;
+    if (mesh.geometry !== part.geo) mesh.geometry.dispose();
+    if (!plan) { mesh.geometry = part.geo; return; }
+    const geo = part.geo.clone(); geo.applyMatrix4(M); retargetGeo(plan, geo); mesh.geometry = geo; });
+  F.ghostWarped = !!plan;
+  if (plan) F.ghost.matrix.identity(); else F.ghost.matrix.copy(placeMatrix(F.src));
+  F.ghost.matrixWorldNeedsUpdate = true;
+}
+
 /* ---------- fit a custom garment through its cage ---------- */
 function topRows(Wd, nb, boneOf, rows, outI, outW, o) {
   // rows: [[rowIndex, weight], ...]
@@ -5888,7 +6260,8 @@ function fitAndBind(src) {
   const body = { PB, NB, fine: buildHash(PB, B.n, 0.025), coarse: buildHash(PB, B.n, 0.15) };
   const ease = src.fit.ease / 1000, conform = src.fit.conform / 100, h = (src.fit.proxy || 3) / 100;
   const M = placeMatrix(src), NM = new T.Matrix3().getNormalMatrix(M);
-  const parts = src.parts.map(part => { const geo = part.geo.clone(); glPreApply(src, geo); geo.applyMatrix4(M); return { part, geo, W: weldGeo(geo) }; });
+  const rplan = retargetPlan(src);
+  const parts = src.parts.map(part => { const geo = part.geo.clone(); glPreApply(src, geo); geo.applyMatrix4(M); if (rplan) retargetGeo(rplan, geo); return { part, geo, W: weldGeo(geo) }; });
   // 1. cage
   const px = makeCage(parts.map(p => p.W), h, body, src.fit.cageSrc === 'avatar', src.fit.roles, src);
   const rigid = px.rigid || parts.map(() => []);
@@ -6005,7 +6378,7 @@ function fitAndBind(src) {
   if (B.skinned) cage.bind(B.skeleton, new T.Matrix4());
   cage.frustumCulled = false; cage.visible = false; cage.renderOrder = 6; cage.name = src.name + ' cage';
   void NM;
-  return { group, verts: total, ms: Math.round(performance.now() - t0),
+  return { group, verts: total, ms: Math.round(performance.now() - t0), retargeted: !!rplan,
     proxy: { mesh: cage, topo, fs: px.fs, N: new Float32Array(pm * 3), binds, size: px.h, P0 } };
 }
 
@@ -6053,7 +6426,7 @@ function saveItem(entry) {
   if (!entry.fileBuf) return;
   const src = entry.custom || {};
   const rec = { id: entry.def.id, name: entry.def.name, tag: entry.def.tag, order: entry.def.order, fileName: entry.fileName, buf: entry.fileBuf,
-    thumb: entry.def.thumb || null, place: src.place || entry.saved?.place, pose: src.pose || entry.saved?.pose, fit: src.fit || entry.saved?.fit,
+    thumb: entry.def.thumb || null, place: src.place || entry.saved?.place, pose: src.pose || entry.saved?.pose, fit: src.fit || entry.saved?.fit, marks: src.marks || entry.saved?.marks || null,
     sculpt: entry.sculptDelta || null, liq: entry.liq || null, cloth: entry.cloth || null, sculptAmt: entry.sculptAmt ?? null, pinW: entry.pinW || null, detail: entry.detail || null, maps: entry.maps || null, blend: entry.blend ?? null, blendW: entry.blendW || null, kind: entry.kind || null, acc: entry.acc || null, noRecv: !!entry.noRecv, noCast: !!entry.noCast, lforce: entry.lforce || null, glatt: entry.glatt && entry.glatt.length ? entry.glatt : null, cage: src.cageFile || entry.cageFile || null, added: entry.added || Date.now() };
   entry.added = rec.added;
   DB.putItem(rec);
@@ -6068,7 +6441,7 @@ async function restoreLibrary() {
     if (!r || !r.buf || S.customLib.has(r.id)) continue;
     const tag = S.sections.some(s => s.id === r.tag) ? r.tag : 'unsorted';
     S.customLib.set(r.id, { def: { id: r.id, name: r.name, cat: 'Custom', slot: r.id, custom: true, tag, order: r.order ?? 0, thumb: r.thumb }, custom: null, mesh: null,
-      fileBuf: r.buf, fileName: r.fileName, saved: { place: r.place, pose: r.pose, fit: r.fit }, cageFile: r.cage || null, sculptDelta: r.sculpt || null, liq: r.liq || null, cloth: r.cloth || null, sculptAmt: r.sculptAmt ?? undefined, pinW: r.pinW || null, detail: r.detail || null, maps: r.maps || null, blend: r.blend ?? undefined, blendW: r.blendW || null, kind: r.kind || undefined, acc: r.acc || null, noRecv: !!r.noRecv, noCast: !!r.noCast, lforce: r.lforce || null, glatt: r.glatt || null, added: r.added });
+      fileBuf: r.buf, fileName: r.fileName, saved: { place: r.place, pose: r.pose, fit: r.fit, marks: r.marks || null }, cageFile: r.cage || null, sculptDelta: r.sculpt || null, liq: r.liq || null, cloth: r.cloth || null, sculptAmt: r.sculptAmt ?? undefined, pinW: r.pinW || null, detail: r.detail || null, maps: r.maps || null, blend: r.blend ?? undefined, blendW: r.blendW || null, kind: r.kind || undefined, acc: r.acc || null, noRecv: !!r.noRecv, noCast: !!r.noCast, lforce: r.lforce || null, glatt: r.glatt || null, added: r.added });
   }
   DB.putMeta('uiVersion', 7); saveSections();
   renderLibrary();
@@ -6081,6 +6454,7 @@ async function ensureSource(entry) {
   if (!src) throw new Error('nomesh');
   const sv = entry.saved || {};
   if (sv.place) Object.assign(src.place, sv.place); if (sv.pose) Object.assign(src.pose, sv.pose); if (sv.fit) Object.assign(src.fit, sv.fit);
+  if (sv.marks) src.marks = sv.marks;
   src.fileBuf = entry.fileBuf; src.fileName = entry.fileName;
   if (entry.cageFile && entry.cageFile.buf) { try { src.cage = await loadCageGeo(entry.cageFile, src); src.cageFile = entry.cageFile; } catch (e) { console.warn('custom cage unreadable', e); } }
   entry.custom = src;
@@ -9238,6 +9612,7 @@ function menuHTML(which) {
       <hr><div class="mb-head">Experimental</div>
       <div class="mb-row"><span>Build rig for unrigged avatars</span><button type="button" class="switch" role="switch" data-set="exp.autoRig" aria-checked="${SETTINGS.exp.autoRig}" aria-label="Build rig for unrigged avatars"></button></div>
       <div class="mb-row"><span>Liquid cage for garments</span><button type="button" class="switch" role="switch" data-set="exp.liquidCage" aria-checked="${SETTINGS.exp.liquidCage}" aria-label="Liquid cage for garments"></button></div>
+      <div class="mb-row"><span>Retarget garments to each avatar</span><button type="button" class="switch" role="switch" data-set="exp.retarget" aria-checked="${SETTINGS.exp.retarget}" aria-label="Retarget garments to each avatar" title="A garment remembers the avatar it was first fitted on. On another avatar it is reshaped to that avatar's proportions (arm and leg length and direction, body width and depth) before fitting."></button></div>
       <div class="mb-row"><span>Cloth dynamics for garments</span><button type="button" class="switch" role="switch" data-set="exp.clothSim" aria-checked="${SETTINGS.exp.clothSim}" aria-label="Cloth dynamics for garments"></button></div>
       <hr>${item('keys', MICONS.keys, 'Keyboard shortcuts…')}
       <hr>${item('wipe', MICONS.trash, 'Delete browser data…', 'data-danger')}`;
@@ -9271,7 +9646,7 @@ document.addEventListener('click', ev => {
     if (set.classList.contains('switch')) SETTINGS[grp][key] = !SETTINGS[grp][key]; else SETTINGS[grp][key] = +set.dataset.v;
     saveSettings();
     if (grp === 'autosave' && SETTINGS.autosave.on) { S.lastAuto = Date.now(); saveSession(); }
-    if (grp === 'exp') { updateRigBtn(); renderSculptBox(); }
+    if (grp === 'exp') { updateRigBtn(); renderSculptBox(); if (key === 'retarget' && !F && [...S.equipped.values()].some(e => e.def.custom)) setTimeout(() => refitAll(false), 50); }
     refreshMenu(); return;
   }
   const it = ev.target.closest('[data-act]'); if (!it || it.disabled) return;
@@ -9462,7 +9837,7 @@ async function buildProject() {
   const garments = (S.layerOrder || []).filter(id => S.customLib.has(id)).map(id => {
     const e = S.customLib.get(id), src = e.custom || {};
     return { id, name: e.def.name, tag: e.def.tag, order: e.def.order, thumb: e.def.thumb || null, fileName: e.fileName, buf: e.fileBuf,
-      place: src.place || e.saved?.place, pose: src.pose || e.saved?.pose, fit: src.fit || e.saved?.fit, sculpt: e.sculptDelta || null, liq: e.liq || null, cloth: e.cloth || null, sculptAmt: e.sculptAmt ?? null, pinW: e.pinW || null, detail: e.detail || null, maps: e.maps || null, blend: e.blend ?? null, blendW: e.blendW || null, kind: e.kind || null, acc: e.acc || null, noRecv: !!e.noRecv, noCast: !!e.noCast, lforce: e.lforce || null, glatt: e.glatt && e.glatt.length ? e.glatt : null, cage: (e.custom && e.custom.cageFile) || e.cageFile || null };
+      place: src.place || e.saved?.place, pose: src.pose || e.saved?.pose, fit: src.fit || e.saved?.fit, marks: src.marks || e.saved?.marks || null, sculpt: e.sculptDelta || null, liq: e.liq || null, cloth: e.cloth || null, sculptAmt: e.sculptAmt ?? null, pinW: e.pinW || null, detail: e.detail || null, maps: e.maps || null, blend: e.blend ?? null, blendW: e.blendW || null, kind: e.kind || null, acc: e.acc || null, noRecv: !!e.noRecv, noCast: !!e.noCast, lforce: e.lforce || null, glatt: e.glatt && e.glatt.length ? e.glatt : null, cage: (e.custom && e.custom.cageFile) || e.cageFile || null };
   });
   let avatar;
   if (S.isMannequin) avatar = { kind: 'mannequin', params: { ...S.params } };
@@ -9568,7 +9943,7 @@ async function openProject(file, handle) {
       const old = S.customLib.get(g.id); if (old && old.custom) old.custom = null;
       const tag = S.sections.some(s => s.id === g.tag) ? g.tag : 'unsorted';
       const e = { def: { id: g.id, name: g.name, cat: 'Custom', slot: g.id, custom: true, tag, order: g.order ?? 0, thumb: g.thumb }, custom: null, mesh: null,
-        fileBuf: g.buf, fileName: g.fileName, saved: { place: g.place, pose: g.pose, fit: g.fit }, sculptDelta: g.sculpt || null, liq: g.liq || null, cloth: g.cloth || null, sculptAmt: g.sculptAmt ?? undefined, pinW: g.pinW || null, detail: g.detail || null, maps: g.maps || null, blend: g.blend ?? undefined, blendW: g.blendW || null, kind: g.kind || undefined, acc: g.acc || null, noRecv: !!g.noRecv, noCast: !!g.noCast, lforce: g.lforce || null, glatt: g.glatt || null, cageFile: g.cage || null, added: Date.now() };
+        fileBuf: g.buf, fileName: g.fileName, saved: { place: g.place, pose: g.pose, fit: g.fit, marks: g.marks || null }, sculptDelta: g.sculpt || null, liq: g.liq || null, cloth: g.cloth || null, sculptAmt: g.sculptAmt ?? undefined, pinW: g.pinW || null, detail: g.detail || null, maps: g.maps || null, blend: g.blend ?? undefined, blendW: g.blendW || null, kind: g.kind || undefined, acc: g.acc || null, noRecv: !!g.noRecv, noCast: !!g.noCast, lforce: g.lforce || null, glatt: g.glatt || null, cageFile: g.cage || null, added: Date.now() };
       S.customLib.set(g.id, e); saveItem(e);
     }
     renderLibrary();
@@ -10215,6 +10590,8 @@ function renderVTools() {
   document.querySelector('#vtAvatar .vt-btn').classList.toggle('on', !VIEW.avatar || VIEW.avatarXray || VIEW.aWire || VIEW.aWireShaded || !VIEW.aTex);
 }
 $('#vtools').addEventListener('click', ev => {
+  const fcb = ev.target.closest('[data-fcmode]'); if (fcb) { setFitCheck(fcb.dataset.fcmode); return; }
+  if (ev.target.closest('#vtFit > .vt-btn')) { setFitCheck(FC.mode === 'off' ? 'clip' : FC.mode); return; }
   const sh = ev.target.closest('[data-shade]'); if (sh) { VIEW.mode = sh.dataset.shade; applyView(); scheduleSave(); return; }
   const vs = ev.target.closest('[data-vis]');
   if (vs) { if (vs.getAttribute('aria-disabled') === 'true') { toast(vs.dataset.texkind === 'avatar' ? 'This avatar has no textures. Add them with Load textures in the Avatar panel.' : 'No worn garment has textures. Add maps from a garment\'s info window.'); return; }
